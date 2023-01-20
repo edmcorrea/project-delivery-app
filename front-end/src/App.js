@@ -5,7 +5,7 @@ import rockGlass from './images/rockGlass.svg';
 function App() {
   return (
     <div className="App">
-      <span className="logo">GP-22- new</span>
+      <span className="logo">GP-22- release</span>
       <object className="rocksGlass" type="image/svg+xml" data={ rockGlass }>
         Glass
       </object>
