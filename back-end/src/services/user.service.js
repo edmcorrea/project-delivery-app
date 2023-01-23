@@ -13,11 +13,11 @@ const login = async (email, password) => {
   const tokenData = {
     userId: user.id,
     userEmail: user.email,
-  }
+  };
   const token = jwtUtil.createToken(tokenData);
   return { statusCode: 200, result: { token } };
-}
+};
 
 module.exports = {
   login,
-}
+};
