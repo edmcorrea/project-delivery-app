@@ -18,7 +18,7 @@ function Login() {
     event.preventDefault();
     try {
       const { token } = await requestLogin('/login', { email, password });
-
+      console.log(token);
       setToken(token);
     } catch (_error) {
       setError(true);
@@ -37,8 +37,8 @@ function Login() {
 
   const handleChange = ({ target }) => {
     const { type, value } = target;
-    console.log(type, value);
-    console.log(email, password);
+    // console.log(type, value);
+    // console.log(email, password);
     if (type === 'text') setEmail(value);
     if (type === 'password') setPassword(value);
   };
