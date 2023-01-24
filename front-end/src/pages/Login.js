@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-// import { useHistory } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { requestLogin, setToken } from '../services/request.login';
 
 function Login() {
-  // let history = useHistory();
+  const history = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
@@ -37,8 +37,6 @@ function Login() {
 
   const handleChange = ({ target }) => {
     const { type, value } = target;
-    console.log(type, value);
-    console.log(email, password);
     if (type === 'text') setEmail(value);
     if (type === 'password') setPassword(value);
   };
@@ -79,9 +77,10 @@ function Login() {
         <button
           type="submit"
           data-testid="common_login__button-register"
-          // onClick={history.push('/register')}
+          onClick={ () => history('/register') }
         >
           Ainda não tenho conta
+
         </button>
         {error && (
           <p data-testid="common_login__element-invalid-email">
