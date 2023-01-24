@@ -18,8 +18,8 @@ function Register() {
       // console.log(token);
       setToken(token);
       history('/customer/products');
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
       setError(true);
     }
   };
