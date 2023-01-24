@@ -6,7 +6,7 @@ function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [disableBtn, setDisableBtn] = useState(true);
-  // const [error, setError] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
