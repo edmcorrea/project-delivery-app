@@ -18,8 +18,9 @@ function Login() {
     event.preventDefault();
     try {
       const { token } = await requestLogin('/login', { email, password });
-
+      console.log(token);
       setToken(token);
+      history('/customer/products');
     } catch (_error) {
       setError(true);
     }
@@ -27,7 +28,7 @@ function Login() {
 
   useEffect(() => {
     const magicNumber = 6;
-    const regexMail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    const regexMail = /\S+@\S+\.\S+/;
     if (password.length >= magicNumber && regexMail.test(email)) {
       return setDisableBtn(false);
     }
@@ -50,7 +51,7 @@ function Login() {
             id="login"
             type="text"
             value={ email }
-            data-testid="common_login__input-email1"
+            data-testid="common_login__input-email"
             onChange={ handleChange }
           />
         </label>

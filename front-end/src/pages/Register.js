@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { requestRegister } from '../services/request.register';
 
 function Register() {
   const [name, setName] = useState('');
@@ -7,22 +8,23 @@ function Register() {
   const [disableBtn, setDisableBtn] = useState(true);
   // const [error, setError] = useState(false);
 
-  /* const handleSubmit = (event) => {
-      event.preventDefault();
-      try {
-        const { token } = await requestRegister('/register', { name, email, password });
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const { token } = await requestRegister('/user', { name, email, password });
 
-        setToken(token);
-      } catch (_error) {
-        setError(true);
-      }
-    }; */
+      setToken(token);
+      console.log(token);
+    } catch (_error) {
+      setError(true);
+    }
+  };
 
   useEffect(() => {
     const passwordChars = 6;
     const nameChars = 12;
-    const regexMail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    if (name.length < nameChars
+    const regexMail = /\S+@\S+\.\S+/;
+    if (name.length >= nameChars
        && password.length >= passwordChars
         && regexMail.test(email)) {
       return setDisableBtn(false);
@@ -77,20 +79,20 @@ function Register() {
         </label>
         <br />
         <button
-          data-testid="common_login__button-register"
+          data-testid="common_register__button-register"
           type="submit"
           disabled={ disableBtn }
-          // onClick={ handleSubmit }
+          onClick={ handleSubmit }
         >
           Cadastrar
 
         </button>
-        {/* error && (
+        { error && (
           <p data-testid="common_register__element-invalid_register">
             Registro inválido
             {' '}
           </p>
-        ) */}
+        ) }
       </form>
     </div>
   );
