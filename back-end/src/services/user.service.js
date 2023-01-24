@@ -1,6 +1,6 @@
 const { User } = require('../database/models');
 const jwtUtil = require('../utils/jwt.util');
-const checkPassword = require('./validations/checkPassword');
+const { checkPassword, creteHashPassword } = require('./validations/hashPassword');
 const { validateUserData } = require('./validations/user.validation');
 
 const getByEmail = async (email) => User.findOne({ where: { email } });
@@ -26,8 +26,8 @@ const login = async (email, password) => {
   } };
 };
 
-const insertUser = async (name, email, password) => {
-  const newUser = validateUserData({ name, email, password });
+const insertUser = async (newUserData) => {
+  const { name, email, password } = validateUserData(newUserData);
 
   const user = await getByEmail(email);
   if(user) {
@@ -36,7 +36,8 @@ const insertUser = async (name, email, password) => {
     throw err;
   }
 
-  const createdUser = await User.create(newUser);
+  const hasedPassword = creteHashPassword(password);
+  const createdUser = await User.create({ name, email, password: hasedPassword });
   const tokenData = {
     userId: createdUser.id,
     userEmail: createdUser.email,

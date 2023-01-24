@@ -29,6 +29,9 @@ describe('integration tests for /login route', function() {
       });
 
     expect(response.status).to.be.equal(200);
+    expect(response.body.name).to.be.equal('Delivery App Admin');
+    expect(response.body.email).to.be.equal('adm@deliveryapp.com');
+    expect(response.body.role).to.be.equal('administrator');
     expect(response.body.token).to.be.string;
   });
 

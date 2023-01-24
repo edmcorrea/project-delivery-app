@@ -7,8 +7,7 @@ const login = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  const { email, name, password } = req.body;
-  const { statusCode, result } = await userService.insertUser(name, email, password);
+  const { statusCode, result } = await userService.insertUser({ ...req.body });
   return res.status(statusCode).json(result);
 };
 
