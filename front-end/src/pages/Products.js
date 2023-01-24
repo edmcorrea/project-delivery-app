@@ -1,7 +1,11 @@
+import NavBar from "../components/navbar";
+import ProductsAvailable from "../components/products.available";
+
 function Products() {
   return (
     <div>
-      Olá
+      <NavBar />
+      <ProductsAvailable />
     </div>
   );
 }
