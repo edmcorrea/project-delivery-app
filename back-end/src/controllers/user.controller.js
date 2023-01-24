@@ -6,6 +6,13 @@ const login = async (req, res) => {
   return res.status(statusCode).json(result);
 };
 
+const createUser = async (req, res) => {
+  const { email, name, password } = req.body;
+  const { statusCode, result } = await userService.insertUser(name, email, password);
+  return res.status(statusCode).json(result);
+};
+
 module.exports = {
   login,
+  createUser,
 };

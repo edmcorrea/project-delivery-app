@@ -1,9 +1,12 @@
 const { User } = require('../database/models');
 const jwtUtil = require('../utils/jwt.util');
 const checkPassword = require('./validations/checkPassword');
+const { validateUserData } = require('./validations/user.validation');
+
+const getByEmail = async (email) => User.findOne({ where: { email } });
 
 const login = async (email, password) => {
-  const user = await User.findOne({ where: { email } });
+  const user = await getByEmail(email);
   if (!user || !checkPassword(user.password, password)) {
     const err = new Error('Invalid login');
     err.statusCode = 404;
@@ -15,9 +18,39 @@ const login = async (email, password) => {
     userEmail: user.email,
   };
   const token = jwtUtil.createToken(tokenData);
-  return { statusCode: 200, result: { token } };
+  return { statusCode: 200, result: {
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    token,
+  } };
 };
+
+const insertUser = async (name, email, password) => {
+  const newUser = validateUserData({ name, email, password });
+
+  const user = await getByEmail(email);
+  if(user) {
+    const err = new Error('User already registered');
+    err.statusCode = 409;
+    throw err;
+  }
+
+  const createdUser = await User.create(newUser);
+  const tokenData = {
+    userId: createdUser.id,
+    userEmail: createdUser.email,
+  };
+  const token = jwtUtil.createToken(tokenData);
+  return { statusCode: 201, result: {
+    name: createdUser.name,
+    email: createdUser.email,
+    role: createdUser.role,
+    token,
+  } };
+}
 
 module.exports = {
   login,
+  insertUser,
 };
