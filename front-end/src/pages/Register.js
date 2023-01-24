@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { requestRegister } from '../services/request.register';
+import { useNavigate } from 'react-router-dom';
+import { requestRegister, setToken } from '../services/request.register';
 
 function Register() {
+  const history = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -11,11 +13,13 @@ function Register() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      console.log(name, email, password);
       const { token } = await requestRegister('/user', { name, email, password });
-
+      // console.log(token);
       setToken(token);
-      console.log(token);
-    } catch (_error) {
+      history('/customer/products');
+    } catch (error) {
+      console.log(error);
       setError(true);
     }
   };
