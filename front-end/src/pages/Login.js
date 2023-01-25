@@ -25,8 +25,12 @@ function Login() {
         token,
       };
       setToken(token);
+<<<<<<< main-group-22-release-customer-products-front
       localStorage.setItem('user', JSON.stringify(myObject));
       history('/customer/products');
+=======
+      history.push('/customer/products');
+>>>>>>> main-group-22-release
     } catch (_error) {
       setError(true);
     }
@@ -74,6 +78,7 @@ function Login() {
         </label>
         <br />
         <button
+          name='login'
           type="submit"
           data-testid="common_login__button-login"
           disabled={ disableBtn }
