@@ -17,10 +17,10 @@ function Register() {
       const { token } = await requestRegister('/user', { name, email, password });
       // console.log(token);
       setToken(token);
-      history('/customer/products');
-    } catch (err) {
-      console.log(err);
+      console.log(token);
+    } catch (_error) {
       setError(true);
+      history('/customer/products');
     }
   };
 

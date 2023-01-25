@@ -17,10 +17,20 @@ function Login() {
   const validateLogin = async (event) => {
     event.preventDefault();
     try {
-      const { token } = await requestLogin('/login', { email, password });
-      console.log(token);
+      const { token, name, role } = await requestLogin('/login', { email, password });
+      const myObject = {
+        name,
+        email,
+        role,
+        token,
+      };
       setToken(token);
+<<<<<<< main-group-22-release-customer-products-front
+      localStorage.setItem('user', JSON.stringify(myObject));
+      history('/customer/products');
+=======
       history.push('/customer/products');
+>>>>>>> main-group-22-release
     } catch (_error) {
       setError(true);
     }
