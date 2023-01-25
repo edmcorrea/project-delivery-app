@@ -6,6 +6,7 @@ require('express-async-errors');
 const loginRoutes = require('./routes/login.routes');
 const userRoutes = require('./routes/user.routes');
 const productsRoutes = require('./routes/products.routes');
+const salesRoutes = require('./routes/sale.routes');
 
 const IMAGES_PATH = path.resolve(__dirname, '../../public');
 
@@ -19,6 +20,7 @@ app.use(cors());
 app.use('/login', loginRoutes);
 app.use('/user', userRoutes);
 app.use('/products', productsRoutes);
+app.use('/sale', salesRoutes);
 
 app.use('/images', express.static(IMAGES_PATH));
 
