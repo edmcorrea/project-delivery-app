@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { requestLogin, setToken } from '../services/request.login';
 
 function Login() {
-  const history = useNavigate();
+  const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
@@ -20,7 +20,7 @@ function Login() {
       const { token } = await requestLogin('/login', { email, password });
       console.log(token);
       setToken(token);
-      history('/customer/products');
+      history.push('/customer/products');
     } catch (_error) {
       setError(true);
     }
@@ -68,6 +68,7 @@ function Login() {
         </label>
         <br />
         <button
+          name='login'
           type="submit"
           data-testid="common_login__button-login"
           disabled={ disableBtn }
@@ -78,7 +79,7 @@ function Login() {
         <button
           type="submit"
           data-testid="common_login__button-register"
-          onClick={ () => history('/register') }
+          onClick={ () => history.push('/register') }
         >
           Ainda não tenho conta
 
