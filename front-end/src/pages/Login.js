@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { requestLogin, setToken } from '../services/request.login';
 
 function Login() {
-  const history = useNavigate();
+  const history = useHistory();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
@@ -17,10 +17,11 @@ function Login() {
   const validateLogin = async (event) => {
     event.preventDefault();
     try {
-      const { token, name } = await requestLogin('/login', { email, password });
+      const { token, name, role } = await requestLogin('/login', { email, password });
       const myObject = {
         name,
         email,
+        role,
         token,
       };
       setToken(token);
@@ -83,7 +84,7 @@ function Login() {
         <button
           type="submit"
           data-testid="common_login__button-register"
-          onClick={ () => history('/register') }
+          onClick={ () => history.push('/register') }
         >
           Ainda não tenho conta
 

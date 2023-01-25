@@ -1,4 +1,4 @@
-export const MockProducts = [
+const MockProducts = [
   {
     name: 'Skol Lata 250ml',
     price: 2.20,
@@ -9,4 +9,6 @@ export const MockProducts = [
     price: 7.50,
     url_image: 'http://localhost:3001/images/heineken_600ml.jpg',
   },
-]
+];
+
+export default MockProducts;
