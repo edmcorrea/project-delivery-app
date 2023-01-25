@@ -14,6 +14,7 @@ function Register() {
       const { token } = await requestRegister('/user', { name, email, password });
 
       setToken(token);
+      localStorage.setItem('user', name, email);
       console.log(token);
     } catch (_error) {
       setError(true);

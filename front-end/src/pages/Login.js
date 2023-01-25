@@ -17,9 +17,14 @@ function Login() {
   const validateLogin = async (event) => {
     event.preventDefault();
     try {
-      const { token } = await requestLogin('/login', { email, password });
-      console.log(token);
+      const { token, name } = await requestLogin('/login', { email, password });
+      const myObject = {
+        name,
+        email,
+        token,
+      };
       setToken(token);
+      localStorage.setItem('user', JSON.stringify(myObject));
       history('/customer/products');
     } catch (_error) {
       setError(true);

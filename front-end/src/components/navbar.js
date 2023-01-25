@@ -2,8 +2,10 @@ function NavBar() {
   return (
     <div>
       <h2
-      data-testid="customer_products__element-navbar-link-products"
-      >PRODUTOS</h2>
+        data-testid="customer_products__element-navbar-link-products"
+      >
+        PRODUTOS
+      </h2>
       <h2 data-testid="customer_products__element-navbar-link-orders">
         MEUS PEDIDOS
       </h2>
