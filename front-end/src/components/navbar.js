@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function NavBar() {
   const [name, setName] = useState('');
-  const history = useHistory();
+  const history = useNavigate();
 
   const logoutUser = () => {
     localStorage.removeItem('user');
-    history.push('/login');
+    history('/login');
   };
 
   useEffect(() => {

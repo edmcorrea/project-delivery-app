@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { requestLogin, setToken } from '../services/request.login';
 
 function Login() {
-  const history = useHistory();
+  const history = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
@@ -25,12 +25,8 @@ function Login() {
         token,
       };
       setToken(token);
-<<<<<<< main-group-22-release-customer-products-front
       localStorage.setItem('user', JSON.stringify(myObject));
       history('/customer/products');
-=======
-      history.push('/customer/products');
->>>>>>> main-group-22-release
     } catch (_error) {
       setError(true);
     }
@@ -78,7 +74,7 @@ function Login() {
         </label>
         <br />
         <button
-          name='login'
+          name="login"
           type="submit"
           data-testid="common_login__button-login"
           disabled={ disableBtn }
