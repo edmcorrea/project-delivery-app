@@ -6,7 +6,7 @@ const JWT_KEY_PATH = path.resolve(__dirname, '../../jwt.evaluation.key');
 const jwtSecret = fs.readFileSync(JWT_KEY_PATH, 'utf-8');
 
 const jwtConfig = {
-  expiresIn: '15d',
+  expiresIn: '120d',
   algorithm: 'HS256',
 };
 

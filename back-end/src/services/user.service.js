@@ -5,6 +5,27 @@ const { validateUserData } = require('./validations/user.validation');
 
 const getByEmail = async (email) => User.findOne({ where: { email } });
 
+const getSellerIdByName = async (name) => {
+  const user = await User.findOne({ where: { name } });
+  if (!user || user.role !== 'seller') {
+    const err = new Error('Invalid seller name');
+    err.statusCode = 400;
+    throw err;
+  }
+  return user.id;
+};
+
+const validateTokenId = async (token) => {
+  const { userId } = jwtUtil.validateToken(token);
+  const user = await User.findOne({ where: { id: userId } });
+  if (!user) {
+    const err = new Error('Expired or invalid token');
+    err.statusCode = 401;
+    throw err;
+  }
+  return userId;
+};
+
 const setToken = (userId, userEmail) => {
   const tokenData = { userId, userEmail };
   const token = jwtUtil.createToken(tokenData);
@@ -54,4 +75,6 @@ const insertUser = async (newUserData) => {
 module.exports = {
   login,
   insertUser,
+  validateTokenId,
+  getSellerIdByName,
 };

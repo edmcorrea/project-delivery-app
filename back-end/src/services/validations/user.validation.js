@@ -1,10 +1,10 @@
 const Joi = require('joi');
 
 const userSchema = Joi.object({
-  name: Joi.string().min(12).required(),
-  email: Joi.string().email().required(),
-  password: Joi.string().min(6).required(),
-  role: Joi.string(),
+  name: Joi.string().min(12).max(100).required(),
+  email: Joi.string().email().max(100).required(),
+  password: Joi.string().min(6).max(32).required(),
+  role: Joi.string().max(20),
 });
 
 const validateUserData = (newUser) => {

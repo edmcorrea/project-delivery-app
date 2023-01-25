@@ -3,10 +3,10 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.createTable('sales_products', {
-      salesId: {
+      saleId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        field: 'sales_id',
+        field: 'sale_id',
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
         primaryKey: true,
