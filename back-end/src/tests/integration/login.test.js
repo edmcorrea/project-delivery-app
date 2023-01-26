@@ -4,6 +4,7 @@ const sinon = require('sinon');
 
 const app = require('../../api/app');
 const { User } = require('../../database/models');
+const { adminMock } = require('../mocks/userMocks');
 
 const { expect, use } = chai;
 use(chaiHttp);
@@ -12,26 +13,20 @@ describe('integration tests for /login route', function() {
   afterEach(sinon.restore);
 
   it('tests a success login', async function() {
-    sinon.stub(User, 'findOne').resolves({
-      id: 1,
-      name: 'Delivery App Admin',
-      email: 'adm@deliveryapp.com',
-      password: 'a4c86edecc5aee06eff8fdeda69e0d04',
-      role: 'administrator',
-    });
+    sinon.stub(User, 'findOne').resolves(adminMock);
 
     const response = await chai
       .request(app)
       .post('/login')
       .send({
-        email: 'adm@deliveryapp.com',
+        email: adminMock.email,
         password: '--adm2@21!!--',
       });
 
     expect(response.status).to.be.equal(200);
-    expect(response.body.name).to.be.equal('Delivery App Admin');
-    expect(response.body.email).to.be.equal('adm@deliveryapp.com');
-    expect(response.body.role).to.be.equal('administrator');
+    expect(response.body.name).to.be.equal(adminMock.name);
+    expect(response.body.email).to.be.equal(adminMock.email);
+    expect(response.body.role).to.be.equal(adminMock.role);
     expect(response.body.token).to.be.string;
   });
 
@@ -51,13 +46,7 @@ describe('integration tests for /login route', function() {
   });
 
   it('tests a login attemp with a invalid password', async function() {
-    sinon.stub(User, 'findOne').resolves({
-      id: 1,
-      name: 'Delivery App Admin',
-      email: 'adm@deliveryapp.com',
-      password: 'a4c86edecc5aee06eff8fdeda69e0d04',
-      role: 'administrator',
-    });
+    sinon.stub(User, 'findOne').resolves(adminMock);
 
     const response = await chai
       .request(app)
