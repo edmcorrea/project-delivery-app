@@ -43,6 +43,13 @@ const insertSale = async (token, saleData) => {
   return managedInsert(saleDataToInsert, validSaleData.products);
 };
 
+const getSallesByUserId = async (token) => {
+  const userId = await validateTokenId(token);
+  const sales = await Sale.findAll({ where: { userId }});
+  return { statusCode: 200, result: sales };
+};
+
 module.exports = {
   insertSale,
+  getSallesByUserId,
 };
