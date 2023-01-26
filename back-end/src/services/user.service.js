@@ -15,6 +15,16 @@ const getSellerIdByName = async (name) => {
   return user.id;
 };
 
+const getSellerNameById = async (id) => {
+  const user = await User.findByPk(id);
+  if (!user || user.role !== 'seller') {
+    const err = new Error('Invalid seller name');
+    err.statusCode = 400;
+    throw err;
+  }
+  return user.name;
+};
+
 const validateTokenId = async (token) => {
   const { userId } = jwtUtil.validateToken(token);
   const user = await User.findOne({ where: { id: userId } });
@@ -77,4 +87,5 @@ module.exports = {
   insertUser,
   validateTokenId,
   getSellerIdByName,
+  getSellerNameById,
 };
