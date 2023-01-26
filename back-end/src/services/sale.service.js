@@ -45,7 +45,7 @@ const insertSale = async (token, saleData) => {
 
 const getSallesByUserId = async (token) => {
   const userId = await validateTokenId(token);
-  const sales = await Sale.findAll({ where: { userId }});
+  const sales = await Sale.findAll({ where: { userId } });
   return { statusCode: 200, result: sales };
 };
 
