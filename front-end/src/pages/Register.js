@@ -15,12 +15,11 @@ function Register() {
     try {
       console.log(name, email, password);
       const { token } = await requestRegister('/user', { name, email, password });
-      // console.log(token);
       setToken(token);
       console.log(token);
+      history('/customer/products');
     } catch (_error) {
       setError(true);
-      history('/customer/products');
     }
   };
 
