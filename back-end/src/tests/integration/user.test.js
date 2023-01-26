@@ -4,6 +4,7 @@ const sinon = require('sinon');
 
 const app = require('../../api/app');
 const { User } = require('../../database/models');
+const { customerMock, adminMock } = require('../mocks/userMocks');
 
 const { expect, use } = chai;
 use(chaiHttp);
@@ -13,13 +14,7 @@ describe('integration tests for /user route', function() {
 
   it('tests a success user insert', async function() {
     sinon.stub(User, 'findOne').resolves(undefined);
-    sinon.stub(User, 'create').resolves({
-      id: 3,
-      name: 'Cliente Zé Birita',
-      email: 'zebirita@email.com',
-      password: '1c37466c159755ce1fa181bd247cb925',
-      role: 'customer',
-    });
+    sinon.stub(User, 'create').resolves(customerMock);
 
     const response = await chai
       .request(app)
@@ -31,20 +26,14 @@ describe('integration tests for /user route', function() {
       });
 
     expect(response.status).to.be.equal(201);
-    expect(response.body.name).to.be.equal('Cliente Zé Birita');
-    expect(response.body.email).to.be.equal('zebirita@email.com');
-    expect(response.body.role).to.be.equal('customer');
+    expect(response.body.name).to.be.equal(customerMock.name);
+    expect(response.body.email).to.be.equal(customerMock.email);
+    expect(response.body.role).to.be.equal(customerMock.role);
     expect(response.body.token).to.be.string;
   });
 
   it('tests if is not possible to create a user that already exists', async function() {
-    sinon.stub(User, 'findOne').resolves({
-      id: 1,
-      name: 'Delivery App Admin',
-      email: 'adm@deliveryapp.com',
-      password: 'a4c86edecc5aee06eff8fdeda69e0d04',
-      role: 'administrator',
-    });
+    sinon.stub(User, 'findOne').resolves(adminMock);
 
     const response = await chai
       .request(app)
