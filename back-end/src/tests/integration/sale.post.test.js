@@ -4,7 +4,7 @@ const sinon = require('sinon');
 
 const app = require('../../api/app');
 const { Sale, SaleProduct, Product, User } = require('../../database/models');
-const { pendenteSaleMock, saleProductMock, salesFromCustomer } = require('../mocks/saleMocks');
+const { pendenteSaleMock, saleProductMock } = require('../mocks/saleMocks');
 const { customerMock, sellerMock } = require('../mocks/userMocks');
 
 const { expect, use } = chai;
@@ -206,53 +206,4 @@ describe('integration tests for /sale route', function() {
     expect(response.status).to.be.equal(400);
     expect(response.body.message).to.be.equal('Invalid seller name');
   });
-
-  it('tests if all sales from a specific user are returned', async function() {
-    sinon.stub(User, 'findOne').resolves(customerMock);
-    sinon.stub(Sale, 'findAll').resolves(salesFromCustomer);
-
-    const response = await chai
-      .request(app)
-      .get('/sale')
-      .set(
-        'authorization',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJZCI6MywidXNlckVtYWlsIjoiemViaXJpdGFAZW1haWwuY29tIn0sImlhdCI6MTY3NDY4NDMwMywiZXhwIjoxNjc1OTgwMzAzfQ.4JEj8Rh-NICQgnJUPCs3dP-ZwztTaIE1VCkTJFzcNcg'
-      );
-
-    expect(response.status).to.be.equal(200);
-    expect(response.body).to.be.deep.equal(salesFromCustomer);
-  });
-
-  it('tests if is not possible to get sales without a token', async function() {
-    const response = await chai.request(app).get('/sale');
-
-    expect(response.status).to.be.equal(401);
-    expect(response.body.message).to.be.equal('Token is required');
-  });
-
-  it('tests if is not possible to get sales with an invalid token', async function() {
-    const response = await chai
-      .request(app)
-      .get('/sale')
-      .set('authorization', 'invalidToken');
-
-    expect(response.status).to.be.equal(401);
-    expect(response.body.message).to.be.equal('Expired or invalid token');
-  });
-
-  it('tests if is not possible to get sales with a token from an invalid user', async function() {
-    sinon.stub(User, 'findOne').resolves(undefined);
-
-    const response = await chai
-      .request(app)
-      .get('/sale')
-      .set(
-        'authorization',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJZCI6MywidXNlckVtYWlsIjoiemViaXJpdGFAZW1haWwuY29tIn0sImlhdCI6MTY3NDY4NDMwMywiZXhwIjoxNjc1OTgwMzAzfQ.4JEj8Rh-NICQgnJUPCs3dP-ZwztTaIE1VCkTJFzcNcg',
-      );
-
-    expect(response.status).to.be.equal(401);
-    expect(response.body.message).to.be.equal('Expired or invalid token');
-  });
 });
-

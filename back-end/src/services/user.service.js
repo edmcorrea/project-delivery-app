@@ -33,7 +33,7 @@ const validateTokenId = async (token) => {
     err.statusCode = 401;
     throw err;
   }
-  return userId;
+  return user.id;
 };
 
 const setToken = (userId, userEmail) => {
