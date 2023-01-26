@@ -17,21 +17,30 @@ function ProductsAvailable() {
     }
   };
 
+  // const setLocalStorage = (item) => localStorage.setItem('cart', JSON.stringify(item));
+
   const addItem = (productId) => {
     setItems({ ...items, [productId]: (items[productId] || 0) + 1 });
-    const itemsArray = Object.entries(items).map(([id, quantity]) => ({ id, quantity }));
-    localStorage.setItem('cart', JSON.stringify(itemsArray));
+    // localStorage.setItem('cart', JSON.stringify(items));
+    const itemsArray = Object.entries(items)
+      .map(([id, quantity]) => ({ id, quantity }));
+    // localStorage.setItem('cart', JSON.stringify(itemsArray));
   };
   const removeItem = (productId) => {
     setItems({ ...items, [productId]: Math.max(0, (items[productId] || 0) - 1) });
-    localStorage.setItem('cart', JSON.stringify(items));
+    // localStorage.setItem('cart', JSON.stringify(items));
   };
   const setItemQuantity = (productId, quantity) => {
     if (!Number.isNaN(quantity) && quantity >= 0) {
       setItems({ ...items, [productId]: parseInt(quantity, 10) });
-      localStorage.setItem('cart', JSON.stringify(items));
+      // localStorage.setItem('cart', JSON.stringify(items));
     }
   };
+
+  useEffect(() => {
+    console.log(items);
+    localStorage.setItem('cart', JSON.stringify(items));
+  }, [items]);
 
   useEffect(() => {
     let total = 0;
@@ -44,7 +53,6 @@ function ProductsAvailable() {
 
   useEffect(() => {
     if (items) {
-      console.log(Object.entries(items));
       const itemsArray = Object.entries(items)
         .map(([id, quantity]) => ({ id, quantity }));
       localStorage.setItem('cart', JSON.stringify(itemsArray));
