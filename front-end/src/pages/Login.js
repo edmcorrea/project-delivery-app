@@ -85,7 +85,7 @@ function Login() {
         <button
           type="submit"
           data-testid="common_login__button-register"
-          onClick={ () => history.push('/register') }
+          onClick={ () => history('/register') }
         >
           Ainda não tenho conta
 
