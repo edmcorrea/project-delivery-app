@@ -146,7 +146,7 @@ describe('integration tests for /sale route', function() {
         ],
       }).set(
         'authorization',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJZCI6OTksInVzZXJFbWFpbCI6InplYmlyaXRhQGVtYWlsLmNvbSJ9LCJpYXQiOjE2NzQ2ODQzMDMsImV4cCI6MTY3NTk4MDMwM30.Cgigq2QiRFl4FlxDh6GL-e2tvhugz6Wtw4Uf6cN3Sko',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJZCI6MywidXNlckVtYWlsIjoiemViaXJpdGFAZW1haWwuY29tIn0sImlhdCI6MTY3NDY4NDMwMywiZXhwIjoxNjc1OTgwMzAzfQ.4JEj8Rh-NICQgnJUPCs3dP-ZwztTaIE1VCkTJFzcNcg',
       );
 
     expect(response.status).to.be.equal(401);
