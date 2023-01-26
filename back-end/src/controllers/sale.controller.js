@@ -24,7 +24,17 @@ const getSallesByUserId = async (req, res) => {
   return res.status(statusCode).json(result);
 };
 
+const getSalleById = async (req, res) => {
+  const { id } = req.params;
+  const { authorization } = req.headers;
+  checkAuth(authorization);
+
+  const { statusCode, result } = await saleService.getSaleById(id, authorization);
+  return res.status(statusCode).json(result);
+};
+
 module.exports = {
   createSale,
   getSallesByUserId,
+  getSalleById,
 };

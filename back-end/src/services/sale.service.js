@@ -1,9 +1,9 @@
 require('dotenv').config();
 const Sequelize = require('sequelize');
 const config = require('../database/config/config');
-const { Sale, SaleProduct } = require('../database/models');
+const { Sale, SaleProduct, Product } = require('../database/models');
 const { checkProducts } = require('./product.service');
-const { validateTokenId, getSellerIdByName } = require('./user.service');
+const { validateTokenId, getSellerIdByName, getSellerNameById } = require('./user.service');
 const { validateSaleData } = require('./validations/sale.validation');
 
 const env = process.env.NODE_ENV || 'development';
@@ -49,7 +49,52 @@ const getSallesByUserId = async (token) => {
   return { statusCode: 200, result: sales };
 };
 
+const validateUserSale = async (token, saleData) => {
+  const userId = await validateTokenId(token);
+  if (userId !== saleData.userId) {
+    const err = new Error('This sale does not belog to the current user');
+    err.statusCode = 401;
+    throw err;
+  }
+};
+
+const formatSaleData = async (saleData) => {
+  const sellerName = await getSellerNameById(saleData.sellerId);
+  const formatedProducts = saleData.products.map((product) => ({ 
+    id: product.id,
+    name: product.name, 
+    price: product.price,
+    quantity: product.SaleProduct.quantity,
+  }));
+
+  const formatedSale = { 
+    id: saleData.id,
+    sellerName,
+    totalPrice: saleData.totalPrice,
+    saleDate: saleData.saleDate,
+    status: saleData.status,
+    products: formatedProducts,
+  };
+  return formatedSale;
+};
+
+const getSaleById = async (saleId, token) => {
+  const sale = await Sale.findByPk(saleId, { include: { 
+    model: Product, as: 'products', attributes: { exclude: ['urlImage'] },
+  } });
+  if (!sale) {
+    const err = new Error('Sale not found');
+    err.statusCode = 404;
+    throw err;
+  }
+  await validateUserSale(token, sale);
+
+  const formatedSale = await formatSaleData(sale);
+  return { statusCode: 200, result: formatedSale };
+};
+
 module.exports = {
   insertSale,
   getSallesByUserId,
+  getSaleById,
 };
