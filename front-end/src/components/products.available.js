@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { requestProducts } from '../services/request.products';
 
 function ProductsAvailable() {
+  const [disable, setDisable] = useState(true);
+  const history = useNavigate();
   const [totalPrice, setTotalPrice] = useState(0);
   const [items, setItems] = useState({});
   const [listProducts, setListProducts] = useState([]);
@@ -15,11 +18,9 @@ function ProductsAvailable() {
   };
 
   const addItem = (productId) => {
-    setItems(
-      [...items, { id: (productId),
-        quantity: (items.find(({ id }) => id === productId).quantity || 0) + 1 }],
-    );
-    localStorage.setItem('cart', JSON.stringify(items));
+    setItems({ ...items, [productId]: (items[productId] || 0) + 1 });
+    const itemsArray = Object.entries(items).map(([id, quantity]) => ({ id, quantity }));
+    localStorage.setItem('cart', JSON.stringify(itemsArray));
   };
   const removeItem = (productId) => {
     setItems({ ...items, [productId]: Math.max(0, (items[productId] || 0) - 1) });
@@ -28,7 +29,6 @@ function ProductsAvailable() {
   const setItemQuantity = (productId, quantity) => {
     if (!Number.isNaN(quantity) && quantity >= 0) {
       setItems({ ...items, [productId]: parseInt(quantity, 10) });
-      // setItems({ ...items, id: [productId]: parseInt(quantity, 10) });
       localStorage.setItem('cart', JSON.stringify(items));
     }
   };
@@ -43,12 +43,24 @@ function ProductsAvailable() {
   }, [items, listProducts]);
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(items));
+    if (items) {
+      console.log(Object.entries(items));
+      const itemsArray = Object.entries(items)
+        .map(([id, quantity]) => ({ id, quantity }));
+      localStorage.setItem('cart', JSON.stringify(itemsArray));
+    }
   }, [items]);
 
   useEffect(() => {
     products();
   }, []);
+
+  useEffect(() => {
+    if (totalPrice === 0) {
+      return setDisable(true);
+    }
+    return setDisable(false);
+  }, [totalPrice]);
 
   return (
     <div>
@@ -97,6 +109,8 @@ function ProductsAvailable() {
       <button
         type="button"
         data-testid="customer_products__button-cart"
+        onClick={ () => history('/customer/checkout') }
+        disabled={ disable }
       >
         <p data-testid="customer_products__checkout-bottom-value">
           Total: R$
