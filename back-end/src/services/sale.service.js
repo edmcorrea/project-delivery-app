@@ -105,7 +105,7 @@ const setNewStatus = (currSale, personId) => {
   if (personId === currSale.sellerId) {
     return setNewStatusBySeller(currSale.status);
   }
-  if (personId === currSale.userId) return 'Entregue';
+  if (personId === currSale.userId && currSale.status === 'Em Trânsito') return 'Entregue';
 
   const err = new Error('Unauthorized operation');
   err.statusCode = 401;
