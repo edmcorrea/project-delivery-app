@@ -37,10 +37,10 @@ function ProductsAvailable() {
       ...filterNotProductId,
       { id: findId.id, quantity: findId.quantity + 1 },
     ]);
-    // productsContext();
   };
 
   const removeItem = (productId) => {
+    // ADICIONAR UMA LOGICA PARA REMOVER O OBJETO COM O QUANTITY = 0
     const filterNotProductId = items.filter(({ id }) => id !== productId);
     const findId = items.find(({ id }) => id === productId) || {
       id: productId,
@@ -48,14 +48,13 @@ function ProductsAvailable() {
     };
     setItems([
       ...filterNotProductId,
-      { id: findId.id, quantity: findId.quantity - 1 },
+      { id: findId.id, quantity: (findId.quantity - 1) },
     ]);
-    // productsContext();
   };
 
   const setItemQuantity = (productId, quantity) => {
     const newItems = items.map((product) => {
-      if (product.id === productId) {
+      if (product.id === productId && !(quantity <=0)) {
         product.quantity = quantity === 0 ? quantity : Number(quantity);
       }
       return product;

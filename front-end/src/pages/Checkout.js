@@ -12,11 +12,11 @@ function Checkout() {
         {arrItems.length ? (
           <div>
             {arrItems.map((element, indice) => (
-              <div key={indice}>
+              <div key={indice + 1}>
                 <p
                   data-testid={`customer_checkout__element-order-table-item-number-${indice}`}
                 >
-                  {indice}
+                  {indice + 1}
                 </p>
                 <p
                   data-testid={`customer_checkout__element-order-table-name-${indice}`}

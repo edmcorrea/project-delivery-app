@@ -12,8 +12,9 @@ function Provider({ children }) {
   const [arrItems, setArrItems] = useState([]);
 
   const productsContext = async () => {
-    console.log(arrItems);
     items.forEach(({ id, quantity }) => {
+      // const filterNotId = arrItems.filter(({ element }) => id !== element.id) || [];
+      // console.log('filterNotId', filterNotId);
       const findedProducts = listProducts.find((element) => element.id === id);
       findedProducts.quantity = quantity;
       setArrItems([...arrItems, findedProducts]);
