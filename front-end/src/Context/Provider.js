@@ -1,19 +1,39 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Context from './Context';
 
 function Provider({ children }) {
-  const [radioSearch, setRadioSearch] = useState('');
-  const [inputSearch, setInputSearch] = useState('');
-  const [apiData, setApiData] = useState([]);
+  // const [radioSearch, setRadioSearch] = useState('');
+  // const [inputSearch, setInputSearch] = useState('');
+  // const [apiData, setApiData] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [items, setItems] = useState([]);
+  const [listProducts, setListProducts] = useState([]);
+  const [arrItems, setArrItems] = useState([]);
+
+  const productsContext = async () => {
+    console.log(arrItems);
+    items.forEach(({ id, quantity }) => {
+      const findedProducts = listProducts.find((element) => element.id === id);
+      findedProducts.quantity = quantity;
+      setArrItems([...arrItems, findedProducts]);
+    })
+  };
+
+  useEffect(() => {
+    productsContext();
+  }, [totalPrice])
 
   const context = {
-    radioSearch,
-    setRadioSearch,
-    setInputSearch,
-    setApiData,
-    inputSearch,
-    apiData };
+    arrItems,
+    totalPrice,
+    setTotalPrice,
+    items,
+    setItems,
+    listProducts,
+    setListProducts,
+    productsContext
+  };
 
   return (
     <Context.Provider value={ context }>

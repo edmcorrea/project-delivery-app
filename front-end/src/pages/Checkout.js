@@ -1,46 +1,57 @@
-import { useEffect, useState } from 'react';
-import NavBar from '../components/navbar';
-import { requestProducts } from '../services/request.products';
+import { useContext, useEffect, useState } from "react";
+import NavBar from "../components/navbar";
+import Context from "../Context/Context";
+import { requestProducts } from "../services/request.products";
 
 function Checkout() {
-  const [listProducts, setListProducts] = useState([]);
-  const [itemStorage, setItemStorage] = useState([]);
-  const [arrItems, setArrItems] = useState([]);
-
-  const products = async () => {
-    try {
-      const getProducts = await requestProducts('/products');
-      setListProducts(getProducts);
-      // let arrItems;
-      // console.log(itemStorage);
-      itemStorage.forEach(({ id }) => {
-        const filteredProducts = getProducts.filter((element) => element.id === id);
-        setArrItems(filteredProducts);
-        // console.log('oi');
-      });
-      // console.log(listProducts);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    setItemStorage(JSON.parse(localStorage.getItem('cart')) || []);
-    products();
-  }, [listProducts]);
-
+  const { arrItems, totalPrice } = useContext(Context);
   return (
     <div>
       <NavBar />
       <div>
-        {arrItems.map((element, indice) => (
-          <div key={ indice }>
-            <p>{element.id}</p>
-            <p>{element.name}</p>
-            <p>{element.price}</p>
-            <p>{itemStorage.map((item) => item.quantity)}</p>
-            <p>{element.price * itemStorage.find((i) => i.id === element.id).quantity}</p>
-          </div>))}
+        {arrItems.length ? (
+          <div>
+            {arrItems.map((element, indice) => (
+              <div key={indice}>
+                <p
+                  data-testid={`customer_checkout__element-order-table-item-number-${indice}`}
+                >
+                  {indice}
+                </p>
+                <p
+                  data-testid={`customer_checkout__element-order-table-name-${indice}`}
+                >
+                  {element.name}
+                </p>
+                <p
+                  data-testid={`customer_checkout__element-order-table-quantity-${indice}`}
+                >
+                  {element.quantity}
+                </p>
+                <p
+                  data-testid={`customer_checkout__element-order-table-unit-price-${indice}`}
+                >
+                  {element.price}
+                </p>
+                <p
+                  data-testid={`customer_checkout__element-order-table-sub-total-${indice}`}
+                >
+                  {element.quantity * element.price}
+                </p>
+                <button
+                  data-testid={`customer_checkout__element-order-table-remove-${indice}`}
+                >
+                  Remover
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>Carrinho vazio</p>
+        )}
+        <p
+          data-testid={"customer_checkout__element-order-total-price"}
+        >{`Total: R$${totalPrice.toFixed(2).replace(".", ",")}`}</p>
       </div>
     </div>
   );
