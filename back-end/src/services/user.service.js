@@ -7,6 +7,7 @@ const getByEmail = async (email) => User.findOne({ where: { email } });
 
 const getSellerIdByName = async (name) => {
   const user = await User.findOne({ where: { name } });
+  // Remover esse if pois vamos criar uma rota para buscar os nomes dos vendedores (ajustar também os testes)
   if (!user || user.role !== 'seller') {
     const err = new Error('Invalid seller name');
     err.statusCode = 400;
@@ -17,11 +18,6 @@ const getSellerIdByName = async (name) => {
 
 const getSellerNameById = async (id) => {
   const user = await User.findByPk(id);
-  if (!user || user.role !== 'seller') {
-    const err = new Error('Invalid seller name');
-    err.statusCode = 400;
-    throw err;
-  }
   return user.name;
 };
 
@@ -82,10 +78,19 @@ const insertUser = async (newUserData) => {
   return { statusCode: 201, result };
 };
 
+const getAllSellers = async () => {
+  const sellers = await User.findAll({ 
+    where: { role: 'seller' },
+    attributes: { exclude: ['password', 'role'] },
+  });
+  return { statusCode: 200, result: sellers };
+};
+
 module.exports = {
   login,
   insertUser,
   validateTokenId,
   getSellerIdByName,
   getSellerNameById,
+  getAllSellers,
 };

@@ -4,8 +4,8 @@ const saleController = require('../../controllers/sale.controller');
 
 const router = express.Router();
 
-router.post('/', saleController.createSale);
-router.get('/', saleController.getSallesByUserId);
-router.get('/:id', saleController.getSalleById);
+router.post('/', saleController.insertSale);
+router.get('/', saleController.getSalesByUserId);
+router.get('/:id', saleController.getSaleById);
 
 module.exports = router;

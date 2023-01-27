@@ -43,7 +43,8 @@ const insertSale = async (token, saleData) => {
   return managedInsert(saleDataToInsert, validSaleData.products);
 };
 
-const getSallesByUserId = async (token) => {
+// Ajustes: func getSalesByUserOrSellerId --> acrescentar um or na query do banco. Op.or do sequelize
+const getSalesByUserId = async (token) => {
   const userId = await validateTokenId(token);
   const sales = await Sale.findAll({ where: { userId } });
   return { statusCode: 200, result: sales };
@@ -78,6 +79,7 @@ const formatSaleData = async (saleData) => {
   return formatedSale;
 };
 
+// Ajustes: remover a func validateUserSale e colocar apenas a validateTokenId (ajustar teste também)
 const getSaleById = async (saleId, token) => {
   const sale = await Sale.findByPk(saleId, { include: { 
     model: Product, as: 'products', attributes: { exclude: ['urlImage'] },
@@ -95,6 +97,6 @@ const getSaleById = async (saleId, token) => {
 
 module.exports = {
   insertSale,
-  getSallesByUserId,
+  getSalesByUserId,
   getSaleById,
 };

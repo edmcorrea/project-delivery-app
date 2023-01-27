@@ -85,7 +85,7 @@ describe('integration tests for /sale route', function() {
     expect(response.body.message).to.be.equal('Token is required');
   });
 
-  it('tests if is not possible to get a specific sale with an invalid id', async function() {
+  it('tests if is not possible to get a specific sale with an invalid sale id', async function() {
     sinon.stub(Sale, 'findByPk').resolves(undefined);
 
     const response = await chai
