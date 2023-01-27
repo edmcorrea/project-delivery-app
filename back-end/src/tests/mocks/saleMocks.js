@@ -9,6 +9,50 @@ const pendenteSaleMock = {
   status: 'Pendente',
 };
 
+const preparandoSaleMock = {
+  id: 1,
+  userId: 3,
+  sellerId: 2,
+  totalPrice: 520.45,
+  deliveryAddress: 'Rua paralelepipedo, bairro - ES',
+  deliveryNumber: '148',
+  saleDate: '2023-01-26T18:30:12.000Z',
+  status: 'Preparando',
+};
+
+const emTransitoSaleMock = {
+  id: 1,
+  userId: 3,
+  sellerId: 2,
+  totalPrice: 520.45,
+  deliveryAddress: 'Rua paralelepipedo, bairro - ES',
+  deliveryNumber: '148',
+  saleDate: '2023-01-26T18:30:12.000Z',
+  status: 'Em Trânsito',
+};
+
+const entregueSaleMock = {
+  id: 1,
+  userId: 3,
+  sellerId: 2,
+  totalPrice: 520.45,
+  deliveryAddress: 'Rua paralelepipedo, bairro - ES',
+  deliveryNumber: '148',
+  saleDate: '2023-01-26T18:30:12.000Z',
+  status: 'Entregue',
+};
+
+const unauthorizedSaleMock = {
+  id: 7,
+  userId: 5,
+  sellerId: 8,
+  totalPrice: 520.45,
+  deliveryAddress: 'Rua paralelepipedo, bairro - ES',
+  deliveryNumber: '148',
+  saleDate: '2023-01-26T18:30:12.000Z',
+  status: 'Pendente',
+};
+
 const saleProductMock = [
   { saleId: 1, productId: 5, quantity: 6 },
   { saleId: 1, productId: 10, quantity: 12 },
@@ -90,4 +134,8 @@ module.exports = {
   salesFromCustomer,
   rawSaleMock,
   formatedSaleMock,
+  preparandoSaleMock,
+  emTransitoSaleMock,
+  entregueSaleMock,
+  unauthorizedSaleMock,
 };
