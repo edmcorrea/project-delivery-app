@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { requestProducts } from '../services/request.products';
 
 function ProductsAvailable() {
-  const [disable, setDisable] = useState(true);
   const history = useNavigate();
+  const [disable, setDisable] = useState(true);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [items, setItems] = useState({});
+  const [items, setItems] = useState([]);
   const [listProducts, setListProducts] = useState([]);
   const products = async () => {
     try {
@@ -17,46 +17,36 @@ function ProductsAvailable() {
     }
   };
 
-  // const setLocalStorage = (item) => localStorage.setItem('cart', JSON.stringify(item));
-
   const addItem = (productId) => {
-    setItems({ ...items, [productId]: (items[productId] || 0) + 1 });
-    // localStorage.setItem('cart', JSON.stringify(items));
-    const itemsArray = Object.entries(items)
-      .map(([id, quantity]) => ({ id, quantity }));
-    // localStorage.setItem('cart', JSON.stringify(itemsArray));
-  };
-  const removeItem = (productId) => {
-    setItems({ ...items, [productId]: Math.max(0, (items[productId] || 0) - 1) });
-    // localStorage.setItem('cart', JSON.stringify(items));
-  };
-  const setItemQuantity = (productId, quantity) => {
-    if (!Number.isNaN(quantity) && quantity >= 0) {
-      setItems({ ...items, [productId]: parseInt(quantity, 10) });
-      // localStorage.setItem('cart', JSON.stringify(items));
-    }
+    const filterNotProductId = items.filter(({id}) => id !== productId);
+    const findId = items.find(({id}) => id === productId) || { id: productId, quantity: 0 };
+    setItems([ ...filterNotProductId, {"id": findId.id, "quantity":findId.quantity + 1 }]);
   };
 
-  useEffect(() => {
-    console.log(items);
-    localStorage.setItem('cart', JSON.stringify(items));
-  }, [items]);
+  const removeItem = (productId) => {
+    const filterNotProductId = items.filter(({id}) => id !== productId);
+    const findId = items.find(({id}) => id === productId) || { id: productId, quantity: 0 };
+    setItems([ ...filterNotProductId, {"id": findId.id, "quantity":findId.quantity - 1 } ]);
+  };
+
+  const setItemQuantity = (productId, quantity) => {
+    const newItems = items.map((product) => {
+      if (product.id === productId) {
+        product.quantity = quantity === 0 ? quantity : Number(quantity);
+      }
+      return product;
+    });
+    setItems(newItems);
+  };
 
   useEffect(() => {
     let total = 0;
-    Object.keys(items).forEach((productId) => {
-      const product = listProducts.find((p) => p.id === parseInt(productId, 10));
-      total += product.price * items[productId];
+    items.forEach((item) => {
+      const product = listProducts.find((p) => p.id === item.id);
+      total += parseFloat(product.price) * item.quantity;
     });
     setTotalPrice(total);
-  }, [items, listProducts]);
-
-  useEffect(() => {
-    if (items) {
-      const itemsArray = Object.entries(items)
-        .map(([id, quantity]) => ({ id, quantity }));
-      localStorage.setItem('cart', JSON.stringify(itemsArray));
-    }
+    localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
 
   useEffect(() => {
@@ -100,7 +90,11 @@ function ProductsAvailable() {
           </button>
           <input
             name="Qtdd-Item"
-            value={ items[prod.id] || 0 }
+            value={
+              items.find((({id}) => id === prod.id))
+              ? items.find((({id}) => id === prod.id)).quantity
+              : 0
+            }
             data-testid={ `customer_products__input-card-quantity-${i + 1}` }
             onChange={ (e) => setItemQuantity(prod.id, e.target.value) }
           />
