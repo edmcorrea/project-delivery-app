@@ -2,10 +2,8 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import Login from '../../pages/Login';
-import renderWithRouter from '../helpers/renderWith';
 
 describe('Verifications about Login Page', () => {
-
   it('Verify if Login Page is displayed correctly', () => {
     render(<Login />);
 
@@ -25,10 +23,10 @@ describe('Verifications about Login Page', () => {
     const email = screen.getByTestId('common_login__input-email');
     const password = screen.getByTestId('common_login__input-password');
     const btnLogin = screen.getByRole('button', { name: /login/i });
-    
+
     userEvent.type(email, 'qualquercoisa.pradaerro');
     userEvent.type(password, '123345');
-    
+
     expect(validador.test(email.value)).toBeFalsy();
     expect(btnLogin).toHaveProperty('disabled', true);
   });
@@ -41,28 +39,28 @@ describe('Verifications about Login Page', () => {
     const email = screen.getByTestId('common_login__input-email');
     const password = screen.getByTestId('common_login__input-password');
     const btnLogin = screen.getByRole('button', { name: /login/i });
-    
+
     // EVENTOS DA PAGINA
     userEvent.type(email, 'zebirita@email.com');
     userEvent.type(password, '12S334FFF5');
     userEvent.click(btnLogin);
-    
+
     // RESULTADOS
     expect(validador.test(email.value)).toBeTruthy();
     expect(btnLogin).toHaveProperty('disabled', false);
   });
-  
+
   // it('Change router when click in "ainda não tenho conta"', () => {
   //   const { history } = renderWithRouter(<Login />);
   //   const { location: { pathname } } = history;
-    
+
   //   // BUSCA POR ELEMENTOS
   //   const btnRegister = screen.getByRole('button', { name: /ainda não tenho conta/i })
-    
+
   //   // EVENTOS DA PAGINA
   //   userEvent.click(btnRegister);
   //   // screen.logTestingPlaygroundURL();
-    
+
   //   expect(pathname).toBe('/register');
   // });
 
@@ -73,12 +71,12 @@ describe('Verifications about Login Page', () => {
   //   const email = screen.getByTestId('common_login__input-email');
   //   const password = screen.getByTestId('common_login__input-password');
   //   const btnLogin = screen.getByRole('button', { name: /login/i });
-    
+
   //   userEvent.type(email, 'zebirita@email.com');
   //   userEvent.type(password, '$#zebirita#$');
   //   userEvent.click(btnLogin);
-    
+
   //   expect(btnLogin).toHaveProperty('disabled', false);
   //   expect(pathname).toBe('/customer/products');
   // });
-})
+});

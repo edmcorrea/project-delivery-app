@@ -18,15 +18,17 @@ function ProductsAvailable() {
   };
 
   const addItem = (productId) => {
-    const filterNotProductId = items.filter(({id}) => id !== productId);
-    const findId = items.find(({id}) => id === productId) || { id: productId, quantity: 0 };
-    setItems([ ...filterNotProductId, {"id": findId.id, "quantity":findId.quantity + 1 }]);
+    const filterNotProductId = items.filter(({ id }) => id !== productId);
+    const findId = items
+      .find(({ id }) => id === productId) || { id: productId, quantity: 0 };
+    setItems([...filterNotProductId, { id: findId.id, quantity: findId.quantity + 1 }]);
   };
 
   const removeItem = (productId) => {
-    const filterNotProductId = items.filter(({id}) => id !== productId);
-    const findId = items.find(({id}) => id === productId) || { id: productId, quantity: 0 };
-    setItems([ ...filterNotProductId, {"id": findId.id, "quantity":findId.quantity - 1 } ]);
+    const filterNotProductId = items.filter(({ id }) => id !== productId);
+    const findId = items
+      .find(({ id }) => id === productId) || { id: productId, quantity: 0 };
+    setItems([...filterNotProductId, { id: findId.id, quantity: findId.quantity - 1 }]);
   };
 
   const setItemQuantity = (productId, quantity) => {
@@ -91,9 +93,9 @@ function ProductsAvailable() {
           <input
             name="Qtdd-Item"
             value={
-              items.find((({id}) => id === prod.id))
-              ? items.find((({id}) => id === prod.id)).quantity
-              : 0
+              items.find((({ id }) => id === prod.id))
+                ? items.find((({ id }) => id === prod.id)).quantity
+                : 0
             }
             data-testid={ `customer_products__input-card-quantity-${i + 1}` }
             onChange={ (e) => setItemQuantity(prod.id, e.target.value) }
