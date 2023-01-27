@@ -8,7 +8,7 @@ const checkAuth = (authorization) => {
   }
 };
 
-const createSale = async (req, res) => {
+const insertSale = async (req, res) => {
     const { authorization } = req.headers;
     checkAuth(authorization);
 
@@ -16,15 +16,15 @@ const createSale = async (req, res) => {
     return res.status(statusCode).json(result);
 };
 
-const getSallesByUserId = async (req, res) => {
+const getSalesByUserId = async (req, res) => {
   const { authorization } = req.headers;
   checkAuth(authorization);
 
-  const { statusCode, result } = await saleService.getSallesByUserId(authorization);
+  const { statusCode, result } = await saleService.getSalesByUserOrSellerId(authorization);
   return res.status(statusCode).json(result);
 };
 
-const getSalleById = async (req, res) => {
+const getSaleById = async (req, res) => {
   const { id } = req.params;
   const { authorization } = req.headers;
   checkAuth(authorization);
@@ -33,8 +33,18 @@ const getSalleById = async (req, res) => {
   return res.status(statusCode).json(result);
 };
 
+const updateSaleStatus = async (req, res) => {
+  const { authorization } = req.headers;
+  const { id } = req.params;
+  checkAuth(authorization);
+
+  const { statusCode, result } = await saleService.updateSaleStatus(id, authorization);
+  return res.status(statusCode).json(result);
+};
+
 module.exports = {
-  createSale,
-  getSallesByUserId,
-  getSalleById,
+  insertSale,
+  getSalesByUserId,
+  getSaleById,
+  updateSaleStatus,
 };

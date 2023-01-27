@@ -43,19 +43,13 @@ const insertSale = async (token, saleData) => {
   return managedInsert(saleDataToInsert, validSaleData.products);
 };
 
-const getSallesByUserId = async (token) => {
-  const userId = await validateTokenId(token);
-  const sales = await Sale.findAll({ where: { userId } });
+const getSalesByUserOrSellerId = async (token) => {
+  const personId = await validateTokenId(token);
+  const sales = await Sale.findAll({ where: { [Sequelize.Op.or]: [
+    { userId: personId },
+    { sellerId: personId }, 
+  ] } });
   return { statusCode: 200, result: sales };
-};
-
-const validateUserSale = async (token, saleData) => {
-  const userId = await validateTokenId(token);
-  if (userId !== saleData.userId) {
-    const err = new Error('This sale does not belog to the current user');
-    err.statusCode = 401;
-    throw err;
-  }
 };
 
 const formatSaleData = async (saleData) => {
@@ -78,23 +72,64 @@ const formatSaleData = async (saleData) => {
   return formatedSale;
 };
 
-const getSaleById = async (saleId, token) => {
-  const sale = await Sale.findByPk(saleId, { include: { 
-    model: Product, as: 'products', attributes: { exclude: ['urlImage'] },
-  } });
+const checkIfSaleExist = (sale) => {
   if (!sale) {
     const err = new Error('Sale not found');
     err.statusCode = 404;
     throw err;
   }
-  await validateUserSale(token, sale);
+};
+
+const getSaleById = async (saleId, token) => {
+  const sale = await Sale.findByPk(saleId, { include: { 
+    model: Product, as: 'products', attributes: { exclude: ['urlImage'] },
+  } });
+  checkIfSaleExist(sale);
+
+  await validateTokenId(token);
 
   const formatedSale = await formatSaleData(sale);
   return { statusCode: 200, result: formatedSale };
 };
 
+const setNewStatusBySeller = (currStatus) => {
+  if (currStatus === 'Pendente') return 'Preparando';
+  if (currStatus === 'Preparando') return 'Em Trânsito';
+
+  const err = new Error('Unauthorized operation');
+  err.statusCode = 401;
+  throw err;
+};
+
+const setNewStatus = (currSale, personId) => {
+  if (personId === currSale.sellerId) {
+    return setNewStatusBySeller(currSale.status);
+  }
+  if (personId === currSale.userId) return 'Entregue';
+
+  const err = new Error('Unauthorized operation');
+  err.statusCode = 401;
+  throw err;
+};
+
+const updateSaleStatus = async (saleId, token) => {
+  const personId = await validateTokenId(token);
+  const currSale = await Sale.findByPk(saleId);
+  checkIfSaleExist(currSale);
+
+  const newStatus = setNewStatus(currSale, personId);
+  await Sale.update(
+    { status: newStatus },
+    { where: { id: saleId } },
+  );
+
+  const updatedSale = await Sale.findByPk(saleId, { attributes: ['id', 'status'] });
+  return { statusCode: 200, result: updatedSale };
+};
+
 module.exports = {
   insertSale,
-  getSallesByUserId,
+  getSalesByUserOrSellerId,
   getSaleById,
+  updateSaleStatus,
 };
