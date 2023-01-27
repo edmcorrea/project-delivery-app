@@ -20,7 +20,7 @@ const getSalesByUserId = async (req, res) => {
   const { authorization } = req.headers;
   checkAuth(authorization);
 
-  const { statusCode, result } = await saleService.getSalesByUserId(authorization);
+  const { statusCode, result } = await saleService.getSalesByUserOrSellerId(authorization);
   return res.status(statusCode).json(result);
 };
 

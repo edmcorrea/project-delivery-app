@@ -43,10 +43,12 @@ const insertSale = async (token, saleData) => {
   return managedInsert(saleDataToInsert, validSaleData.products);
 };
 
-// Ajustes: func getSalesByUserOrSellerId --> acrescentar um or na query do banco. Op.or do sequelize
-const getSalesByUserId = async (token) => {
-  const userId = await validateTokenId(token);
-  const sales = await Sale.findAll({ where: { userId } });
+const getSalesByUserOrSellerId = async (token) => {
+  const personId = await validateTokenId(token);
+  const sales = await Sale.findAll({ where: { [Sequelize.Op.or]: [
+    { userId: personId },
+    { sellerId: personId }, 
+  ] } });
   return { statusCode: 200, result: sales };
 };
 
@@ -97,6 +99,6 @@ const getSaleById = async (saleId, token) => {
 
 module.exports = {
   insertSale,
-  getSalesByUserId,
+  getSalesByUserOrSellerId,
   getSaleById,
 };
