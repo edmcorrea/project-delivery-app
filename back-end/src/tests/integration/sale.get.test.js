@@ -127,20 +127,4 @@ describe('integration tests for /sale route', function() {
     expect(response.status).to.be.equal(401);
     expect(response.body.message).to.be.equal('Expired or invalid token');
   });
-
-  it('tests if is not possible to get a specific sale using a token from another user', async function() {
-    sinon.stub(Sale, 'findByPk').resolves(rawSaleMock);
-    sinon.stub(User, 'findOne').resolves(adminMock);
-    
-    const response = await chai
-      .request(app)
-      .get('/sale/3')
-      .set(
-        'authorization',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJZCI6MywidXNlckVtYWlsIjoiemViaXJpdGFAZW1haWwuY29tIn0sImlhdCI6MTY3NDY4NDMwMywiZXhwIjoxNjc1OTgwMzAzfQ.4JEj8Rh-NICQgnJUPCs3dP-ZwztTaIE1VCkTJFzcNcg',
-      );
-
-    expect(response.status).to.be.equal(401);
-    expect(response.body.message).to.be.equal('This sale does not belog to the current user');
-  });
 });

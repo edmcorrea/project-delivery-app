@@ -52,15 +52,6 @@ const getSalesByUserOrSellerId = async (token) => {
   return { statusCode: 200, result: sales };
 };
 
-const validateUserSale = async (token, saleData) => {
-  const userId = await validateTokenId(token);
-  if (userId !== saleData.userId) {
-    const err = new Error('This sale does not belog to the current user');
-    err.statusCode = 401;
-    throw err;
-  }
-};
-
 const formatSaleData = async (saleData) => {
   const sellerName = await getSellerNameById(saleData.sellerId);
   const formatedProducts = saleData.products.map((product) => ({ 
@@ -81,7 +72,6 @@ const formatSaleData = async (saleData) => {
   return formatedSale;
 };
 
-// Ajustes: remover a func validateUserSale e colocar apenas a validateTokenId (ajustar teste também)
 const getSaleById = async (saleId, token) => {
   const sale = await Sale.findByPk(saleId, { include: { 
     model: Product, as: 'products', attributes: { exclude: ['urlImage'] },
@@ -91,7 +81,7 @@ const getSaleById = async (saleId, token) => {
     err.statusCode = 404;
     throw err;
   }
-  await validateUserSale(token, sale);
+  await validateTokenId(token);
 
   const formatedSale = await formatSaleData(sale);
   return { statusCode: 200, result: formatedSale };

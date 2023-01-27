@@ -7,12 +7,6 @@ const getByEmail = async (email) => User.findOne({ where: { email } });
 
 const getSellerIdByName = async (name) => {
   const user = await User.findOne({ where: { name } });
-  // Remover esse if pois vamos criar uma rota para buscar os nomes dos vendedores (ajustar também os testes)
-  if (!user || user.role !== 'seller') {
-    const err = new Error('Invalid seller name');
-    err.statusCode = 400;
-    throw err;
-  }
   return user.id;
 };
 
