@@ -7,5 +7,6 @@ const router = express.Router();
 router.post('/', saleController.insertSale);
 router.get('/', saleController.getSalesByUserId);
 router.get('/:id', saleController.getSaleById);
+router.patch('/status/:id', saleController.updateSaleStatus);
 
 module.exports = router;

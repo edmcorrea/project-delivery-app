@@ -33,8 +33,18 @@ const getSaleById = async (req, res) => {
   return res.status(statusCode).json(result);
 };
 
+const updateSaleStatus = async (req, res) => {
+  const { authorization } = req.headers;
+  const { id } = req.params;
+  checkAuth(authorization);
+
+  const { statusCode, result } = await saleService.updateSaleStatus(id, authorization);
+  return res.status(statusCode).json(result);
+};
+
 module.exports = {
   insertSale,
   getSalesByUserId,
   getSaleById,
+  updateSaleStatus,
 };

@@ -72,23 +72,64 @@ const formatSaleData = async (saleData) => {
   return formatedSale;
 };
 
-const getSaleById = async (saleId, token) => {
-  const sale = await Sale.findByPk(saleId, { include: { 
-    model: Product, as: 'products', attributes: { exclude: ['urlImage'] },
-  } });
+const checkIfSaleExist = (sale) => {
   if (!sale) {
     const err = new Error('Sale not found');
     err.statusCode = 404;
     throw err;
   }
+};
+
+const getSaleById = async (saleId, token) => {
+  const sale = await Sale.findByPk(saleId, { include: { 
+    model: Product, as: 'products', attributes: { exclude: ['urlImage'] },
+  } });
+  checkIfSaleExist(sale);
+
   await validateTokenId(token);
 
   const formatedSale = await formatSaleData(sale);
   return { statusCode: 200, result: formatedSale };
 };
 
+const setNewStatusBySeller = (currStatus) => {
+  if (currStatus === 'Pendente') return 'Preparando';
+  if (currStatus === 'Preparando') return 'Em Trânsito';
+
+  const err = new Error('Unauthorized operation');
+  err.statusCode = 401;
+  throw err;
+};
+
+const setNewStatus = (currSale, personId) => {
+  if (personId === currSale.sellerId) {
+    return setNewStatusBySeller(currSale.status);
+  }
+  if (personId === currSale.userId) return 'Entregue';
+
+  const err = new Error('Unauthorized operation');
+  err.statusCode = 401;
+  throw err;
+};
+
+const updateSaleStatus = async (saleId, token) => {
+  const personId = await validateTokenId(token);
+  const currSale = await Sale.findByPk(saleId);
+  checkIfSaleExist(currSale);
+
+  const newStatus = setNewStatus(currSale, personId);
+  await Sale.update(
+    { status: newStatus },
+    { where: { id: saleId } },
+  );
+
+  const updatedSale = await Sale.findByPk(saleId, { attributes: ['id', 'status'] });
+  return { statusCode: 200, result: updatedSale };
+};
+
 module.exports = {
   insertSale,
   getSalesByUserOrSellerId,
   getSaleById,
+  updateSaleStatus,
 };
