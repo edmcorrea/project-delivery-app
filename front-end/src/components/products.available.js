@@ -12,15 +12,13 @@ function ProductsAvailable() {
     setItems,
     listProducts,
     setListProducts,
-    productsContext,
   } = useContext(Context);
   const [disable, setDisable] = useState(true);
-  // const [totalPrice, setTotalPrice] = useState(0);
-  // const [items, setItems] = useState([]);
-  // const [listProducts, setListProducts] = useState([]);
+
   const products = async () => {
     try {
       const getProducts = await requestProducts("/products");
+      getProducts.forEach((prod) => (prod.quantity = 0));
       setListProducts(getProducts);
     } catch (error) {
       console.log(error);
@@ -40,22 +38,25 @@ function ProductsAvailable() {
   };
 
   const removeItem = (productId) => {
-    // ADICIONAR UMA LOGICA PARA REMOVER O OBJETO COM O QUANTITY = 0
     const filterNotProductId = items.filter(({ id }) => id !== productId);
     const findId = items.find(({ id }) => id === productId) || {
       id: productId,
       quantity: 0,
     };
-    setItems([
-      ...filterNotProductId,
-      { id: findId.id, quantity: (findId.quantity - 1) },
-    ]);
+    if (!findId || findId.quantity < 1) {
+      setItems([...filterNotProductId]);
+    } else {
+      setItems([
+        ...filterNotProductId,
+        { id: findId.id, quantity: findId.quantity - 1 },
+      ]);
+    }
   };
 
   const setItemQuantity = (productId, quantity) => {
     const newItems = items.map((product) => {
-      if (product.id === productId && !(quantity <=0)) {
-        product.quantity = quantity === 0 ? quantity : Number(quantity);
+      if (product.id === productId) {
+        product.quantity = quantity;
       }
       return product;
     });
@@ -109,11 +110,11 @@ function ProductsAvailable() {
           </button>
           <input
             name="Qtdd-Item"
-            value={
-              items.find(({ id }) => id === prod.id)
-                ? items.find(({ id }) => id === prod.id).quantity
-                : 0
-            }
+            value={prod.quantity}
+            // items.find(({ id }) => id === prod.id)
+            //   ? items.find(({ id }) => id === prod.id).quantity
+            //   : 0
+            // }
             data-testid={`customer_products__input-card-quantity-${i + 1}`}
             onChange={(e) => setItemQuantity(prod.id, e.target.value)}
           />

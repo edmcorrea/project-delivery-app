@@ -5,6 +5,7 @@ import { requestProducts } from "../services/request.products";
 
 function Checkout() {
   const { arrItems, totalPrice } = useContext(Context);
+  console.log();
   return (
     <div>
       <NavBar />
@@ -31,7 +32,7 @@ function Checkout() {
                 <p
                   data-testid={`customer_checkout__element-order-table-unit-price-${indice}`}
                 >
-                  {element.price}
+                  {element.price.toFixed(2).replace(".", ",")}
                 </p>
                 <p
                   data-testid={`customer_checkout__element-order-table-sub-total-${indice}`}

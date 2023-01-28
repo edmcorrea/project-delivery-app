@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-import Context from './Context';
+import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
+import Context from "./Context";
 
 function Provider({ children }) {
   // const [radioSearch, setRadioSearch] = useState('');
@@ -12,18 +12,19 @@ function Provider({ children }) {
   const [arrItems, setArrItems] = useState([]);
 
   const productsContext = async () => {
+    console.log("items", items);
+    let search = [];
     items.forEach(({ id, quantity }) => {
-      // const filterNotId = arrItems.filter(({ element }) => id !== element.id) || [];
-      // console.log('filterNotId', filterNotId);
       const findedProducts = listProducts.find((element) => element.id === id);
       findedProducts.quantity = quantity;
-      setArrItems([...arrItems, findedProducts]);
-    })
+      search.push(findedProducts);
+    });
+    setArrItems(search);
   };
 
   useEffect(() => {
     productsContext();
-  }, [totalPrice])
+  }, [totalPrice]);
 
   const context = {
     arrItems,
@@ -33,14 +34,10 @@ function Provider({ children }) {
     setItems,
     listProducts,
     setListProducts,
-    productsContext
+    productsContext,
   };
 
-  return (
-    <Context.Provider value={ context }>
-      { children }
-    </Context.Provider>
-  );
+  return <Context.Provider value={context}>{children}</Context.Provider>;
 }
 export default Provider;
 
