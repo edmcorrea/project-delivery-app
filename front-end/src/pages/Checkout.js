@@ -9,6 +9,7 @@ const numberFormat = new Intl.NumberFormat('pt-BR', {
 
 function Checkout() {
   const { arrItems, totalPrice } = useContext(Context);
+  console.log();
   return (
     <div>
       <NavBar />
@@ -17,6 +18,7 @@ function Checkout() {
           <div>
             {arrItems.map((element, indice) => (
               <div key={ indice }>
+              <div key={indice + 1}>
                 <p
                   data-testid={ `customer_checkout__element-order-table-item-number-${ indice }` }
                 >
@@ -36,6 +38,7 @@ function Checkout() {
                   data-testid={ `customer_checkout__element-order-table-unit-price-${ indice }`}
                 >
                   {numberFormat.format(element.price)}
+                  {element.price.toFixed(2).replace(".", ",")}
                 </p>
                 <p
                   data-testid={ `customer_checkout__element-order-table-sub-total-${ indice }`}

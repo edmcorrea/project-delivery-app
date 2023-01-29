@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
-import Context from './Context';
+import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
+import Context from "./Context";
 
 function Provider({ children }) {
   // const [radioSearch, setRadioSearch] = useState('');
@@ -37,11 +37,7 @@ function Provider({ children }) {
     productsContext,
   };
 
-  return (
-    <Context.Provider value={ context }>
-      { children }
-    </Context.Provider>
-  );
+  return <Context.Provider value={context}>{children}</Context.Provider>;
 }
 export default Provider;
 
