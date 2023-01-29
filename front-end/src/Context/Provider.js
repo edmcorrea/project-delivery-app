@@ -12,17 +12,19 @@ function Provider({ children }) {
   const [arrItems, setArrItems] = useState([]);
 
   const productsContext = async () => {
-    console.log(arrItems);
+    console.log('items', items);
+    const search = [];
     items.forEach(({ id, quantity }) => {
       const findedProducts = listProducts.find((element) => element.id === id);
       findedProducts.quantity = quantity;
-      setArrItems([...arrItems, findedProducts]);
-    })
+      search.push(findedProducts);
+    });
+    setArrItems(search);
   };
 
   useEffect(() => {
     productsContext();
-  }, [totalPrice])
+  }, [totalPrice]);
 
   const context = {
     arrItems,
@@ -32,7 +34,7 @@ function Provider({ children }) {
     setItems,
     listProducts,
     setListProducts,
-    productsContext
+    productsContext,
   };
 
   return (
