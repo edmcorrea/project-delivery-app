@@ -1,3 +1,4 @@
+const Sequelize = require('sequelize');
 const { User } = require('../database/models');
 const jwtUtil = require('../utils/jwt.util');
 const { checkPassword, creteHashPassword } = require('./validations/hashPassword');
@@ -110,6 +111,17 @@ const getAllSellers = async () => {
   return { statusCode: 200, result: sellers };
 };
 
+const getAllSellersAndCustomers = async () => {
+  const users = await User.findAll({ 
+    where: { [Sequelize.Op.or]: [
+      { role: 'customer' },
+      { role: 'seller' },
+    ] },
+    attributes: { exclude: ['password'] },
+  });
+  return { statusCode: 200, result: users };
+};
+
 module.exports = {
   login,
   insertUser,
@@ -118,4 +130,5 @@ module.exports = {
   getSellerNameById,
   getAllSellers,
   insertUserByAdmin,
+  getAllSellersAndCustomers,
 };

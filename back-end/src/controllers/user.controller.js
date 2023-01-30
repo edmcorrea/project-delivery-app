@@ -22,9 +22,15 @@ const getAllSellers = async (_req, res) => {
   return res.status(statusCode).json(result);
 };
 
+const getAllSellersAndCustomers = async (_req, res) => {
+  const { statusCode, result } = await userService.getAllSellersAndCustomers();
+  return res.status(statusCode).json(result);
+};
+
 module.exports = {
   login,
   insertUser,
   getAllSellers,
   insertUserByAdmin,
+  getAllSellersAndCustomers,
 };
