@@ -12,7 +12,16 @@ const jwtConfig = {
 
 const createToken = (data) => jwt.sign({ data }, jwtSecret, jwtConfig);
 
+const checkAuth = (authorization) => {
+  if (!authorization) {
+    const err = new Error('Token is required');
+    err.statusCode = 401;
+    throw err;
+  }
+};
+
 const validateToken = (token) => {
+  checkAuth(token);
   try {
     const { data } = jwt.verify(token, jwtSecret);
     return data;

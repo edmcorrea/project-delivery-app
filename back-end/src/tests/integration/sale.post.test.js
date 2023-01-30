@@ -4,6 +4,7 @@ const sinon = require('sinon');
 
 const app = require('../../api/app');
 const { Sale, SaleProduct, Product, User } = require('../../database/models');
+const { sequelize } = require('../../services/sale.service');
 const { pendenteSaleMock, saleProductMock } = require('../mocks/saleMocks');
 const { customerMock, sellerMock } = require('../mocks/userMocks');
 
@@ -18,8 +19,7 @@ describe('integration tests for /sale route', function() {
     sinon.stub(User, 'findOne')
       .onFirstCall().resolves(customerMock)
       .onSecondCall().resolves(sellerMock);
-    sinon.stub(Sale, 'create').resolves(pendenteSaleMock);
-    sinon.stub(SaleProduct, 'bulkCreate').resolves(saleProductMock);
+    sinon.stub(sequelize, 'transaction').resolves(pendenteSaleMock.id);
 
     const response = await chai
       .request(app)

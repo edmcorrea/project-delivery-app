@@ -118,6 +118,7 @@ const updateSaleStatus = async (saleId, token) => {
 };
 
 module.exports = {
+  sequelize,
   insertSale,
   getSalesByUserOrSellerId,
   getSaleById,

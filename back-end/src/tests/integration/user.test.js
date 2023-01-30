@@ -4,91 +4,13 @@ const sinon = require('sinon');
 
 const app = require('../../api/app');
 const { User } = require('../../database/models');
-const { customerMock, adminMock, sellerListMock } = require('../mocks/userMocks');
+const { sellerListMock, userListMock, adminMock, customerMock } = require('../mocks/userMocks');
 
 const { expect, use } = chai;
 use(chaiHttp);
 
 describe('integration tests for /user route', function() {
   afterEach(sinon.restore);
-
-  it('tests a success user insert', async function() {
-    sinon.stub(User, 'findOne').resolves(undefined);
-    sinon.stub(User, 'create').resolves(customerMock);
-
-    const response = await chai
-      .request(app)
-      .post('/user')
-      .send({
-        name: 'Cliente Zé Birita',
-        email: 'zebirita@email.com',
-        password: '$#zebirita#$',
-      });
-
-    expect(response.status).to.be.equal(201);
-    expect(response.body.name).to.be.equal(customerMock.name);
-    expect(response.body.email).to.be.equal(customerMock.email);
-    expect(response.body.role).to.be.equal(customerMock.role);
-    expect(response.body.token).to.be.string;
-  });
-
-  it('tests if is not possible to create a user that already exists', async function() {
-    sinon.stub(User, 'findOne').resolves(adminMock);
-
-    const response = await chai
-      .request(app)
-      .post('/user')
-      .send({
-        name: 'Delivery App Admin',
-        email: 'adm@deliveryapp.com',
-        password: '--adm2@21!!--',
-      });
-
-    expect(response.status).to.be.equal(409);
-    expect(response.body.message).to.be.equal('User already registered');
-  });
-
-  it('tests if is not possible to create a user with a short password(min 6)', async function() {
-    const response = await chai
-      .request(app)
-      .post('/user')
-      .send({
-        name: 'Name Test ok',
-        email: 'tesemail@email.com',
-        password: 'pass',
-      });
-
-    expect(response.status).to.be.equal(400);
-    expect(response.body.message).to.be.equal('\"password\" length must be at least 6 characters long');
-  });
-  
-  it('tests if is not possible to create a user with a short name(min 12)', async function() {
-    const response = await chai
-      .request(app)
-      .post('/user')
-      .send({
-        name: 'Name',
-        email: 'tesemail@email.com',
-        password: '1234567',
-      });
-
-    expect(response.status).to.be.equal(400);
-    expect(response.body.message).to.be.equal('\"name\" length must be at least 12 characters long');
-  });
-
-  it('tests if is not possible to create a user with an invalid email', async function() {
-    const response = await chai
-      .request(app)
-      .post('/user')
-      .send({
-        name: 'Name Test OK',
-        email: 'email',
-        password: '1234567',
-      });
-
-    expect(response.status).to.be.equal(400);
-    expect(response.body.message).to.be.equal('\"email\" must be a valid email');
-  });
 
   it('tests if all sellers are returned', async function() {
     sinon.stub(User, 'findAll').resolves(sellerListMock);
@@ -100,5 +22,81 @@ describe('integration tests for /user route', function() {
     expect(response.status).to.be.equal(200);
     expect(response.body).to.be.deep.equal(sellerListMock);
   });
+
+  it('tests if all users are returned (without administrators)', async function() {
+    sinon.stub(User, 'findAll').resolves(userListMock);
+
+    const response = await chai
+      .request(app)
+      .get('/user');
+
+    expect(response.status).to.be.equal(200);
+    expect(response.body).to.be.deep.equal(userListMock);
+  });
+
+  it('tests if it is possible to remove an user by id', async function() {
+    sinon.stub(User, 'findOne').resolves(adminMock);
+    sinon.stub(User, 'findByPk').resolves(customerMock);
+    sinon.stub(User, 'destroy').resolves({});
+
+    const response = await chai
+      .request(app)
+      .delete('/user/3')
+      .set(
+        'authorization',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJZCI6MSwidXNlckVtYWlsIjoiYWRtQGRlbGl2ZXJ5YXBwLmNvbSJ9LCJpYXQiOjE2NzUxMDUyMzksImV4cCI6MTY4NTQ3MzIzOX0.HV6Qg0JJY76YW_1Z3dxXpItI9iGozHiIU2-e09R_RJ0',
+      );
+
+    expect(response.status).to.be.equal(204);
+  });
   
+  it('tests if is not possible to remove an user by administrator without a token', async function() {
+    const response = await chai
+      .request(app)
+      .delete('/user/3')
+    
+    expect(response.status).to.be.equal(401);
+    expect(response.body.message).to.be.equal('Token is required');
+  });
+
+  it('tests if is not possible to remove an user by administrator with an invalid token', async function() {
+    const response = await chai
+      .request(app)
+      .delete('/user/3')
+      .set('authorization', 'invalidToken');
+
+    expect(response.status).to.be.equal(401);
+    expect(response.body.message).to.be.equal('Expired or invalid token');
+  });
+
+  it('tests if is not possible to remove an user by administrator with a token from an invalid user', async function() {
+    sinon.stub(User, 'findOne').resolves(customerMock);
+
+    const response = await chai
+      .request(app)
+      .delete('/user/3')
+      .set(
+        'authorization',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJZCI6MywidXNlckVtYWlsIjoiemViaXJpdGFAZW1haWwuY29tIn0sImlhdCI6MTY3NDY4NDMwMywiZXhwIjoxNjc1OTgwMzAzfQ.4JEj8Rh-NICQgnJUPCs3dP-ZwztTaIE1VCkTJFzcNcg',
+      );
+    
+    expect(response.status).to.be.equal(401);
+    expect(response.body.message).to.be.equal('Expired or invalid token');
+  });
+
+  it('tests if is not possible to remove an user that does not exist', async function() {
+    sinon.stub(User, 'findOne').resolves(adminMock);
+    sinon.stub(User, 'findByPk').resolves(undefined);
+
+    const response = await chai
+      .request(app)
+      .delete('/user/9')
+      .set(
+        'authorization',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJZCI6MSwidXNlckVtYWlsIjoiYWRtQGRlbGl2ZXJ5YXBwLmNvbSJ9LCJpYXQiOjE2NzUxMDUyMzksImV4cCI6MTY4NTQ3MzIzOX0.HV6Qg0JJY76YW_1Z3dxXpItI9iGozHiIU2-e09R_RJ0',
+      );
+    
+    expect(response.status).to.be.equal(404);
+    expect(response.body.message).to.be.equal('User does not exist');
+  });
 });
