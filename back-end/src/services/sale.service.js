@@ -10,6 +10,7 @@ const env = process.env.NODE_ENV || 'development';
 const sequelize = new Sequelize(config[env]);
 
 const managedInsert = async (saleDataToInsert, products) => {
+  console.log('managerInsert');
   try {
     const id = await sequelize.transaction(async (transaction) => {
       const sale = await Sale.create(saleDataToInsert, { transaction });
@@ -19,8 +20,10 @@ const managedInsert = async (saleDataToInsert, products) => {
       await SaleProduct.bulkCreate(saleProductList, { transaction });
       return sale.id;
     });
+    console.log('id', id);
     return { statusCode: 201, result: { id } };
   } catch (err) {
+    console.log('n entrei');
     err.statusCode = 500;
     throw err;
   }

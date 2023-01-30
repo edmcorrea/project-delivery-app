@@ -32,7 +32,8 @@ function Checkout() {
     const {token} = JSON.parse(localStorage.getItem('user'));
     // console.log(token);
     try {
-      setToken(token);
+      // setToken(token);
+      console.log(sellerName);
       const obj = {
         sellerName,
         totalPrice,
@@ -41,7 +42,8 @@ function Checkout() {
         products: items,
       };
       // console.log(obj);
-      const {id} = await requestCheckout('/sale', obj);
+      const { id } = await requestCheckout('sale', obj, token);
+      console.log(id);
       // console.log(alo);
       history(`/customer/orders/${id}`);
     } catch (error) {
@@ -112,7 +114,7 @@ function Checkout() {
             value={sellerName}
           >
             {sellers.length &&
-              sellers.map(({ name }) => <option>{name}</option>)}
+              sellers.map(({ id, name }) => <option key={id} value={id}>{name}</option>)}
           </select>
           <label htmlFor="address">Endereço:</label>
           <input
