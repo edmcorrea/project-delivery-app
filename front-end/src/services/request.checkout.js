@@ -13,3 +13,7 @@ export const requestCheckout = async (endpoint, body) => {
   const { data } = await api.post(endpoint, body);
   return data;
 };
+
+export const setToken = (token) => {
+  api.defaults.headers.common.Authorization = token;
+};
