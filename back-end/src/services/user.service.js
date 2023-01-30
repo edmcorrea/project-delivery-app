@@ -26,6 +26,16 @@ const validateTokenId = async (token) => {
   return user.id;
 };
 
+const validateAdminTokenId = async (token) => {
+  const { userId } = jwtUtil.validateToken(token);
+  const user = await User.findOne({ where: { id: userId } });
+  if (!user || user.role !== 'administrator') {
+    const err = new Error('Expired or invalid token');
+    err.statusCode = 401;
+    throw err;
+  }
+};
+
 const setToken = (userId, userEmail) => {
   const tokenData = { userId, userEmail };
   const token = jwtUtil.createToken(tokenData);
@@ -50,18 +60,38 @@ const login = async (email, password) => {
   return { statusCode: 200, result };
 };
 
-const insertUser = async (newUserData) => {
-  const { name, email, password } = validateUserData(newUserData);
-
+const checkExistentUser = async (email) => {
   const user = await getByEmail(email);
   if (user) {
     const err = new Error('User already registered');
     err.statusCode = 409;
     throw err;
   }
+};
 
-  const hasedPassword = creteHashPassword(password);
-  const createdUser = await User.create({ name, email, password: hasedPassword });
+const insertUser = async (newUserData) => {
+  const { name, email, password } = validateUserData(newUserData);
+  await checkExistentUser(email);
+
+  const hashedPassword = creteHashPassword(password);
+  const createdUser = await User.create({ name, email, password: hashedPassword });
+  const token = setToken(createdUser.id, createdUser.email);
+  const result = {
+    name: createdUser.name,
+    email: createdUser.email,
+    role: createdUser.role,
+    token,
+  };
+  return { statusCode: 201, result };
+};
+
+const insertUserByAdmin = async (newUserData, adminToken) => {
+  await validateAdminTokenId(adminToken);
+  const { name, email, password, role } = validateUserData(newUserData);
+  await checkExistentUser(email);
+
+  const hashedPassword = creteHashPassword(password);
+  const createdUser = await User.create({ name, email, password: hashedPassword, role });
   const token = setToken(createdUser.id, createdUser.email);
   const result = {
     name: createdUser.name,
@@ -87,4 +117,5 @@ module.exports = {
   getSellerIdByName,
   getSellerNameById,
   getAllSellers,
+  insertUserByAdmin,
 };

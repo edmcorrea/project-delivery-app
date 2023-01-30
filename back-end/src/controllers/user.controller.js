@@ -11,6 +11,12 @@ const insertUser = async (req, res) => {
   return res.status(statusCode).json(result);
 };
 
+const insertUserByAdmin = async (req, res) => {
+  const { authorization } = req.headers;
+  const { statusCode, result } = await userService.insertUserByAdmin({ ...req.body }, authorization);
+  return res.status(statusCode).json(result);
+};
+
 const getAllSellers = async (_req, res) => {
   const { statusCode, result } = await userService.getAllSellers();
   return res.status(statusCode).json(result);
@@ -20,4 +26,5 @@ module.exports = {
   login,
   insertUser,
   getAllSellers,
+  insertUserByAdmin,
 };
