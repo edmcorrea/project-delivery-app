@@ -76,7 +76,8 @@ function ProductsAvailable() {
       total += parseFloat(product.price) * item.quantity;
     });
     setTotalPrice(total);
-    localStorage.setItem('cart', JSON.stringify(items));
+    const itemsNotQttNull = items.filter(({quantity}) => quantity !== 0);
+    localStorage.setItem('cart', JSON.stringify(itemsNotQttNull));
   }, [items]);
 
   useEffect(() => {

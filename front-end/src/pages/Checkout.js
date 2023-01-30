@@ -8,7 +8,7 @@ const numberFormat = new Intl.NumberFormat('pt-BR', {
 });
 
 function Checkout() {
-  const { arrItems, totalPrice } = useContext(Context);
+  const { arrItems, totalPrice, removeCart } = useContext(Context);
   return (
     <div>
       <NavBar />
@@ -43,6 +43,7 @@ function Checkout() {
                   {numberFormat.format(Number(element.quantity) * Number(element.price))}
                 </p>
                 <button
+                onClick={() => removeCart(element.id)}
                   data-testid={ `customer_checkout__element-order-table-remove-${ indice }`}
                 >
                   Remover
@@ -56,7 +57,7 @@ function Checkout() {
         <p
           data-testid="customer_checkout__element-order-total-price"
         >
-          {`Total: R$${totalPrice.toFixed(2).replace('.', ',')}`}
+          {totalPrice.toFixed(2).replace('.', ',')}
 
         </p>
       </div>
