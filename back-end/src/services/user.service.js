@@ -122,6 +122,19 @@ const getAllSellersAndCustomers = async () => {
   return { statusCode: 200, result: users };
 };
 
+const removeUser = async (userId, token) => {
+  await validateAdminTokenId(token);
+  const user = await User.findByPk(userId);
+  if (!user) {
+    const err = new Error('User does not exist');
+    err.statusCode = 404;
+    throw err;
+  }
+  
+  await User.destroy({ where: { id: userId } });
+  return { statusCode: 204 };
+};
+
 module.exports = {
   login,
   insertUser,
@@ -131,4 +144,5 @@ module.exports = {
   getAllSellers,
   insertUserByAdmin,
   getAllSellersAndCustomers,
+  removeUser,
 };

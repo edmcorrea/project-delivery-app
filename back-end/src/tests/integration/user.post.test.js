@@ -32,7 +32,7 @@ describe('integration tests for /user route', function() {
     expect(response.body.token).to.be.string;
   });
 
-  it('tests if is not possible to create a user that already exists, by a customer', async function() {
+  it('tests if is not possible to create an user that already exists, by a customer', async function() {
     sinon.stub(User, 'findOne').resolves(adminMock);
 
     const response = await chai
@@ -48,7 +48,7 @@ describe('integration tests for /user route', function() {
     expect(response.body.message).to.be.equal('User already registered');
   });
 
-  it('tests if is not possible to create a user with a short password(min 6), by a customer', async function() {
+  it('tests if is not possible to create an user with a short password(min 6), by a customer', async function() {
     const response = await chai
       .request(app)
       .post('/user')
@@ -62,7 +62,7 @@ describe('integration tests for /user route', function() {
     expect(response.body.message).to.be.equal('\"password\" length must be at least 6 characters long');
   });
   
-  it('tests if is not possible to create a user with a short name(min 12), by a customer', async function() {
+  it('tests if is not possible to create an user with a short name(min 12), by a customer', async function() {
     const response = await chai
       .request(app)
       .post('/user')
@@ -76,7 +76,7 @@ describe('integration tests for /user route', function() {
     expect(response.body.message).to.be.equal('\"name\" length must be at least 12 characters long');
   });
 
-  it('tests if is not possible to create a user with an invalid email, by a customer', async function() {
+  it('tests if is not possible to create an user with an invalid email, by a customer', async function() {
     const response = await chai
       .request(app)
       .post('/user')
@@ -116,7 +116,7 @@ describe('integration tests for /user route', function() {
     expect(response.body.token).to.be.string;
   });
 
-  it('tests if is not possible to create a user by administrator without a token', async function() {
+  it('tests if is not possible to create an user by administrator without a token', async function() {
     const response = await chai
       .request(app)
       .post('/user/admin')
@@ -131,7 +131,7 @@ describe('integration tests for /user route', function() {
     expect(response.body.message).to.be.equal('Token is required');
   });
 
-  it('tests if is not possible to create a user by administrator with an invalid token', async function() {
+  it('tests if is not possible to create an user by administrator with an invalid token', async function() {
     const response = await chai
       .request(app)
       .post('/user/admin')
@@ -147,7 +147,7 @@ describe('integration tests for /user route', function() {
   });
 
   it('tests if is not possible to create a user by administrator with a token from an invalid user', async function() {
-    sinon.stub(User, 'findOne').resolves(undefined);
+    sinon.stub(User, 'findOne').resolves(customerMock);
 
     const response = await chai
       .request(app)

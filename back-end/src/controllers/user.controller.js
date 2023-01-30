@@ -28,10 +28,18 @@ const getAllSellersAndCustomers = async (_req, res) => {
   return res.status(statusCode).json(result);
 };
 
+const removeUser = async (req, res) => {
+  const { authorization } = req.headers;
+  const { id } = req.params;
+  const { statusCode } = await userService.removeUser(id, authorization);
+  return res.status(statusCode).end();
+};
+
 module.exports = {
   login,
   insertUser,
   getAllSellers,
   insertUserByAdmin,
   getAllSellersAndCustomers,
+  removeUser,
 };
