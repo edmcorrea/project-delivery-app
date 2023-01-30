@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import NavBar from '../components/navbar';
 import Context from '../Context/Context';
+import { requestCheckout, requestSeller } from '../services/request.checkout';
 
 const numberFormat = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -9,6 +10,19 @@ const numberFormat = new Intl.NumberFormat('pt-BR', {
 
 function Checkout() {
   const { arrItems, totalPrice, removeCart } = useContext(Context);
+
+  const finalizarPedido = async () => {
+    const aloha = await requestSeller('/user/sellers');
+    console.log(aloha);
+    // const obj = {
+    //   sellerName: name,
+    //   totalPrice,
+    //   deliveryAddress
+    // }
+    // const { id } = requestCheckout(`/customer/sale`, arrItems);
+    // con
+  }
+
   return (
     <div>
       <NavBar />
@@ -73,7 +87,9 @@ function Checkout() {
           <label for="address-number">Endereço:</label>
           <input data-testid="customer_checkout__input-address-number" id="address-number" name="address-number">
           </input>
-          <button data-testid="customer_checkout__button-submit-order" type="button">Finalizar Pedido</button>
+          <button 
+          onClick={() => finalizarPedido()}
+          data-testid="customer_checkout__button-submit-order" type="button">Finalizar Pedido</button>
         </div>
       </div>
     </div>
