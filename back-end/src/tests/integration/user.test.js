@@ -4,7 +4,7 @@ const sinon = require('sinon');
 
 const app = require('../../api/app');
 const { User } = require('../../database/models');
-const { sellerListMock } = require('../mocks/userMocks');
+const { sellerListMock, userListMock } = require('../mocks/userMocks');
 
 const { expect, use } = chai;
 use(chaiHttp);
@@ -21,5 +21,16 @@ describe('integration tests for /user route', function() {
 
     expect(response.status).to.be.equal(200);
     expect(response.body).to.be.deep.equal(sellerListMock);
+  });
+
+  it('tests if all users are returned(without administrators)', async function() {
+    sinon.stub(User, 'findAll').resolves(userListMock);
+
+    const response = await chai
+      .request(app)
+      .get('/user');
+
+    expect(response.status).to.be.equal(200);
+    expect(response.body).to.be.deep.equal(userListMock);
   });
 });
