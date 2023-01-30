@@ -7,12 +7,12 @@ const getByEmail = async (email) => User.findOne({ where: { email } });
 
 const getSellerIdByName = async (name) => {
   const user = await User.findOne({ where: { name } });
-  if (!user || user.role !== 'seller') {
-    const err = new Error('Invalid seller name');
-    err.statusCode = 400;
-    throw err;
-  }
   return user.id;
+};
+
+const getSellerNameById = async (id) => {
+  const user = await User.findByPk(id);
+  return user.name;
 };
 
 const validateTokenId = async (token) => {
@@ -23,7 +23,7 @@ const validateTokenId = async (token) => {
     err.statusCode = 401;
     throw err;
   }
-  return userId;
+  return user.id;
 };
 
 const setToken = (userId, userEmail) => {
@@ -72,9 +72,19 @@ const insertUser = async (newUserData) => {
   return { statusCode: 201, result };
 };
 
+const getAllSellers = async () => {
+  const sellers = await User.findAll({ 
+    where: { role: 'seller' },
+    attributes: { exclude: ['password', 'role'] },
+  });
+  return { statusCode: 200, result: sellers };
+};
+
 module.exports = {
   login,
   insertUser,
   validateTokenId,
   getSellerIdByName,
+  getSellerNameById,
+  getAllSellers,
 };

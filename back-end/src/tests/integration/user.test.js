@@ -4,7 +4,7 @@ const sinon = require('sinon');
 
 const app = require('../../api/app');
 const { User } = require('../../database/models');
-const { customerMock, adminMock } = require('../mocks/userMocks');
+const { customerMock, adminMock, sellerListMock } = require('../mocks/userMocks');
 
 const { expect, use } = chai;
 use(chaiHttp);
@@ -88,6 +88,17 @@ describe('integration tests for /user route', function() {
 
     expect(response.status).to.be.equal(400);
     expect(response.body.message).to.be.equal('\"email\" must be a valid email');
+  });
+
+  it('tests if all sellers are returned', async function() {
+    sinon.stub(User, 'findAll').resolves(sellerListMock);
+
+    const response = await chai
+      .request(app)
+      .get('/user/sellers');
+
+    expect(response.status).to.be.equal(200);
+    expect(response.body).to.be.deep.equal(sellerListMock);
   });
   
 });
