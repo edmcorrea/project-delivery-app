@@ -1,3 +1,4 @@
+const Sequelize = require('sequelize');
 const { User } = require('../database/models');
 const jwtUtil = require('../utils/jwt.util');
 const { checkPassword, creteHashPassword } = require('./validations/hashPassword');
@@ -26,6 +27,16 @@ const validateTokenId = async (token) => {
   return user.id;
 };
 
+const validateAdminTokenId = async (token) => {
+  const { userId } = jwtUtil.validateToken(token);
+  const user = await User.findOne({ where: { id: userId } });
+  if (!user || user.role !== 'administrator') {
+    const err = new Error('Expired or invalid token');
+    err.statusCode = 401;
+    throw err;
+  }
+};
+
 const setToken = (userId, userEmail) => {
   const tokenData = { userId, userEmail };
   const token = jwtUtil.createToken(tokenData);
@@ -50,18 +61,38 @@ const login = async (email, password) => {
   return { statusCode: 200, result };
 };
 
-const insertUser = async (newUserData) => {
-  const { name, email, password } = validateUserData(newUserData);
-
+const checkExistentUser = async (email) => {
   const user = await getByEmail(email);
   if (user) {
     const err = new Error('User already registered');
     err.statusCode = 409;
     throw err;
   }
+};
 
-  const hasedPassword = creteHashPassword(password);
-  const createdUser = await User.create({ name, email, password: hasedPassword });
+const insertUser = async (newUserData) => {
+  const { name, email, password } = validateUserData(newUserData);
+  await checkExistentUser(email);
+
+  const hashedPassword = creteHashPassword(password);
+  const createdUser = await User.create({ name, email, password: hashedPassword });
+  const token = setToken(createdUser.id, createdUser.email);
+  const result = {
+    name: createdUser.name,
+    email: createdUser.email,
+    role: createdUser.role,
+    token,
+  };
+  return { statusCode: 201, result };
+};
+
+const insertUserByAdmin = async (newUserData, adminToken) => {
+  await validateAdminTokenId(adminToken);
+  const { name, email, password, role } = validateUserData(newUserData);
+  await checkExistentUser(email);
+
+  const hashedPassword = creteHashPassword(password);
+  const createdUser = await User.create({ name, email, password: hashedPassword, role });
   const token = setToken(createdUser.id, createdUser.email);
   const result = {
     name: createdUser.name,
@@ -80,6 +111,30 @@ const getAllSellers = async () => {
   return { statusCode: 200, result: sellers };
 };
 
+const getAllSellersAndCustomers = async () => {
+  const users = await User.findAll({ 
+    where: { [Sequelize.Op.or]: [
+      { role: 'customer' },
+      { role: 'seller' },
+    ] },
+    attributes: { exclude: ['password'] },
+  });
+  return { statusCode: 200, result: users };
+};
+
+const removeUser = async (userId, token) => {
+  await validateAdminTokenId(token);
+  const user = await User.findByPk(userId);
+  if (!user) {
+    const err = new Error('User does not exist');
+    err.statusCode = 404;
+    throw err;
+  }
+  
+  await User.destroy({ where: { id: userId } });
+  return { statusCode: 204 };
+};
+
 module.exports = {
   login,
   insertUser,
@@ -87,4 +142,7 @@ module.exports = {
   getSellerIdByName,
   getSellerNameById,
   getAllSellers,
+  insertUserByAdmin,
+  getAllSellersAndCustomers,
+  removeUser,
 };
