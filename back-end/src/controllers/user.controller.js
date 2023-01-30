@@ -13,7 +13,8 @@ const insertUser = async (req, res) => {
 
 const insertUserByAdmin = async (req, res) => {
   const { authorization } = req.headers;
-  const { statusCode, result } = await userService.insertUserByAdmin({ ...req.body }, authorization);
+  const { statusCode, result } = await userService
+    .insertUserByAdmin({ ...req.body }, authorization);
   return res.status(statusCode).json(result);
 };
 
