@@ -1,29 +1,19 @@
 require('dotenv').config();
 const Sequelize = require('sequelize');
-const config = require('../database/config/config');
 const { Sale, SaleProduct, Product } = require('../database/models');
 const { checkProducts } = require('./product.service');
 const { validateTokenId, getSellerIdByName, getSellerNameById } = require('./user.service');
 const { validateSaleData } = require('./validations/sale.validation');
 
-const env = process.env.NODE_ENV || 'development';
-const sequelize = new Sequelize(config[env]);
-
 const managedInsert = async (saleDataToInsert, products) => {
-  try {
-    const id = await sequelize.transaction(async (transaction) => {
-      const sale = await Sale.create(saleDataToInsert, { transaction });
-      const saleProductList = products.map((product) => ({
-        saleId: sale.id, productId: product.id, quantity: product.quantity,
-      }));
-      await SaleProduct.bulkCreate(saleProductList, { transaction });
-      return sale.id;
-    });
-    return { statusCode: 201, result: { id } };
-  } catch (err) {
-    err.statusCode = 500;
-    throw err;
-  }
+  const sale = await Sale.create(saleDataToInsert);
+  
+  const saleProductList = products.map((product) => ({
+    saleId: sale.id, productId: product.id, quantity: product.quantity,
+  }));
+  await SaleProduct.bulkCreate(saleProductList);
+
+  return { statusCode: 201, result: { id: sale.id } };
 };
 
 const insertSale = async (token, saleData) => {
