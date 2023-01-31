@@ -4,28 +4,26 @@ const sinon = require('sinon');
 
 const app = require('../../api/app');
 const { Sale, SaleProduct, Product, User } = require('../../database/models');
-const { sequelize } = require('../../services/sale.service');
 const { pendenteSaleMock, saleProductMock } = require('../mocks/saleMocks');
 const { customerMock, sellerMock } = require('../mocks/userMocks');
 
 const { expect, use } = chai;
 use(chaiHttp);
 
-describe('integration tests for /sale route', function() {
+describe('integration tests for POST /sale route', function() {
   afterEach(sinon.restore);
 
   it('tests a success sale insert', async function() {
     sinon.stub(Product, 'findAndCountAll').resolves({ count: saleProductMock.length });
-    sinon.stub(User, 'findOne')
-      .onFirstCall().resolves(customerMock)
-      .onSecondCall().resolves(sellerMock);
-    sinon.stub(sequelize, 'transaction').resolves(pendenteSaleMock.id);
+    sinon.stub(User, 'findOne').resolves(customerMock);
+    sinon.stub(Sale, 'create').resolves(pendenteSaleMock);
+    sinon.stub(SaleProduct, 'bulkCreate').resolves(saleProductMock);
 
     const response = await chai
       .request(app)
       .post('/sale')
       .send({
-        sellerName: sellerMock.name,
+        sellerId: sellerMock.id,
         totalPrice: pendenteSaleMock.totalPrice,
         deliveryAddress: pendenteSaleMock.deliveryAddress,
         deliveryNumber: pendenteSaleMock.deliveryNumber,
@@ -43,11 +41,13 @@ describe('integration tests for /sale route', function() {
   });
 
   it('tests if is not possible to create a sale without a token', async function() {
+    sinon.stub(Product, 'findAndCountAll').resolves({ count: saleProductMock.length });
+
     const response = await chai
       .request(app)
       .post('/sale')
       .send({
-        sellerName: sellerMock.name,
+        sellerId: sellerMock.id,
         totalPrice: pendenteSaleMock.totalPrice,
         deliveryAddress: pendenteSaleMock.deliveryAddress,
         deliveryNumber: pendenteSaleMock.deliveryNumber,
@@ -66,7 +66,7 @@ describe('integration tests for /sale route', function() {
       .request(app)
       .post('/sale')
       .send({
-        sellerName: sellerMock.name,
+        sellerId: sellerMock.id,
         totalPrice: '520.4abc69',
         deliveryAddress: pendenteSaleMock.deliveryAddress,
         deliveryNumber: pendenteSaleMock.deliveryNumber,
@@ -90,7 +90,7 @@ describe('integration tests for /sale route', function() {
       .request(app)
       .post('/sale')
       .send({
-        sellerName: sellerMock.name,
+        sellerId: sellerMock.id,
         totalPrice: pendenteSaleMock.totalPrice,
         deliveryAddress: pendenteSaleMock.deliveryAddress,
         deliveryNumber: pendenteSaleMock.deliveryNumber,
@@ -114,7 +114,7 @@ describe('integration tests for /sale route', function() {
       .request(app)
       .post('/sale')
       .send({
-        sellerName: sellerMock.name,
+        sellerId: sellerMock.id,
         totalPrice: pendenteSaleMock.totalPrice,
         deliveryAddress: pendenteSaleMock.deliveryAddress,
         deliveryNumber: pendenteSaleMock.deliveryNumber,
@@ -136,7 +136,7 @@ describe('integration tests for /sale route', function() {
       .request(app)
       .post('/sale')
       .send({
-        sellerName: sellerMock.name,
+        sellerId: sellerMock.id,
         totalPrice: pendenteSaleMock.totalPrice,
         deliveryAddress: pendenteSaleMock.deliveryAddress,
         deliveryNumber: pendenteSaleMock.deliveryNumber,
