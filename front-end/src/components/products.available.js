@@ -57,16 +57,22 @@ function ProductsAvailable() {
   };
 
   const setItemQuantity = (productId, quantity) => {
-    const newItems = items.map((product) => {
-      if (product.id === productId) {
-        product.quantity = quantity === 0 ? quantity : Number(quantity);
-      }
-      return product;
-    });
-    /* if (quantity === 0) {
-      localStorage.removeItem(productId);
-    } */ // teste
-    setItems(newItems);
+    const productFromInput = items.some(({ id }) => id === productId);
+    if (productFromInput) {
+      const newItems = items.map((product) => {
+        if (product.id === productId) {
+          product.quantity = quantity === 0 ? quantity : Number(quantity);
+        }
+        return product;
+      });
+      setItems(newItems);
+    } else {
+      const filterNotProductId = items.filter(({ id }) => id !== productId);
+      setItems([
+        ...filterNotProductId,
+        { id: productId, quantity: Number(quantity) },
+      ]);
+    }
   };
 
   useEffect(() => {
