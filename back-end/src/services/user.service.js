@@ -13,9 +13,9 @@ const getSellerNameById = async (id) => {
 
 const validateTokenId = async (token) => {
   const { userId } = jwtUtil.validateToken(token);
-  const user = await User.findOne({ where: { id: userId } });
+  const user = await User.findByPk(userId);
   if (!user) {
-    const err = new Error('Expired or invalid token');
+    const err = new Error("Expired or invalid token");
     err.statusCode = 401;
     throw err;
   }
@@ -41,13 +41,13 @@ const setToken = (userId, userEmail) => {
 const login = async (email, password) => {
   const user = await getByEmail(email);
   if (!user || !checkPassword(user.password, password)) {
-    const err = new Error('Invalid login');
+    const err = new Error("Invalid login");
     err.statusCode = 404;
     throw err;
   }
 
   const token = setToken(user.id, user.email);
-  const result = { 
+  const result = {
     name: user.name,
     email: user.email,
     role: user.role,
@@ -59,7 +59,7 @@ const login = async (email, password) => {
 const checkExistentUser = async (email) => {
   const user = await getByEmail(email);
   if (user) {
-    const err = new Error('User already registered');
+    const err = new Error("User already registered");
     err.statusCode = 409;
     throw err;
   }
@@ -99,9 +99,9 @@ const insertUserByAdmin = async (newUserData, adminToken) => {
 };
 
 const getAllSellers = async () => {
-  const sellers = await User.findAll({ 
-    where: { role: 'seller' },
-    attributes: { exclude: ['password', 'role'] },
+  const sellers = await User.findAll({
+    where: { role: "seller" },
+    attributes: { exclude: ["password", "role"] },
   });
   return { statusCode: 200, result: sellers };
 };

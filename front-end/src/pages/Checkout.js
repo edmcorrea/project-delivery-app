@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/navbar';
 import Context from '../Context/Context';
-import { requestCheckout, requestSeller, setToken } from '../services/request.checkout';
+import { requestCheckout, requestSeller } from '../services/request.checkout';
 
 const numberFormat = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -31,10 +31,11 @@ function Checkout() {
   });
 
   const finalizarPedido = async () => {
-    const { token } = JSON.parse(localStorage.getItem('user'));
+    // const { token } = JSON.parse(localStorage.getItem('user'));
     // console.log(token);
     try {
-      setToken(token);
+      // setToken(token);
+      console.log(sellerName);
       const obj = {
         sellerId,
         totalPrice,
