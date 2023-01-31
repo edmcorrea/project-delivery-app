@@ -15,9 +15,7 @@ function ProductsAvailable() {
     productsContext,
   } = useContext(Context);
   const [disable, setDisable] = useState(true);
-  // const [totalPrice, setTotalPrice] = useState(0);
-  // const [items, setItems] = useState([]);
-  // const [listProducts, setListProducts] = useState([]);
+
   const products = async () => {
     try {
       const getProducts = await requestProducts('/products');

@@ -1,12 +1,15 @@
 import NavBar from '../components/navbar';
+import OrdersUserDetailsComponent from '../components/orders.user.details.';
+import CheckoutComponent from '../components/products.checkout';
 
-function OrderDetail() {
+function OrdersDetail() {
   return (
     <div>
       <NavBar />
-      <p>alô vó,  to istorado dai</p>
+      <OrdersUserDetailsComponent />
+      <CheckoutComponent dataTest="order_details" />
     </div>
   );
 }
 
-export default OrderDetail;
+export default OrdersDetail;

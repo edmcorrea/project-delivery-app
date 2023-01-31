@@ -11,8 +11,11 @@ export const requestSeller = async (endpoint) => {
 
 export const requestCheckout = async (endpoint, body) => {
   const { data } = await api.post(endpoint, body);
-  console.log(data);
   return data;
+};
+
+export const setToken = (token) => {
+  api.defaults.headers.common.Authorization = token;
 };
 
 // export const requestCheckout = async (endpoint, body, token) => {
@@ -29,7 +32,3 @@ export const requestCheckout = async (endpoint, body) => {
 //   console.log(data);
 //   return data;
 // };
-
-export const setToken = (token) => {
-  api.defaults.headers.common.Authorization = token;
-};

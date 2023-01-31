@@ -3,13 +3,11 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Context from './Context';
 
 function Provider({ children }) {
-  // const [radioSearch, setRadioSearch] = useState('');
-  // const [inputSearch, setInputSearch] = useState('');
-  // const [apiData, setApiData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [items, setItems] = useState([]);
   const [listProducts, setListProducts] = useState([]);
   const [arrItems, setArrItems] = useState([]);
+  const [productsOrder, setProductsOrder] = useState([]);
   const [saleList, setSaleList] = useState([]);
   const [userRole, setUserRole] = useState('');
 
@@ -36,6 +34,10 @@ function Provider({ children }) {
     setTotalPrice(newtotalPrice);
   };
 
+  const productOrderDetails = (saleProducts) => {
+    setProductsOrder(saleProducts);
+  };
+
   useEffect(() => {
     productsContext();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -51,12 +53,13 @@ function Provider({ children }) {
     setListProducts,
     productsContext,
     removeCart,
+    productOrderDetails,
+    productsOrder,
     saleList,
     setSaleList,
     userRole,
     setUserRole,
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }), [totalPrice, items, arrItems, listProducts, saleList, userRole]);
+  }), [totalPrice, items, arrItems, listProducts, saleList, productsOrder, userRole]);
 
   return <Context.Provider value={ context }>{children}</Context.Provider>;
 }
