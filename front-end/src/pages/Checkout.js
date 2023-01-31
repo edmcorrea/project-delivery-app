@@ -6,7 +6,7 @@ function Checkout() {
   return (
     <div>
       <NavBar />
-      <CheckoutComponent />
+      <CheckoutComponent dataTest='checkout'/>
       <AddressComponent />
     </div>
   );

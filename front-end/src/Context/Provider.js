@@ -7,6 +7,7 @@ function Provider({ children }) {
   const [items, setItems] = useState([]);
   const [listProducts, setListProducts] = useState([]);
   const [arrItems, setArrItems] = useState([]);
+  const [productsOrder, setProductsOrder] = useState([]);
 
   const productsContext = async () => {
     const search = [];
@@ -31,6 +32,10 @@ function Provider({ children }) {
     setTotalPrice(newtotalPrice);
   };
 
+  const productOrderDetails = (saleProducts) => {
+    setProductsOrder(saleProducts);
+  };
+
   useEffect(() => {
     productsContext();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -46,7 +51,8 @@ function Provider({ children }) {
     setListProducts,
     productsContext,
     removeCart,
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    productOrderDetails,
+    productsOrder,
   }), [totalPrice, items, arrItems, listProducts]);
 
   return <Context.Provider value={ context }>{children}</Context.Provider>;
