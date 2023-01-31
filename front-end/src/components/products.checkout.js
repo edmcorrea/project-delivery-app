@@ -17,7 +17,7 @@ function CheckoutComponent({ dataTest }) {
     } else {
       setArrMap(productsOrder);
     }
-  })
+  }, [])
   return (
     <div>
       {arrMap.length ? (
