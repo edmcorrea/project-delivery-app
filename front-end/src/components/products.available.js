@@ -65,7 +65,7 @@ function ProductsAvailable() {
     });
     /* if (quantity === 0) {
       localStorage.removeItem(productId);
-    } */ // teste 
+    } */ // teste
     setItems(newItems);
   };
 
@@ -76,12 +76,14 @@ function ProductsAvailable() {
       total += parseFloat(product.price) * item.quantity;
     });
     setTotalPrice(total);
-    const itemsNotQttNull = items.filter(({quantity}) => quantity !== 0);
+    const itemsNotQttNull = items.filter(({ quantity }) => quantity !== 0);
     localStorage.setItem('cart', JSON.stringify(itemsNotQttNull));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
   useEffect(() => {
     products();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -151,4 +153,3 @@ function ProductsAvailable() {
 }
 
 export default ProductsAvailable;
-

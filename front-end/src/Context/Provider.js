@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
-import Context from "./Context";
+import PropTypes from 'prop-types';
+import React, { useEffect, useMemo, useState } from 'react';
+import Context from './Context';
 
 function Provider({ children }) {
   // const [radioSearch, setRadioSearch] = useState('');
@@ -25,20 +25,21 @@ function Provider({ children }) {
     const removeLocalStorage = items.filter((elem) => elem.id !== id);
     const remove = arrItems.filter((elem) => elem.id !== id);
     const newtotalPrice = remove.reduce((acc, curr) => {
-      acc += parseFloat(curr.price)*curr.quantity;
+      acc += parseFloat(curr.price) * curr.quantity;
       return acc;
     }, 0);
     console.log(remove, newtotalPrice);
     localStorage.setItem('cart', JSON.stringify(removeLocalStorage));
     setItems(removeLocalStorage);
     setTotalPrice(newtotalPrice);
-  }
+  };
 
   useEffect(() => {
     productsContext();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [totalPrice]);
 
-  const context = {
+  const context = useMemo(() => ({
     arrItems,
     totalPrice,
     setTotalPrice,
@@ -48,9 +49,10 @@ function Provider({ children }) {
     setListProducts,
     productsContext,
     removeCart,
-  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }), [totalPrice, items, arrItems, listProducts]);
 
-  return <Context.Provider value={context}>{children}</Context.Provider>;
+  return <Context.Provider value={ context }>{children}</Context.Provider>;
 }
 export default Provider;
 
