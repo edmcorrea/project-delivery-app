@@ -11,6 +11,7 @@ function Provider({ children }) {
   const [listProducts, setListProducts] = useState([]);
   const [arrItems, setArrItems] = useState([]);
   const [saleList, setSaleList] = useState([]);
+  const [userRole, setUserRole] = useState('');
 
   const productsContext = async () => {
     const search = [];
@@ -52,8 +53,10 @@ function Provider({ children }) {
     removeCart,
     saleList,
     setSaleList,
+    userRole,
+    setUserRole,
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }), [totalPrice, items, arrItems, listProducts, saleList]);
+  }), [totalPrice, items, arrItems, listProducts, saleList, userRole]);
 
   return <Context.Provider value={ context }>{children}</Context.Provider>;
 }

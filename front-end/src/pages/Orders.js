@@ -13,6 +13,8 @@ function Orders() {
   const {
     saleList,
     setSaleList,
+    userRole,
+    setUserRole,
   } = useContext(Context);
 
   const getSaleList = async () => {
@@ -40,6 +42,8 @@ function Orders() {
 
   useEffect(() => {
     getSaleList();
+    const { role } = JSON.parse(localStorage.getItem('user'));
+    setUserRole(role);
   }, []);
 
   return (
@@ -47,20 +51,25 @@ function Orders() {
       <NavBar />
       <div>
         {saleList.map((sale, i) => (
-          <Link key={ i + 1 } to={ `/customer/orders/${sale.id}` }>
+          <Link key={ i + 1 } to={ `/${userRole}/orders/${sale.id}` }>
             <div>
-              <p data-testid={ `customer_orders__element-order-id-${sale.id}` }>
+              <p data-testid={ `${userRole}_orders__element-order-id-${sale.id}` }>
                 { sale.id }
               </p>
-              <p data-testid={ `customer_orders__element-delivery-status-${sale.id}` }>
+              <p data-testid={ `${userRole}_orders__element-delivery-status-${sale.id}` }>
                 { sale.status }
               </p>
-              <p data-testid={ `customer_orders__element-order-date-${sale.id}` }>
+              <p data-testid={ `${userRole}_orders__element-order-date-${sale.id}` }>
                 { formatDate(sale.saleDate) }
               </p>
-              <p data-testid={ `customer_orders__element-card-price-${sale.id}` }>
+              <p data-testid={ `${userRole}_orders__element-card-price-${sale.id}` }>
                 { numberFormat.format(sale.totalPrice) }
               </p>
+              { userRole === 'seller' && (
+                <p data-testid={ `seller_orders__element-card-address-${sale.id}` }>
+                  { `${sale.deliveryAddress}, ${sale.deliveryNumber}` }
+                </p>
+              ) }
             </div>
           </Link>
         ))}
