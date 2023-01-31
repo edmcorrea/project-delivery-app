@@ -7,6 +7,7 @@ function NavBar() {
 
   const logoutUser = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('cart');
     history('/login');
   };
 
@@ -19,14 +20,20 @@ function NavBar() {
 
   return (
     <div>
-      <h2
+      <button
         data-testid="customer_products__element-navbar-link-products"
+        type="button"
+        onClick={ () => history('/customer/products') }
       >
         PRODUTOS
-      </h2>
-      <h2 data-testid="customer_products__element-navbar-link-orders">
+      </button>
+      <button
+        data-testid="customer_products__element-navbar-link-orders"
+        type="button"
+        onClick={ () => history('/customer/orders') }
+      >
         MEUS PEDIDOS
-      </h2>
+      </button>
       <h2 data-testid="customer_products__element-navbar-user-full-name">
         {name}
       </h2>
