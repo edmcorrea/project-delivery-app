@@ -10,6 +10,7 @@ function Provider({ children }) {
   const [items, setItems] = useState([]);
   const [listProducts, setListProducts] = useState([]);
   const [arrItems, setArrItems] = useState([]);
+  const [saleList, setSaleList] = useState([]);
 
   const productsContext = async () => {
     const search = [];
@@ -49,8 +50,10 @@ function Provider({ children }) {
     setListProducts,
     productsContext,
     removeCart,
+    saleList,
+    setSaleList,
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }), [totalPrice, items, arrItems, listProducts]);
+  }), [totalPrice, items, arrItems, listProducts, saleList]);
 
   return <Context.Provider value={ context }>{children}</Context.Provider>;
 }
