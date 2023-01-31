@@ -2,7 +2,7 @@ require('dotenv').config();
 const Sequelize = require('sequelize');
 const { Sale, SaleProduct, Product } = require('../database/models');
 const { checkProducts } = require('./product.service');
-const { validateTokenId, getSellerIdByName, getSellerNameById } = require('./user.service');
+const { validateTokenId, getSellerNameById } = require('./user.service');
 const { validateSaleData } = require('./validations/sale.validation');
 
 const managedInsert = async (saleDataToInsert, products) => {
@@ -21,11 +21,9 @@ const insertSale = async (token, saleData) => {
   await checkProducts(validSaleData.products);
 
   const userId = await validateTokenId(token);
-  const sellerId = await getSellerIdByName(validSaleData.sellerName);
-
   const saleDataToInsert = {
     userId,
-    sellerId,
+    sellerId: validSaleData.sellerId,
     totalPrice: validSaleData.totalPrice,
     deliveryAddress: validSaleData.deliveryAddress,
     deliveryNumber: validSaleData.deliveryNumber,
@@ -71,12 +69,12 @@ const checkIfSaleExist = (sale) => {
 };
 
 const getSaleById = async (saleId, token) => {
+  await validateTokenId(token);
+
   const sale = await Sale.findByPk(saleId, { include: { 
     model: Product, as: 'products', attributes: { exclude: ['urlImage'] },
   } });
   checkIfSaleExist(sale);
-
-  await validateTokenId(token);
 
   const formatedSale = await formatSaleData(sale);
   return { statusCode: 200, result: formatedSale };
@@ -118,7 +116,6 @@ const updateSaleStatus = async (saleId, token) => {
 };
 
 module.exports = {
-  sequelize,
   insertSale,
   getSalesByUserOrSellerId,
   getSaleById,

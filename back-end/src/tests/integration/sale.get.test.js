@@ -10,7 +10,7 @@ const { customerMock, sellerMock, adminMock } = require('../mocks/userMocks');
 const { expect, use } = chai;
 use(chaiHttp);
 
-describe('integration tests for /sale route', function() {
+describe('integration tests for GET /sale route', function() {
   afterEach(sinon.restore);
 
   it('tests if all sales from a specific user are returned', async function() {
@@ -61,9 +61,9 @@ describe('integration tests for /sale route', function() {
     expect(response.body.message).to.be.equal('Expired or invalid token');
   });
 
-  it('tests if a specific sale is return', async function() {
-    sinon.stub(Sale, 'findByPk').resolves(rawSaleMock);
+  it('tests if a specific sale is returned', async function() {
     sinon.stub(User, 'findOne').resolves(customerMock);
+    sinon.stub(Sale, 'findByPk').resolves(rawSaleMock);
     sinon.stub(User, 'findByPk').resolves(sellerMock);
 
     const response = await chai
@@ -86,6 +86,7 @@ describe('integration tests for /sale route', function() {
   });
 
   it('tests if is not possible to get a specific sale with an invalid sale id', async function() {
+    sinon.stub(User, 'findOne').resolves(customerMock);
     sinon.stub(Sale, 'findByPk').resolves(undefined);
 
     const response = await chai
@@ -101,8 +102,6 @@ describe('integration tests for /sale route', function() {
   });
 
   it('tests if is not possible to get a specific sale with an invalid token', async function() {
-    sinon.stub(Sale, 'findByPk').resolves(rawSaleMock);
-
     const response = await chai
       .request(app)
       .get('/sale/1')
@@ -113,7 +112,6 @@ describe('integration tests for /sale route', function() {
   });
 
   it('tests if is not possible to get a specific sale with a token from an invalid user', async function() {
-    sinon.stub(Sale, 'findByPk').resolves(rawSaleMock);
     sinon.stub(User, 'findOne').resolves(undefined);
 
     const response = await chai

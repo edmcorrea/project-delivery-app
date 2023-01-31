@@ -6,11 +6,6 @@ const { validateUserData } = require('./validations/user.validation');
 
 const getByEmail = async (email) => User.findOne({ where: { email } });
 
-const getSellerIdByName = async (name) => {
-  const user = await User.findOne({ where: { name } });
-  return user.id;
-};
-
 const getSellerNameById = async (id) => {
   const user = await User.findByPk(id);
   return user.name;
@@ -139,7 +134,6 @@ module.exports = {
   login,
   insertUser,
   validateTokenId,
-  getSellerIdByName,
   getSellerNameById,
   getAllSellers,
   insertUserByAdmin,
