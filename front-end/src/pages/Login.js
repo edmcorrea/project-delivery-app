@@ -33,6 +33,11 @@ function Login() {
   };
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) history('/customer/products');
+  }, []);
+
+  useEffect(() => {
     const magicNumber = 6;
     const regexMail = /\S+@\S+\.\S+/;
     if (password.length >= magicNumber && regexMail.test(email)) {

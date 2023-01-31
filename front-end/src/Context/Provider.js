@@ -8,6 +8,7 @@ function Provider({ children }) {
   const [listProducts, setListProducts] = useState([]);
   const [arrItems, setArrItems] = useState([]);
   const [productsOrder, setProductsOrder] = useState([]);
+  const [saleList, setSaleList] = useState([]);
 
   const productsContext = async () => {
     const search = [];
@@ -53,7 +54,9 @@ function Provider({ children }) {
     removeCart,
     productOrderDetails,
     productsOrder,
-  }), [totalPrice, items, arrItems, listProducts]);
+    saleList,
+    setSaleList,
+  }), [totalPrice, items, arrItems, listProducts, saleList, productsOrder]);
 
   return <Context.Provider value={ context }>{children}</Context.Provider>;
 }
