@@ -3,9 +3,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Context from './Context';
 
 function Provider({ children }) {
-  // const [radioSearch, setRadioSearch] = useState('');
-  // const [inputSearch, setInputSearch] = useState('');
-  // const [apiData, setApiData] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [items, setItems] = useState([]);
   const [listProducts, setListProducts] = useState([]);

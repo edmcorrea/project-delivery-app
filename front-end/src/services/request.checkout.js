@@ -11,7 +11,6 @@ export const requestSeller = async (endpoint) => {
 
 export const requestCheckout = async (endpoint, body) => {
   const { data } = await api.post(endpoint, body);
-  console.log(data);
   return data;
 };
 
