@@ -1,13 +1,21 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Login from '../../pages/Login';
+
+const loginTestId = 'common_login__input-email';
+const validador = /\S+@\S+\.\S+/;
 
 describe('Verifications about Login Page', () => {
   it('Verify if Login Page is displayed correctly', () => {
-    render(<Login />);
+    render(
+      <Router>
+        <Login />
+      </Router>,
+    );
 
-    const login = screen.getByTestId('common_login__input-email');
+    const login = screen.getByTestId(loginTestId);
     const password = screen.getByText(/senha/i);
     const btnRegister = screen.getByRole('button', { name: /tenho/i });
 
@@ -17,10 +25,13 @@ describe('Verifications about Login Page', () => {
   });
 
   it('Making login in Login Page - BUTTON DISABLED', () => {
-    render(<Login />);
-    const validador = new RegExp(/\S+@\S+\.\S+/);
+    render(
+      <Router>
+        <Login />
+      </Router>,
+    );
 
-    const email = screen.getByTestId('common_login__input-email');
+    const email = screen.getByTestId(loginTestId);
     const password = screen.getByTestId('common_login__input-password');
     const btnLogin = screen.getByRole('button', { name: /login/i });
 
@@ -32,11 +43,14 @@ describe('Verifications about Login Page', () => {
   });
 
   it('Making login in Login Page - BUTTON ENABLED', () => {
-    render(<Login />);
-    const validador = new RegExp(/\S+@\S+\.\S+/);
+    render(
+      <Router>
+        <Login />
+      </Router>,
+    );
 
     // BUSCA POR ELEMENTOS
-    const email = screen.getByTestId('common_login__input-email');
+    const email = screen.getByTestId(loginTestId);
     const password = screen.getByTestId('common_login__input-password');
     const btnLogin = screen.getByRole('button', { name: /login/i });
 
@@ -67,7 +81,6 @@ describe('Verifications about Login Page', () => {
   // it('Making login in Login Page - SUCESS', () => {
   //   const { history } = renderWithRouter(<Login />);
   //   const { location: { pathname } } = history;
-
   //   const email = screen.getByTestId('common_login__input-email');
   //   const password = screen.getByTestId('common_login__input-password');
   //   const btnLogin = screen.getByRole('button', { name: /login/i });
