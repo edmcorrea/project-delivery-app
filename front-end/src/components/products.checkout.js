@@ -1,10 +1,11 @@
-import { useContext, useEffect, useState } from "react";
-import Context from "../Context/Context";
-import RemoveCartBtn from "./remove.cart.btn";
+import PropTypes from 'prop-types';
+import { useContext, useEffect, useState } from 'react';
+import Context from '../Context/Context';
+import RemoveCartBtn from './remove.cart.btn';
 
-const numberFormat = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
+const numberFormat = new Intl.NumberFormat('pt-BR', {
+  style: 'currency',
+  currency: 'BRL',
 });
 
 function CheckoutComponent({ dataTest }) {
@@ -12,50 +13,58 @@ function CheckoutComponent({ dataTest }) {
   const [arrMap, setArrMap] = useState([]);
 
   useEffect(() => {
-    if(dataTest === 'checkout') {
+    if (dataTest === 'checkout') {
       setArrMap(arrItems);
     } else {
       setArrMap(productsOrder);
     }
-  })
+  }, []);
   return (
     <div>
       {arrMap.length ? (
         <div>
           {arrMap.map((element, indice) => (
-            <div key={indice}>
+            <div key={ indice }>
               <p
-                data-testid={`customer_${dataTest}__element-order-table-item-number-${indice}`}
+                data-testid={
+                  `customer_${dataTest}__element-order-table-item-number-${indice}`
+                }
               >
                 {indice + 1}
               </p>
               <p
-                data-testid={`customer_${dataTest}__element-order-table-name-${indice}`}
+                data-testid={ `customer_${dataTest}__element-order-table-name-${indice}` }
               >
                 {element.name}
               </p>
               <p
-                data-testid={`customer_${dataTest}__element-order-table-quantity-${indice}`}
+                data-testid={
+                  `customer_${dataTest}__element-order-table-quantity-${indice}`
+                }
               >
                 {element.quantity}
               </p>
               <p
-                data-testid={`customer_${dataTest}__element-order-table-unit-price-${indice}`}
+                data-testid={
+                  `customer_${dataTest}__element-order-table-unit-price-${indice}`
+                }
               >
                 {numberFormat.format(element.price)}
               </p>
               <p
-                data-testid={`customer_${dataTest}__element-order-table-sub-total-${indice}`}
+                data-testid={
+                  `customer_${dataTest}__element-order-table-sub-total-${indice}`
+                }
               >
                 {numberFormat.format(
-                  Number(element.quantity) * Number(element.price)
+                  Number(element.quantity) * Number(element.price),
                 )}
               </p>
-              {dataTest === "checkout" && (
+              {dataTest === 'checkout' && (
                 <RemoveCartBtn
-                  dataTest={dataTest}
-                  id={element.id}
-                  indice={indice}
+                  dataTest={ dataTest }
+                  id={ element.id }
+                  indice={ indice }
                 />
               )}
             </div>
@@ -64,11 +73,15 @@ function CheckoutComponent({ dataTest }) {
       ) : (
         <p>Carrinho vazio</p>
       )}
-      <p data-testid={`customer_${dataTest}__element-order-total-price`}>
-        {totalPrice.toFixed(2).replace(".", ",")}
+      <p data-testid={ `customer_${dataTest}__element-order-total-price` }>
+        {totalPrice.toFixed(2).replace('.', ',')}
       </p>
     </div>
   );
 }
+
+CheckoutComponent.propTypes = {
+  dataTest: PropTypes.string.isRequired,
+};
 
 export default CheckoutComponent;

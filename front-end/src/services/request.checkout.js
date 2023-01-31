@@ -14,6 +14,10 @@ export const requestCheckout = async (endpoint, body) => {
   return data;
 };
 
+export const setToken = (token) => {
+  api.defaults.headers.common.Authorization = token;
+};
+
 // export const requestCheckout = async (endpoint, body, token) => {
 //   console.log(`http://localhost:${process.env.PORT}/${endpoint}`);
 //   const { data } = await axios.post(
@@ -28,7 +32,3 @@ export const requestCheckout = async (endpoint, body) => {
 //   console.log(data);
 //   return data;
 // };
-
-export const setToken = (token) => {
-  api.defaults.headers.common.Authorization = token;
-};

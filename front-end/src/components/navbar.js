@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Context from '../Context/Context';
 
 function NavBar() {
   const [name, setName] = useState('');
   const history = useNavigate();
+  const { userRole } = useContext(Context);
 
   const logoutUser = () => {
     localStorage.removeItem('user');
@@ -20,13 +22,14 @@ function NavBar() {
 
   return (
     <div>
-      <button
-        data-testid="customer_products__element-navbar-link-products"
-        type="button"
-        onClick={ () => history('/customer/products') }
-      >
-        PRODUTOS
-      </button>
+      {userRole === 'customer' && (
+        <button
+          data-testid="customer_products__element-navbar-link-products"
+          type="button"
+          onClick={ () => history('/customer/products') }
+        >
+          PRODUTOS
+        </button>)}
       <button
         data-testid="customer_products__element-navbar-link-orders"
         type="button"
