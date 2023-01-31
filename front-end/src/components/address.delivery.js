@@ -28,8 +28,8 @@ function AddressComponent() {
     const sellerList = await requestSeller("/user/sellers");
     setSellers(sellerList);
     // console.log(sellerList);
-    const sale = await requestSaleId("/sale/1");
-    console.log(sale);
+    // const sale = await requestSaleId("/sale/1");
+    // console.log(sale);
   });
 
   const finalizarPedido = async () => {
