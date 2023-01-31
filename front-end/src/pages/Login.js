@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Context from '../Context/Context';
 import { requestLogin, setToken } from '../services/request.login';
 
 function Login() {
@@ -8,25 +9,28 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
   const [disableBtn, setDisableBtn] = useState(true);
+  const { setUserRole } = useContext(Context);
   /* function handleSubmit(event) {
     event.preventDefault();
     // Validate login credentials here
     setIsLoggedIn(true);
   } */
 
+  const setUserRoleContext = (user) => {
+    if (user) {
+      setUserRole(user.role);
+      if (user.role === 'customer') history('/customer/products');
+      if (user.role === 'seller') history('/seller/orders');
+    }
+  };
+
   const validateLogin = async (event) => {
     event.preventDefault();
     try {
-      const { token, name, role } = await requestLogin('/login', { email, password });
-      const myObject = {
-        name,
-        email,
-        role,
-        token,
-      };
-      setToken(token);
-      localStorage.setItem('user', JSON.stringify(myObject));
-      history('/customer/products');
+      const user = await requestLogin('/login', { email, password });
+      setToken(user.token);
+      localStorage.setItem('user', JSON.stringify(user));
+      setUserRoleContext(user);
     } catch (_error) {
       setError(true);
     }
@@ -34,7 +38,7 @@ function Login() {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
-    if (user) history('/customer/products');
+    setUserRoleContext(user);
   }, []);
 
   useEffect(() => {
