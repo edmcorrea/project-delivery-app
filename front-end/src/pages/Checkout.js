@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavBar from '../components/navbar';
 import Context from '../Context/Context';
-import { requestCheckout, requestSeller } from '../services/request.checkout';
+import { requestCheckout, requestSeller, setToken } from '../services/request.checkout';
 
 const numberFormat = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -12,7 +12,7 @@ function Checkout() {
   const history = useNavigate();
   const { items, arrItems, totalPrice, removeCart } = useContext(Context);
   const [sellers, setSellers] = useState([]);
-  const [sellerId, setSellerId] = useState('Fulana Pereira');
+  const [sellerId, setSellerId] = useState(2);
   const [endereco, setEndereco] = useState('');
   const [numEndereco, setNumEndereco] = useState('');
 
@@ -31,11 +31,11 @@ function Checkout() {
   });
 
   const finalizarPedido = async () => {
-    // const { token } = JSON.parse(localStorage.getItem('user'));
-    // console.log(token);
+    const { token } = JSON.parse(localStorage.getItem('user'));
+    console.log(token);
     try {
-      // setToken(token);
-      console.log(sellerName);
+      setToken(token);
+      console.log(sellerId);
       const obj = {
         sellerId,
         totalPrice,
@@ -44,7 +44,7 @@ function Checkout() {
         products: items,
       };
       // console.log(obj);
-      const { id } = await requestCheckout('/sale', obj);
+      const { id } = await requestCheckout('sale', obj);
       // console.log(alo);
       history(`/customer/orders/${id}`);
     } catch (error) {
