@@ -10,6 +10,7 @@ function Provider({ children }) {
   const [productsOrder, setProductsOrder] = useState([]);
   const [saleList, setSaleList] = useState([]);
   const [userRole, setUserRole] = useState('');
+  const [userList, setUserList] = useState([]);
 
   const productsContext = async () => {
     const search = [];
@@ -59,7 +60,18 @@ function Provider({ children }) {
     setSaleList,
     userRole,
     setUserRole,
-  }), [totalPrice, items, arrItems, listProducts, saleList, productsOrder, userRole]);
+    userList,
+    setUserList,
+  }), [
+    totalPrice,
+    items,
+    arrItems,
+    listProducts,
+    saleList,
+    productsOrder,
+    userRole,
+    userList,
+  ]);
 
   return <Context.Provider value={ context }>{children}</Context.Provider>;
 }
