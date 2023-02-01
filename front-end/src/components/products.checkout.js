@@ -16,7 +16,7 @@ function CheckoutComponent({ dataTest }) {
     // console.log('productsOrder', productsOrder);
     // console.log('arrItems', arrItems);
     console.log('saleList', saleList);
-    const salePrice = saleList.find(() => );
+    // const salePrice = saleList.find(() => );
     if (dataTest === 'checkout') {
       setArrMap(arrItems);
     } else {
