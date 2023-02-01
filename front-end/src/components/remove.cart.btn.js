@@ -2,13 +2,13 @@ import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import Context from '../Context/Context';
 
-function RemoveCartBtn({ dataTest, id, indice }) {
+function RemoveCartBtn({ id, indice }) {
   const { removeCart } = useContext(Context);
   return (
     <button
       type="button"
       onClick={ () => removeCart(id) }
-      data-testid={ `customer_${dataTest}__element-order-table-remove-${indice}` }
+      data-testid={ `customer_checkout__element-order-table-remove-${indice}` }
     >
       Remover
     </button>
@@ -16,7 +16,6 @@ function RemoveCartBtn({ dataTest, id, indice }) {
 }
 
 RemoveCartBtn.propTypes = {
-  dataTest: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   indice: PropTypes.number.isRequired,
 };
