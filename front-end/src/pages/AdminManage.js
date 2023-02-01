@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import NavBar from '../components/navbar';
-import { requestInsertUser, setToken } from '../services/request.mangeUser';
+import UserList from '../components/user.list';
+import Context from '../Context/Context';
+import { requestInsertUser, requestUsers, setToken } from '../services/request.mangeUser';
 
 function AdminManage() {
   const [email, setEmail] = useState('');
@@ -10,6 +12,7 @@ function AdminManage() {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [disableBtn, setDisableBtn] = useState(true);
+  const { setUserList } = useContext(Context);
 
   const handleChange = ({ target: { id, value } }) => {
     if (id === 'email') setEmail(value);
@@ -37,6 +40,8 @@ function AdminManage() {
       };
       await requestInsertUser('/user/admin', userData);
       clearInputs();
+      const users = await requestUsers('/user');
+      setUserList(users);
     } catch (err) {
       setErrorMessage(err.message);
       setError(true);
@@ -58,6 +63,12 @@ function AdminManage() {
   return (
     <div>
       <NavBar />
+      {error && (
+        <p data-testid="admin_manage__element-invalid-register">
+          { errorMessage }
+        </p>
+      )}
+      <h2>Cadastrar novo usuário</h2>
       <form>
         <label htmlFor="name">
           Nome:
@@ -115,11 +126,7 @@ function AdminManage() {
           Cadastrar
         </button>
       </form>
-      {error && (
-        <p data-testid="admin_manage__element-invalid-register">
-          { errorMessage }
-        </p>
-      )}
+      <UserList />
     </div>
   );
 }
