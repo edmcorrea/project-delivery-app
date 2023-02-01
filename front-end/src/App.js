@@ -21,6 +21,7 @@ function App() {
         <Route exact path="/customer/orders" element={ <Orders /> } />
         <Route exact path="/customer/orders/:id" element={ <OrderDetail /> } />
         <Route exact path="/seller/orders" element={ <Orders /> } />
+        <Route exact path="/seller/orders/:id" element={ <OrderDetail /> } />
       </Routes>
     </Provider>
   );

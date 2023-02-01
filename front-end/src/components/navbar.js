@@ -5,11 +5,12 @@ import Context from '../Context/Context';
 function NavBar() {
   const [name, setName] = useState('');
   const history = useNavigate();
-  const { userRole } = useContext(Context);
+  const { userRole, setItems } = useContext(Context);
 
   const logoutUser = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('cart');
+    setItems([]);
     history('/login');
   };
 

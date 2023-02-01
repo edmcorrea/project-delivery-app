@@ -9,10 +9,14 @@ const numberFormat = new Intl.NumberFormat('pt-BR', {
 });
 
 function CheckoutComponent({ dataTest }) {
-  const { arrItems, totalPrice, productsOrder } = useContext(Context);
+  const { arrItems, totalPrice, productsOrder, saleList } = useContext(Context);
   const [arrMap, setArrMap] = useState([]);
 
   useEffect(() => {
+    // console.log('productsOrder', productsOrder);
+    // console.log('arrItems', arrItems);
+    console.log('saleList', saleList);
+    const salePrice = saleList.find(() => );
     if (dataTest === 'checkout') {
       setArrMap(arrItems);
     } else {

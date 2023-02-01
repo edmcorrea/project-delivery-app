@@ -34,9 +34,9 @@ function Provider({ children }) {
     setTotalPrice(newtotalPrice);
   };
 
-  const productOrderDetails = (saleProducts) => {
-    setProductsOrder(saleProducts);
-  };
+  // const productOrderDetails = (saleProducts) => {
+  //   setProductsOrder(saleProducts);
+  // };
 
   useEffect(() => {
     productsContext();
@@ -53,7 +53,7 @@ function Provider({ children }) {
     setListProducts,
     productsContext,
     removeCart,
-    productOrderDetails,
+    // productOrderDetails,
     productsOrder,
     saleList,
     setSaleList,
