@@ -9,7 +9,7 @@ const numberFormat = new Intl.NumberFormat('pt-BR', {
   currency: 'BRL',
 });
 
-function CheckoutComponent({ dataTest }) {
+function ProductsListComponent({ dataTest }) {
   const { arrItems, totalPrice, productsOrder, userRole } = useContext(Context);
   const [arrMap, setArrMap] = useState([]);
   const [orderTotalPrice, setOrderTotalPrice] = useState(0);
@@ -92,8 +92,8 @@ function CheckoutComponent({ dataTest }) {
   );
 }
 
-CheckoutComponent.propTypes = {
+ProductsListComponent.propTypes = {
   dataTest: PropTypes.string.isRequired,
 };
 
-export default CheckoutComponent;
+export default ProductsListComponent;

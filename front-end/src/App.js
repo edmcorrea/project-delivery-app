@@ -5,7 +5,7 @@ import Provider from './Context/Provider';
 import AdminManage from './pages/AdminManage';
 import Checkout from './pages/Checkout';
 import Login from './pages/Login';
-import OrderDetail from './pages/OrderDetail';
+import OrderDetail from './pages/OrderDetails';
 import Orders from './pages/Orders';
 import Products from './pages/Products';
 import Register from './pages/Register';

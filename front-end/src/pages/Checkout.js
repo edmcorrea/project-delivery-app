@@ -1,12 +1,12 @@
-import AddressComponent from '../components/address.delivery';
-import NavBar from '../components/navbar';
-import CheckoutComponent from '../components/products.checkout';
+import AddressComponent from "../components/address.delivery";
+import NavBar from "../components/navbar";
+import ProductsListComponent from "../components/products.list";
 
 function Checkout() {
   return (
     <div>
       <NavBar />
-      <CheckoutComponent dataTest="checkout" />
+      <ProductsListComponent dataTest="checkout" />
       <AddressComponent />
     </div>
   );

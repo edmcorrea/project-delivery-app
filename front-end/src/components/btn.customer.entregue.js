@@ -3,11 +3,11 @@ import { useContext } from "react";
 import Context from "../Context/Context";
 
 function BtnCustomerEntregue({ disableBtn, updateStatus, sellerId }) {
-  const { removeCart } = useContext(Context);
+  console.log(sellerId);
   return (
     <button
       type="button"
-      onClick={() => updateStatus(sellerId, 'Em Trânsito')}
+      onClick={ () => updateStatus(sellerId) }
       disabled={disableBtn}
       data-testid="customer_order_details__button-delivery-check"
       id="delivery-check"
