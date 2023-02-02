@@ -35,10 +35,6 @@ function Provider({ children }) {
     setTotalPrice(newtotalPrice);
   };
 
-  // const productOrderDetails = (saleProducts) => {
-  //   setProductsOrder(saleProducts);
-  // };
-
   useEffect(() => {
     productsContext();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,7 +50,7 @@ function Provider({ children }) {
     setListProducts,
     productsContext,
     removeCart,
-    // productOrderDetails,
+    setProductsOrder,
     productsOrder,
     saleList,
     setSaleList,

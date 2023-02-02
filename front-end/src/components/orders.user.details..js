@@ -21,7 +21,6 @@ function OrdersUserDetailsComponent() {
     const { token } = JSON.parse(localStorage.getItem('user'));
     setToken(token);
     const newSale = await requestSaleId(`/sale/${id}`);
-    console.log(newSale);
     setSellerId(newSale.id);
     setProductsOrder(newSale.products);
     setSale(newSale);
@@ -58,14 +57,14 @@ function OrdersUserDetailsComponent() {
   useEffect( async () => {
     const newSale = await requestSaleId(`/sale/${id}`);
     setSale(newSale);
-    if (newSale.status === 'Em Trânsito') {
-      setDisableBtnDelivered(false);
-    }
     if (newSale.status === 'Preparando') {
       setDisableBtnInTransit(false);
-      setDisableBtnPreparing(true)
+      setDisableBtnPreparing(true);
     }
-    console.log('entrei');
+    if (newSale.status === 'Em Trânsito') {
+      setDisableBtnDelivered(false);
+      // setDisableBtnPreparing(true);
+    }
   }, [sellerStatus])
 
   return (

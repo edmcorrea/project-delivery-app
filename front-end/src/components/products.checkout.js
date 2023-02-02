@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import Context from '../Context/Context';
+import CartEmpty from './cart.empty';
 import RemoveCartBtn from './remove.cart.btn';
 
 const numberFormat = new Intl.NumberFormat('pt-BR', {
@@ -9,20 +10,26 @@ const numberFormat = new Intl.NumberFormat('pt-BR', {
 });
 
 function CheckoutComponent({ dataTest }) {
-  const { arrItems, totalPrice, productsOrder, saleList } = useContext(Context);
+  const { arrItems, totalPrice, productsOrder, userRole } = useContext(Context);
   const [arrMap, setArrMap] = useState([]);
+  const [orderTotalPrice, setOrderTotalPrice] = useState(0);
 
   useEffect(() => {
-    // console.log('productsOrder', productsOrder);
-    // console.log('arrItems', arrItems);
-    console.log('saleList', saleList);
-    // const salePrice = saleList.find(() => );
     if (dataTest === 'checkout') {
       setArrMap(arrItems);
     } else {
       setArrMap(productsOrder);
     }
   }, [arrItems, productsOrder]);
+
+  useEffect(() => {
+    const newTotalPrice = arrMap.reduce((acc, curr) => {
+      acc += Number(curr.price)*Number(curr.quantity);
+      return acc;
+    }, 0);
+    setOrderTotalPrice(newTotalPrice);
+  }, [arrMap]);
+
   return (
     <div>
       {arrMap.length ? (
@@ -74,10 +81,12 @@ function CheckoutComponent({ dataTest }) {
           ))}
         </div>
       ) : (
-        <p>Carrinho vazio</p>
+        <CartEmpty dataTest={dataTest}/>
       )}
-      <p data-testid={ `customer_${dataTest}__element-order-total-price` }>
-        {totalPrice.toFixed(2).replace('.', ',')}
+      <p data-testid={ `${userRole}_${dataTest}__element-order-total-price` }>
+        {(dataTest === 'checkout') 
+        ? totalPrice.toFixed(2).replace('.', ',')
+        : orderTotalPrice.toFixed(2).replace('.', ',')}
       </p>
     </div>
   );
