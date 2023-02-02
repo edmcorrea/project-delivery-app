@@ -22,10 +22,9 @@ function Orders() {
     try {
       setToken(token);
       const sales = await requestSales('/sale');
-      console.log(sales);
       setSaleList(sales);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 

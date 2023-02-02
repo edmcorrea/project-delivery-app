@@ -21,6 +21,7 @@ function Login() {
       setUserRole(user.role);
       if (user.role === 'customer') history('/customer/products');
       if (user.role === 'seller') history('/seller/orders');
+      if (user.role === 'administrator') history('/admin/manage');
     }
   };
 
@@ -102,7 +103,6 @@ function Login() {
         {error && (
           <p data-testid="common_login__element-invalid-email">
             Login inválido
-            {' '}
           </p>
         )}
       </form>

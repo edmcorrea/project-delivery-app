@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Provider from './Context/Provider';
+import AdminManage from './pages/AdminManage';
 import Checkout from './pages/Checkout';
 import Login from './pages/Login';
 import OrderDetail from './pages/OrderDetail';
@@ -22,6 +23,7 @@ function App() {
         <Route exact path="/customer/orders/:id" element={ <OrderDetail /> } />
         <Route exact path="/seller/orders" element={ <Orders /> } />
         <Route exact path="/seller/orders/:id" element={ <OrderDetail /> } />
+        <Route exact path="/admin/manage" element={ <AdminManage /> } />
       </Routes>
     </Provider>
   );

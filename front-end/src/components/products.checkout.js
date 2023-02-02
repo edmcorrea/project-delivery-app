@@ -22,7 +22,7 @@ function CheckoutComponent({ dataTest }) {
     } else {
       setArrMap(productsOrder);
     }
-  }, []);
+  }, [arrItems, productsOrder]);
   return (
     <div>
       {arrMap.length ? (
@@ -66,7 +66,6 @@ function CheckoutComponent({ dataTest }) {
               </p>
               {dataTest === 'checkout' && (
                 <RemoveCartBtn
-                  dataTest={ dataTest }
                   id={ element.id }
                   indice={ indice }
                 />

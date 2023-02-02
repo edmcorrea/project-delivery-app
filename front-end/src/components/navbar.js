@@ -31,13 +31,24 @@ function NavBar() {
         >
           PRODUTOS
         </button>)}
-      <button
-        data-testid="customer_products__element-navbar-link-orders"
-        type="button"
-        onClick={ () => history('/customer/orders') }
-      >
-        MEUS PEDIDOS
-      </button>
+      {userRole !== 'administrator' && (
+        <button
+          data-testid="customer_products__element-navbar-link-orders"
+          type="button"
+          onClick={ () => history('/customer/orders') }
+        >
+          MEUS PEDIDOS
+        </button>
+      )}
+      {userRole === 'administrator' && (
+        <button
+          data-testid="customer_products__element-navbar-link-orders"
+          type="button"
+          onClick={ () => history('/admin/manage') }
+        >
+          GERENCIAR USUÁRIOS
+        </button>
+      )}
       <h2 data-testid="customer_products__element-navbar-user-full-name">
         {name}
       </h2>
