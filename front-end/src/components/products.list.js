@@ -10,9 +10,17 @@ const numberFormat = new Intl.NumberFormat('pt-BR', {
 });
 
 function ProductsListComponent({ dataTest }) {
-  const { arrItems, totalPrice, productsOrder, userRole } = useContext(Context);
+  const { arrItems, totalPrice, productsOrder } = useContext(Context);
   const [arrMap, setArrMap] = useState([]);
   const [orderTotalPrice, setOrderTotalPrice] = useState(0);
+  const [userRole, setUserRole] = useState('');
+
+  useEffect(() => {
+    const userObj = JSON.parse(localStorage.getItem('user'));
+    if (userObj) {
+      setUserRole(userObj.role);
+    }
+  }, []);
 
   useEffect(() => {
     if (dataTest === 'checkout') {
@@ -24,7 +32,7 @@ function ProductsListComponent({ dataTest }) {
 
   useEffect(() => {
     const newTotalPrice = arrMap.reduce((acc, curr) => {
-      acc += Number(curr.price)*Number(curr.quantity);
+      acc += Number(curr.price) * Number(curr.quantity);
       return acc;
     }, 0);
     setOrderTotalPrice(newTotalPrice);
@@ -81,12 +89,12 @@ function ProductsListComponent({ dataTest }) {
           ))}
         </div>
       ) : (
-        <CartEmpty dataTest={dataTest}/>
+        <CartEmpty dataTest={ dataTest } />
       )}
       <p data-testid={ `${userRole}_${dataTest}__element-order-total-price` }>
-        {(dataTest === 'checkout') 
-        ? totalPrice.toFixed(2).replace('.', ',')
-        : orderTotalPrice.toFixed(2).replace('.', ',')}
+        {(dataTest === 'checkout')
+          ? totalPrice.toFixed(2).replace('.', ',')
+          : orderTotalPrice.toFixed(2).replace('.', ',')}
       </p>
     </div>
   );

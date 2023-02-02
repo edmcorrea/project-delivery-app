@@ -1,6 +1,6 @@
-import NavBar from "../components/navbar";
-import OrdersInfoDetailsComponent from "../components/orders.info.details.";
-import ProductsListComponent from "../components/products.list";
+import NavBar from '../components/navbar';
+import OrdersInfoDetailsComponent from '../components/orders.info.details.';
+import ProductsListComponent from '../components/products.list';
 
 function OrdersDetail() {
   return (

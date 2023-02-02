@@ -5,11 +5,13 @@ import Context from '../Context/Context';
 function NavBar() {
   const [name, setName] = useState('');
   const history = useNavigate();
-  const { userRole, setItems } = useContext(Context);
+  const [userRole, setUserRole] = useState('');
+  const { setItems } = useContext(Context);
 
   const logoutUser = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('cart');
+    setUserRole('');
     setItems([]);
     history('/login');
   };
@@ -18,6 +20,7 @@ function NavBar() {
     const userObj = JSON.parse(localStorage.getItem('user'));
     if (userObj) {
       setName(userObj.name);
+      setUserRole(userObj.role);
     }
   }, []);
 
@@ -35,7 +38,7 @@ function NavBar() {
         <button
           data-testid="customer_products__element-navbar-link-orders"
           type="button"
-          onClick={ () => history('/customer/orders') }
+          onClick={ () => history(`/${userRole}/orders`) }
         >
           MEUS PEDIDOS
         </button>

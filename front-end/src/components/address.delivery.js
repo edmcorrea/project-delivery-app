@@ -39,7 +39,7 @@ function AddressComponent() {
         products: items,
       };
       const { id } = await requestCheckout('sale', obj);
-      
+
       history(`/customer/orders/${id}`);
       localStorage.setItem('cart', JSON.stringify([]));
     } catch (error) {

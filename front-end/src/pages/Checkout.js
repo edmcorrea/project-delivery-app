@@ -1,6 +1,6 @@
-import AddressComponent from "../components/address.delivery";
-import NavBar from "../components/navbar";
-import ProductsListComponent from "../components/products.list";
+import AddressComponent from '../components/address.delivery';
+import NavBar from '../components/navbar';
+import ProductsListComponent from '../components/products.list';
 
 function Checkout() {
   return (
