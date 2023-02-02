@@ -9,7 +9,6 @@ function Provider({ children }) {
   const [arrItems, setArrItems] = useState([]);
   const [productsOrder, setProductsOrder] = useState([]);
   const [saleList, setSaleList] = useState([]);
-  const [userRole, setUserRole] = useState('');
   const [userList, setUserList] = useState([]);
 
   const productsContext = async () => {
@@ -29,14 +28,9 @@ function Provider({ children }) {
       acc += parseFloat(curr.price) * curr.quantity;
       return acc;
     }, 0);
-    console.log(remove, newtotalPrice);
     localStorage.setItem('cart', JSON.stringify(removeLocalStorage));
     setItems(removeLocalStorage);
     setTotalPrice(newtotalPrice);
-  };
-
-  const productOrderDetails = (saleProducts) => {
-    setProductsOrder(saleProducts);
   };
 
   useEffect(() => {
@@ -54,12 +48,10 @@ function Provider({ children }) {
     setListProducts,
     productsContext,
     removeCart,
-    productOrderDetails,
+    setProductsOrder,
     productsOrder,
     saleList,
     setSaleList,
-    userRole,
-    setUserRole,
     userList,
     setUserList,
   }), [
@@ -69,7 +61,6 @@ function Provider({ children }) {
     listProducts,
     saleList,
     productsOrder,
-    userRole,
     userList,
   ]);
 

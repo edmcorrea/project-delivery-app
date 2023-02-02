@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import Context from '../Context/Context';
+import CartEmpty from './cart.empty';
 import RemoveCartBtn from './remove.cart.btn';
 
 const numberFormat = new Intl.NumberFormat('pt-BR', {
@@ -8,9 +9,18 @@ const numberFormat = new Intl.NumberFormat('pt-BR', {
   currency: 'BRL',
 });
 
-function CheckoutComponent({ dataTest }) {
+function ProductsListComponent({ dataTest }) {
   const { arrItems, totalPrice, productsOrder } = useContext(Context);
   const [arrMap, setArrMap] = useState([]);
+  const [orderTotalPrice, setOrderTotalPrice] = useState(0);
+  const [userRole, setUserRole] = useState('');
+
+  useEffect(() => {
+    const userObj = JSON.parse(localStorage.getItem('user'));
+    if (userObj) {
+      setUserRole(userObj.role);
+    }
+  }, []);
 
   useEffect(() => {
     if (dataTest === 'checkout') {
@@ -19,6 +29,15 @@ function CheckoutComponent({ dataTest }) {
       setArrMap(productsOrder);
     }
   }, [arrItems, productsOrder]);
+
+  useEffect(() => {
+    const newTotalPrice = arrMap.reduce((acc, curr) => {
+      acc += Number(curr.price) * Number(curr.quantity);
+      return acc;
+    }, 0);
+    setOrderTotalPrice(newTotalPrice);
+  }, [arrMap]);
+
   return (
     <div>
       {arrMap.length ? (
@@ -70,17 +89,19 @@ function CheckoutComponent({ dataTest }) {
           ))}
         </div>
       ) : (
-        <p>Carrinho vazio</p>
+        <CartEmpty dataTest={ dataTest } />
       )}
-      <p data-testid={ `customer_${dataTest}__element-order-total-price` }>
-        {totalPrice.toFixed(2).replace('.', ',')}
+      <p data-testid={ `${userRole}_${dataTest}__element-order-total-price` }>
+        {(dataTest === 'checkout')
+          ? totalPrice.toFixed(2).replace('.', ',')
+          : orderTotalPrice.toFixed(2).replace('.', ',')}
       </p>
     </div>
   );
 }
 
-CheckoutComponent.propTypes = {
+ProductsListComponent.propTypes = {
   dataTest: PropTypes.string.isRequired,
 };
 
-export default CheckoutComponent;
+export default ProductsListComponent;

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import NavBar from '../components/navbar';
 import Context from '../Context/Context';
@@ -10,12 +10,8 @@ const numberFormat = new Intl.NumberFormat('pt-BR', {
 });
 
 function Orders() {
-  const {
-    saleList,
-    setSaleList,
-    userRole,
-    setUserRole,
-  } = useContext(Context);
+  const { saleList, setSaleList } = useContext(Context);
+  const [userRole, setUserRole] = useState('');
 
   const getSaleList = async () => {
     const { token } = JSON.parse(localStorage.getItem('user'));
@@ -40,9 +36,9 @@ function Orders() {
   };
 
   useEffect(() => {
-    getSaleList();
     const { role } = JSON.parse(localStorage.getItem('user'));
     setUserRole(role);
+    getSaleList();
   }, []);
 
   return (

@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Context from '../Context/Context';
 import { requestLogin, setToken } from '../services/request.login';
 
 function Login() {
@@ -9,7 +8,6 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
   const [disableBtn, setDisableBtn] = useState(true);
-  const { setUserRole } = useContext(Context);
   /* function handleSubmit(event) {
     event.preventDefault();
     // Validate login credentials here
@@ -18,7 +16,6 @@ function Login() {
 
   const setUserRoleContext = (user) => {
     if (user) {
-      setUserRole(user.role);
       if (user.role === 'customer') history('/customer/products');
       if (user.role === 'seller') history('/seller/orders');
       if (user.role === 'administrator') history('/admin/manage');
