@@ -10,13 +10,11 @@ function Register() {
   const [disableBtn, setDisableBtn] = useState(true);
   const [error, setError] = useState(false);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     try {
-      console.log(name, email, password);
-      const { token } = await requestRegister('/user', { name, email, password });
-      setToken(token);
-      console.log(token);
+      const user = await requestRegister('/user', { name, email, password });
+      setToken(user.token);
+      localStorage.setItem('user', JSON.stringify(user));
       history('/customer/products');
     } catch (_error) {
       setError(true);
@@ -83,7 +81,7 @@ function Register() {
         <br />
         <button
           data-testid="common_register__button-register"
-          type="submit"
+          type="button"
           disabled={ disableBtn }
           onClick={ handleSubmit }
         >

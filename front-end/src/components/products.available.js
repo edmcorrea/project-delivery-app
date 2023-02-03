@@ -102,7 +102,7 @@ function ProductsAvailable() {
       {listProducts.map((prod, i) => (
         <div key={ i + 1 }>
           <p data-testid={ `customer_products__element-card-price-${i + 1}` }>
-            {prod.price.replace(/\./, ',')}
+            {prod.price.toString().replace(/\./, ',')}
           </p>
           <img
             alt="customer_product"

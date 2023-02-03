@@ -22,8 +22,7 @@ function Login() {
     }
   };
 
-  const validateLogin = async (event) => {
-    event.preventDefault();
+  const validateLogin = async () => {
     try {
       const user = await requestLogin('/login', { email, password });
       setToken(user.token);
@@ -82,7 +81,7 @@ function Login() {
         <br />
         <button
           name="login"
-          type="submit"
+          type="button"
           data-testid="common_login__button-login"
           disabled={ disableBtn }
           onClick={ validateLogin }
@@ -90,19 +89,19 @@ function Login() {
           Login
         </button>
         <button
-          type="submit"
+          type="button"
           data-testid="common_login__button-register"
           onClick={ () => history('/register') }
         >
           Ainda não tenho conta
 
         </button>
-        {error && (
-          <p data-testid="common_login__element-invalid-email">
-            Login inválido
-          </p>
-        )}
       </form>
+      {error && (
+        <p data-testid="common_login__element-invalid-email">
+          Login inválido
+        </p>
+      )}
     </div>
   );
 }

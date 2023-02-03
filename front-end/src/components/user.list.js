@@ -8,7 +8,6 @@ function UserList() {
   const getUserList = async () => {
     try {
       const users = await requestUsers('/user');
-      console.log('users inicial', users);
       setUserList(users);
     } catch (error) {
       console.log(error.message);
