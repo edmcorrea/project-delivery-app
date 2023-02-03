@@ -62,6 +62,42 @@ export const productsMock = [
   },
 ];
 
+export const cartMock = [
+  {
+    id: 2,
+    quantity: 4,
+  },
+  {
+    id: 4,
+    quantity: 1,
+  },
+  {
+    id: 6,
+    quantity: 2,
+  },
+];
+
+export const checkoutProductsMock = [
+  {
+    id: 2,
+    name: 'Heineken 600ml',
+    quantity: 4,
+    price: '7,50',
+  },
+  {
+    id: 4,
+    name: 'Brahma 600ml',
+    quantity: 1,
+    price: '7,50',
+  },
+  {
+    id: 6,
+    name: 'Skol Beats Senses 313ml',
+    quantity: 2,
+    price: '4,49',
+  },
+];
+
 export const salesMock = [
   {
     id: 1,
@@ -84,3 +120,11 @@ export const salesMock = [
     status: 'Pendente',
   },
 ];
+
+export const submitCheckout = {
+  sellerId: 2,
+  totalPrice: '46,48',
+  deliveryAddress: 'Some Valid Address',
+  deliveryNumber: '1234',
+  products: cartMock,
+};
