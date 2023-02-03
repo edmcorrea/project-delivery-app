@@ -6,6 +6,7 @@ function RemoveCartBtn({ id, indice }) {
   const { removeCart } = useContext(Context);
   return (
     <button
+      className='product-list-btn'
       type="button"
       onClick={ () => removeCart(id) }
       data-testid={ `customer_checkout__element-order-table-remove-${indice}` }

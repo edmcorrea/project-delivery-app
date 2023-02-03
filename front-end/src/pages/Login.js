@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { requestLogin, setToken } from '../services/request.login';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { requestLogin, setToken } from "../services/request.login";
+import "../styles/login.css";
 
 function Login() {
   const history = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
   const [disableBtn, setDisableBtn] = useState(true);
   /* function handleSubmit(event) {
@@ -16,18 +17,18 @@ function Login() {
 
   const setUserRoleContext = (user) => {
     if (user) {
-      if (user.role === 'customer') history('/customer/products');
-      if (user.role === 'seller') history('/seller/orders');
-      if (user.role === 'administrator') history('/admin/manage');
+      if (user.role === "customer") history("/customer/products");
+      if (user.role === "seller") history("/seller/orders");
+      if (user.role === "administrator") history("/admin/manage");
     }
   };
 
   const validateLogin = async (event) => {
     event.preventDefault();
     try {
-      const user = await requestLogin('/login', { email, password });
+      const user = await requestLogin("/login", { email, password });
       setToken(user.token);
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(user));
       setUserRoleContext(user);
     } catch (_error) {
       setError(true);
@@ -35,7 +36,7 @@ function Login() {
   };
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem("user"));
     setUserRoleContext(user);
   }, []);
 
@@ -51,58 +52,68 @@ function Login() {
 
   const handleChange = ({ target }) => {
     const { type, value } = target;
-    if (type === 'text') setEmail(value);
-    if (type === 'password') setPassword(value);
+    if (type === "text") setEmail(value);
+    if (type === "password") setPassword(value);
   };
 
   return (
-    <div>
+    <div className="login-page">
       <form>
-        <label htmlFor="login">
-          Login
+        <label className="wrap-input" htmlFor="login">
           <input
+            className={email ? "has-val" : "csinput"}
             id="login"
             type="text"
-            value={ email }
+            value={email}
             data-testid="common_login__input-email"
-            onChange={ handleChange }
+            onChange={handleChange}
           />
+          <span className="focus-input" data-placeholder="Email">
+            {" "}
+          </span>
         </label>
         <br />
-        <label htmlFor="password">
-          Senha
+        <label className="wrap-input" htmlFor="password">
           <input
+            className={password ? "has-val" : "csinput"}
             id="password"
             type="password"
-            value={ password }
+            value={password}
             data-testid="common_login__input-password"
-            onChange={ handleChange }
+            onChange={handleChange}
           />
+          <span className="focus-input" data-placeholder="Senha">
+            {" "}
+          </span>
         </label>
         <br />
         <button
+          className="login-btn"
           name="login"
           type="submit"
           data-testid="common_login__button-login"
-          disabled={ disableBtn }
-          onClick={ validateLogin }
+          disabled={disableBtn}
+          onClick={validateLogin}
         >
           Login
         </button>
         <button
+          className="register-btn"
           type="submit"
           data-testid="common_login__button-register"
-          onClick={ () => history('/register') }
+          onClick={() => history("/register")}
         >
           Ainda não tenho conta
-
         </button>
-        {error && (
-          <p data-testid="common_login__element-invalid-email">
-            Login inválido
-          </p>
-        )}
       </form>
+      {error && (
+        <p
+          className="login-invalid"
+          data-testid="common_login__element-invalid-email"
+        >
+          Login inválido
+        </p>
+      )}
     </div>
   );
 }

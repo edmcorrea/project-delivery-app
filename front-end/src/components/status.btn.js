@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
 
 function StatusBtn({
   disableSaiuParaEntrega,
@@ -8,22 +8,23 @@ function StatusBtn({
   updateStatus,
   sellerId,
 }) {
-  const [userRole, setUserRole] = useState('');
+  const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
-    const { role } = JSON.parse(localStorage.getItem('user'));
+    const { role } = JSON.parse(localStorage.getItem("user"));
     setUserRole(role);
   }, []);
 
   console.log(sellerId);
   return (
-    <div>
-      {userRole === 'seller' ? (
+    <div className="status-buttons">
+      {userRole === "seller" ? (
         <>
           <button
+            className="status-btn"
             type="button"
-            onClick={ () => updateStatus(sellerId) }
-            disabled={ disablePrepararPedido }
+            onClick={() => updateStatus(sellerId)}
+            disabled={disablePrepararPedido}
             data-testid="seller_order_details__button-preparing-check"
             id="preparing-check"
             name="preparing-check"
@@ -31,9 +32,10 @@ function StatusBtn({
             PREPARAR PEDIDO
           </button>
           <button
+            className="status-btn"
             type="button"
-            onClick={ () => updateStatus(sellerId) }
-            disabled={ disableSaiuParaEntrega }
+            onClick={() => updateStatus(sellerId)}
+            disabled={disableSaiuParaEntrega}
             data-testid="seller_order_details__button-dispatch-check"
             id="dispatch-check"
             name="dispatch-check"
@@ -43,9 +45,10 @@ function StatusBtn({
         </>
       ) : (
         <button
+          className="status-btn"
           type="button"
-          onClick={ () => updateStatus(sellerId) }
-          disabled={ disableMarcarComoEntregue }
+          onClick={() => updateStatus(sellerId)}
+          disabled={disableMarcarComoEntregue}
           data-testid="customer_order_details__button-delivery-check"
           id="delivery-check"
           name="delivery-check"

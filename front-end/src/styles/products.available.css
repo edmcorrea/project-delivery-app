@@ -1,0 +1,113 @@
+.products-available-page section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-around;
+  margin: 20px;
+
+  /* position: relative; */
+}
+
+.product-available {
+  align-items: center;
+  border: 1px solid rgba(3, 201, 155, 0.377);
+  border-radius: 10px;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-basis: 18%;
+  flex-direction: column;
+
+  /* flex-grow: 2; */
+  justify-content: center;
+
+  /* padding: 5px; */
+  position: relative;
+  text-align: justify;
+}
+
+.product-available p {
+  font-size: 20px;
+  font-weight: 700;
+  left: 10px;
+  position: absolute;
+  text-align: justify;
+  top: 0;
+}
+
+.product-available h3 {
+  text-align: justify;
+}
+
+.container-available-inc-dec {
+  align-items: center;
+  background-color: #f0f0f0;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-top: 1px solid #036b52;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.available-inc-dec-btns {
+  display: flex;
+
+  /* padding: 15px 0; */
+}
+
+.available-inc-dec-btns button {
+  background-color: #036b52;
+  color: white;
+  font-size: 25px;
+  width: 30px;
+}
+
+.available-inc-dec-btns button:hover {
+  cursor: pointer;
+}
+
+.available-inc-dec-btns input {
+  align-items: center;
+  display: flex;
+  font-size: 15px;
+  justify-content: center;
+  padding: 10px;
+  text-align: center;
+  width: 30px;
+}
+
+/* .products-available-page {
+} */
+
+.total-price {
+  align-items: center;
+  background-color: #036b53e3;
+  border-radius: 10px;
+  box-shadow: 3px 3px 3px 1px rgba(0, 0, 0, 0.2);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  float: right;
+  gap: 15px;
+  position: fixed;
+  right: 20px;
+  top: 80px;
+}
+
+.total-price:disabled {
+  background-color: #eaf1ef6e;
+
+  /* border: 1px solid red; */
+  border-radius: 10px;
+  color: rgba(0, 0, 0, 0.521);
+  float: right;
+  position: fixed;
+  right: 20px;
+  top: 80px;
+}
+
+.cart {
+  height: 30px;
+  width: 30px;
+}

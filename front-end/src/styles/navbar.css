@@ -1,0 +1,33 @@
+.navbar-component {
+  background-color: #5f9487;
+  border: 1px solid #036b52;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar-component section {
+  display: flex;
+}
+
+/* .navbar-logout {
+  font-size: small;
+  padding: 0 10px;
+} */
+
+.navbar-component button {
+  background-color: transparent;
+  border: none;
+  font-size: medium;
+  font-weight: 700;
+  padding: 0 50px;
+}
+
+.navbar-component button:hover {
+  cursor: pointer;
+}
+
+.navbar-component h2 {
+  font-weight: 700;
+  padding: 0 30px;
+}

@@ -1,26 +1,31 @@
-import { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { requestCheckout, requestSeller, setToken } from '../services/request.checkout';
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  requestCheckout,
+  requestSeller,
+  setToken,
+} from "../services/request.checkout";
 // import { requestSalleId } from "../services/request.sale.id";
-import Context from '../Context/Context';
+import Context from "../Context/Context";
+import "../styles/adress.delivery.css";
 
 function AddressComponent() {
   const history = useNavigate();
   const { items, totalPrice } = useContext(Context);
   const [sellers, setSellers] = useState([]);
   const [sellerId, setSellerId] = useState(2);
-  const [endereco, setEndereco] = useState('');
-  const [numEndereco, setNumEndereco] = useState('');
+  const [endereco, setEndereco] = useState("");
+  const [numEndereco, setNumEndereco] = useState("");
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
-    if (name === 'sellers') setSellerId(value);
-    if (name === 'address') setEndereco(value);
-    if (name === 'address-number') setNumEndereco(value);
+    if (name === "sellers") setSellerId(value);
+    if (name === "address") setEndereco(value);
+    if (name === "address-number") setNumEndereco(value);
   };
 
   useEffect(async () => {
-    const sellerList = await requestSeller('/user/sellers');
+    const sellerList = await requestSeller("/user/sellers");
     setSellers(sellerList);
     // console.log(sellerList);
     // const sale = await requestSaleId("/sale/1");
@@ -28,7 +33,7 @@ function AddressComponent() {
   }, []);
 
   const finalizarPedido = async () => {
-    const { token } = JSON.parse(localStorage.getItem('user'));
+    const { token } = JSON.parse(localStorage.getItem("user"));
     try {
       setToken(token);
       const obj = {
@@ -38,31 +43,31 @@ function AddressComponent() {
         deliveryNumber: numEndereco,
         products: items,
       };
-      const { id } = await requestCheckout('sale', obj);
+      const { id } = await requestCheckout("sale", obj);
 
       history(`/customer/orders/${id}`);
-      localStorage.setItem('cart', JSON.stringify([]));
+      localStorage.setItem("cart", JSON.stringify([]));
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div>
-      <p>Detalhes e Endereço para Entrega</p>
-      <div>
+    <div className="page-adress-delivery">
+      <h2>Detalhes e Endereço para Entrega</h2>
+      <form>
         <label htmlFor="sellers">
-          P.Vendedora Responsável:
+          P. Vendedora Responsável:
           <select
-            onChange={ handleChange }
+            onChange={handleChange}
             data-testid="customer_checkout__select-seller"
             id="sellers"
             name="sellers"
-            value={ sellerId }
+            value={sellerId}
           >
-            {sellers.length
-              && sellers.map(({ name, id }) => (
-                <option key={ id } value={ id }>
+            {sellers.length &&
+              sellers.map(({ name, id }) => (
+                <option key={id} value={id}>
                   {name}
                 </option>
               ))}
@@ -71,31 +76,33 @@ function AddressComponent() {
         <label htmlFor="address">
           Endereço:
           <input
-            onChange={ handleChange }
+            placeholder='Rua Francisco Magalhães'
+            onChange={handleChange}
             data-testid="customer_checkout__input-address"
             id="address"
             name="address"
-            value={ endereco }
+            value={endereco}
           />
         </label>
         <label htmlFor="address-number">
           Número:
           <input
-            onChange={ handleChange }
+            placeholder='3030'
+            onChange={handleChange}
             data-testid="customer_checkout__input-address-number"
             id="address-number"
             name="address-number"
-            value={ numEndereco }
+            value={numEndereco}
           />
         </label>
-        <button
-          onClick={ () => finalizarPedido() }
-          data-testid="customer_checkout__button-submit-order"
-          type="button"
-        >
-          Finalizar Pedido
-        </button>
-      </div>
+      </form>
+      <button
+        onClick={() => finalizarPedido()}
+        data-testid="customer_checkout__button-submit-order"
+        type="button"
+      >
+        Finalizar Pedido
+      </button>
     </div>
   );
 }

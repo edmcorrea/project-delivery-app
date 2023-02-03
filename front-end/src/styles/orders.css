@@ -1,0 +1,63 @@
+.page-orders {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-around;
+  margin: 0;
+  padding: 0 10%;
+  width: 80%;
+}
+
+.page-orders a {
+  align-items: center;
+  border: 1px solid rgba(180, 180, 180, 0.521);
+  border-radius: 10px;
+  box-shadow: 2px 1px 2px 1px rgba(0, 0, 0, 0.2);
+  color: black;
+  display: flex;
+  flex-basis: 35%;
+  justify-content: space-evenly;
+  text-decoration: none;
+}
+
+.page-orders p, .page-orders h3 {
+  margin: 0;
+}
+
+.status-sale {
+  border-radius: 10px;
+  font-size: 25px;
+  line-height: 50px;
+  margin: 0;
+  padding: 20px 10px;
+  text-align: center;
+  width: 35%;
+}
+
+.order {
+  align-items: center;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.order-sale-id {
+  font-size: 20px;
+}
+
+.Pendente {
+  background-color: rgba(204, 184, 0, 0.75);
+}
+
+.Preparando {
+  background-color: rgba(175, 253, 231, 0.75);
+}
+
+.EmTransito {
+  background-color: rgba(102, 204, 1, 0.75);
+}
+
+.Entregue {
+  background-color: rgba(0, 204, 155, 0.75);
+}

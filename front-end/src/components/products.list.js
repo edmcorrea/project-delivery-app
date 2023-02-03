@@ -1,29 +1,30 @@
-import PropTypes from 'prop-types';
-import { useContext, useEffect, useState } from 'react';
-import Context from '../Context/Context';
-import CartEmpty from './cart.empty';
-import RemoveCartBtn from './remove.cart.btn';
+import PropTypes from "prop-types";
+import { useContext, useEffect, useState } from "react";
+import Context from "../Context/Context";
+import CartEmpty from "./cart.empty";
+import RemoveCartBtn from "./remove.cart.btn";
+import "../styles/products.list.css";
 
-const numberFormat = new Intl.NumberFormat('pt-BR', {
-  style: 'currency',
-  currency: 'BRL',
+const numberFormat = new Intl.NumberFormat("pt-BR", {
+  style: "currency",
+  currency: "BRL",
 });
 
 function ProductsListComponent({ dataTest }) {
   const { arrItems, totalPrice, productsOrder } = useContext(Context);
   const [arrMap, setArrMap] = useState([]);
   const [orderTotalPrice, setOrderTotalPrice] = useState(0);
-  const [userRole, setUserRole] = useState('');
+  const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
-    const userObj = JSON.parse(localStorage.getItem('user'));
+    const userObj = JSON.parse(localStorage.getItem("user"));
     if (userObj) {
       setUserRole(userObj.role);
     }
   }, []);
 
   useEffect(() => {
-    if (dataTest === 'checkout') {
+    if (dataTest === "checkout") {
       setArrMap(arrItems);
     } else {
       setArrMap(productsOrder);
@@ -39,63 +40,65 @@ function ProductsListComponent({ dataTest }) {
   }, [arrMap]);
 
   return (
-    <div>
+    <div className="component-products-list">
       {arrMap.length ? (
-        <div>
+        <table className="product-list">
+          <tr>
+            <th>Item</th>
+            <th>Descrição</th>
+            <th>Quantidade</th>
+            <th>Valor Unitário</th>
+            <th>Sub-Total</th>
+            {dataTest === "checkout" && <th>Remover</th>}
+          </tr>
           {arrMap.map((element, indice) => (
-            <div key={ indice }>
-              <p
-                data-testid={
-                  `customer_${dataTest}__element-order-table-item-number-${indice}`
-                }
+            <tr key={indice}>
+              <td
+                data-testid={`customer_${dataTest}__element-order-table-item-number-${indice}`}
               >
                 {indice + 1}
-              </p>
-              <p
-                data-testid={ `customer_${dataTest}__element-order-table-name-${indice}` }
+              </td>
+              <td
+                data-testid={`customer_${dataTest}__element-order-table-name-${indice}`}
               >
                 {element.name}
-              </p>
-              <p
-                data-testid={
-                  `customer_${dataTest}__element-order-table-quantity-${indice}`
-                }
+              </td>
+              <td
+                data-testid={`customer_${dataTest}__element-order-table-quantity-${indice}`}
               >
                 {element.quantity}
-              </p>
-              <p
-                data-testid={
-                  `customer_${dataTest}__element-order-table-unit-price-${indice}`
-                }
+              </td>
+              <td
+                data-testid={`customer_${dataTest}__element-order-table-unit-price-${indice}`}
               >
                 {numberFormat.format(element.price)}
-              </p>
-              <p
-                data-testid={
-                  `customer_${dataTest}__element-order-table-sub-total-${indice}`
-                }
+              </td>
+              <td
+                data-testid={`customer_${dataTest}__element-order-table-sub-total-${indice}`}
               >
                 {numberFormat.format(
-                  Number(element.quantity) * Number(element.price),
+                  Number(element.quantity) * Number(element.price)
                 )}
-              </p>
-              {dataTest === 'checkout' && (
-                <RemoveCartBtn
-                  id={ element.id }
-                  indice={ indice }
-                />
-              )}
-            </div>
+              </td>
+              {dataTest === "checkout" &&  <td>
+                {dataTest === "checkout" && (
+                  <RemoveCartBtn id={element.id} indice={indice} />
+                )}
+              </td>}
+            </tr>
           ))}
-        </div>
+        </table>
       ) : (
-        <CartEmpty dataTest={ dataTest } />
+        <CartEmpty dataTest={dataTest} />
       )}
-      <p data-testid={ `${userRole}_${dataTest}__element-order-total-price` }>
-        {(dataTest === 'checkout')
-          ? totalPrice.toFixed(2).replace('.', ',')
-          : orderTotalPrice.toFixed(2).replace('.', ',')}
-      </p>
+      <div className="total-price-checkout">
+        <h2>TOTAL</h2>
+        <h2 data-testid={`${userRole}_${dataTest}__element-order-total-price`}>
+          {dataTest === "checkout"
+            ? numberFormat.format(totalPrice)
+            : numberFormat.format(orderTotalPrice)}
+        </h2>
+      </div>
     </div>
   );
 }
