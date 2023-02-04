@@ -45,7 +45,7 @@ function AddressComponent() {
       };
       const { id } = await requestCheckout("sale", obj);
 
-      history(`/customer/orders/${id}`);
+      history(`/customer/order/sucess/${id}`);
       localStorage.setItem("cart", JSON.stringify([]));
     } catch (error) {
       console.log(error);

@@ -49,3 +49,14 @@
   padding: 20px 50px;
   text-align: center;
 }
+
+.page-adress-delivery button:hover {
+  cursor: pointer;
+  scale: 1.05;
+  transition: scale 0.3s;
+}
+
+.page-buy-sucess {
+  display: flex;
+  flex-direction: column;
+}
