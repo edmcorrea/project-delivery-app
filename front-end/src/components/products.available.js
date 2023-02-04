@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Context from "../Context/Context";
 import { requestProducts } from "../services/request.products";
 import "../styles/products.available.css";
-import { BsFillCartXFill } from 'react-icons/bs';
-import { BsCartCheck } from 'react-icons/bs';
-
+import { BsFillCartXFill } from "react-icons/bs";
+import { BsCartCheck } from "react-icons/bs";
 
 function ProductsAvailable() {
   const history = useNavigate();
@@ -49,12 +48,13 @@ function ProductsAvailable() {
       quantity: 0,
     };
     if (findId.quantity === 0) {
-      return;
+      setItems([...filterNotProductId]);
+    } else {
+      setItems([
+        ...filterNotProductId,
+        { id: findId.id, quantity: findId.quantity - 1 },
+      ]);
     }
-    setItems([
-      ...filterNotProductId,
-      { id: findId.id, quantity: findId.quantity - 1 },
-    ]);
     productsContext();
   };
 
@@ -165,13 +165,16 @@ function ProductsAvailable() {
         onClick={() => history("/customer/checkout")}
         disabled={disable}
       >
-        {totalPrice 
-        ? <BsCartCheck className="cart" />
-        : <BsFillCartXFill className="cart" />
-        }
-        <h2 data-testid="customer_products__checkout-bottom-value
-        ">
-           R$ {totalPrice.toFixed(2).replace(".", ",")}
+        {totalPrice ? (
+          <BsCartCheck className="cart" />
+        ) : (
+          <BsFillCartXFill className="cart" />
+        )}
+        <h2
+          data-testid="customer_products__checkout-bottom-value
+        "
+        >
+          R$ {totalPrice.toFixed(2).replace(".", ",")}
         </h2>
       </button>
     </div>

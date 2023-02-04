@@ -27,13 +27,11 @@ function AddressComponent() {
   useEffect(async () => {
     const sellerList = await requestSeller("/user/sellers");
     setSellers(sellerList);
-    // console.log(sellerList);
-    // const sale = await requestSaleId("/sale/1");
-    // console.log(sale);
   }, []);
 
   const finalizarPedido = async () => {
     const { token } = JSON.parse(localStorage.getItem("user"));
+    const cart = JSON.parse(localStorage.getItem("cart"));
     try {
       setToken(token);
       const obj = {
@@ -41,12 +39,13 @@ function AddressComponent() {
         totalPrice,
         deliveryAddress: endereco,
         deliveryNumber: numEndereco,
-        products: items,
+        products: cart,
       };
       const { id } = await requestCheckout("sale", obj);
 
-      history(`/customer/order/sucess/${id}`);
+      history(`/customer/orders/${id}`);
       localStorage.setItem("cart", JSON.stringify([]));
+      setItems([]);
     } catch (error) {
       console.log(error);
     }

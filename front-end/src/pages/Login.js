@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { requestLogin, setToken } from "../services/request.login";
 import "../styles/login.css";
+import duckLogin from "../images/duck-login.png";
 
 function Login() {
   const history = useNavigate();
@@ -58,62 +59,70 @@ function Login() {
 
   return (
     <div className="login-page">
-      <form>
-        <label className="wrap-input" htmlFor="login">
-          <input
-            className={email ? "has-val" : "csinput"}
-            id="login"
-            type="text"
-            value={email}
-            data-testid="common_login__input-email"
-            onChange={handleChange}
+      <div className="login-container">
+        <form>
+          <img
+            alt="duck-duck-login"
+            src={duckLogin}
+            style={{ width: "200px", height: "170px" }}
           />
-          <span className="focus-input" data-placeholder="Email">
-            {" "}
-          </span>
-        </label>
-        <br />
-        <label className="wrap-input" htmlFor="password">
-          <input
-            className={password ? "has-val" : "csinput"}
-            id="password"
-            type="password"
-            value={password}
-            data-testid="common_login__input-password"
-            onChange={handleChange}
-          />
-          <span className="focus-input" data-placeholder="Senha">
-            {" "}
-          </span>
-        </label>
-        <br />
-        <button
-          className="login-btn"
-          name="login"
-          type="submit"
-          data-testid="common_login__button-login"
-          disabled={disableBtn}
-          onClick={validateLogin}
-        >
-          Login
-        </button>
-        <button
-          className="register-btn"
-          type="submit"
-          data-testid="common_login__button-register"
-          onClick={() => history("/register")}
-        >
-          Ainda não tenho conta
-        </button>
-      </form>
-      {error && (
-        <p
-          className="login-invalid"
-          data-testid="common_login__element-invalid-email"
-        >
-          Login inválido
-        </p>
-      )}
+          <br />
+          <label className="wrap-input" htmlFor="login">
+            <input
+              className={email ? "has-val" : "csinput"}
+              id="login"
+              type="text"
+              value={email}
+              data-testid="common_login__input-email"
+              onChange={handleChange}
+            />
+            <span className="focus-input" data-placeholder="Email">
+              {" "}
+            </span>
+          </label>
+          <br />
+          <label className="wrap-input" htmlFor="password">
+            <input
+              className={password ? "has-val" : "csinput"}
+              id="password"
+              type="password"
+              value={password}
+              data-testid="common_login__input-password"
+              onChange={handleChange}
+            />
+            <span className="focus-input" data-placeholder="Senha">
+              {" "}
+            </span>
+          </label>
+          <br />
+          <button
+            className="login-btn"
+            name="login"
+            type="submit"
+            data-testid="common_login__button-login"
+            disabled={disableBtn}
+            onClick={validateLogin}
+          >
+            Login
+          </button>
+          <button
+            className="register-btn"
+            type="submit"
+            data-testid="common_login__button-register"
+            onClick={() => history("/register")}
+          >
+            Ainda não tenho conta
+          </button>
+        </form>
+        {error && (
+          <p
+            className="login-invalid"
+            data-testid="common_login__element-invalid-email"
+          >
+            Login inválido
+          </p>
+        )}
+      </div>
     </div>
   );
 }

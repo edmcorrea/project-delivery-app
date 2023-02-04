@@ -54,3 +54,16 @@ th, td {
   justify-content: space-between;
   padding: 0 5.5%;
 }
+
+.page-cart-empty {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  justify-content: center;
+}
+
+.img-cart-empty {
+  height: 70px;
+  width: 70px;
+}

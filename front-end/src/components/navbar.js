@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Context from "../Context/Context";
 import "../styles/navbar.css";
+import duckLogin from "../images/duck-logo-2.png";
 
 function NavBar() {
   const [name, setName] = useState("");
@@ -28,6 +29,13 @@ function NavBar() {
   return (
     <div className="navbar-component">
       <section>
+        <img
+          className="img-logo"
+          alt="duck-duck-login"
+          src={duckLogin}
+          style={{ width: "110px", height: "70px" }}
+        />
+        <div className="white-border"> </div>
         {userRole === "customer" && (
           <button
             data-testid="customer_products__element-navbar-link-products"
@@ -61,7 +69,7 @@ function NavBar() {
           {name}
         </h2>
         <button
-        className="navbar-logout"
+          className="navbar-logout"
           data-testid="customer_products__element-navbar-link-logout"
           type="button"
           onClick={logoutUser}

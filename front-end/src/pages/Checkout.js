@@ -11,7 +11,6 @@ function Checkout() {
         <ProductsListComponent dataTest="checkout" />
         <AddressComponent />
       </div>
-        {/* <BuySucess /> */}
     </div>
   );
 }
