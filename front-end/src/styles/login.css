@@ -1,6 +1,6 @@
 .login-page {
   background-color: black;
-  background-image: url(../images/duck-bg.png);
+  background-image: url('../images/duck-bg.png');
   background-position: right;
   background-repeat: no-repeat;
   background-size: 100%;
@@ -13,7 +13,7 @@
   flex-direction: column;
   justify-content: center;
   opacity: 92%;
-  padding-top: 100px;
+  padding-top: 5%;
   width: 100%;
 }
 

@@ -7,15 +7,17 @@ import {
 } from "../services/request.checkout";
 // import { requestSalleId } from "../services/request.sale.id";
 import Context from "../Context/Context";
+import BuySucess from "../pages/BuySucess";
 import "../styles/adress.delivery.css";
 
 function AddressComponent() {
   const history = useNavigate();
-  const { items, totalPrice } = useContext(Context);
+  const { totalPrice } = useContext(Context);
   const [sellers, setSellers] = useState([]);
   const [sellerId, setSellerId] = useState(2);
   const [endereco, setEndereco] = useState("");
   const [numEndereco, setNumEndereco] = useState("");
+  const [redirect, setRedirect] = useState(false);
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -51,57 +53,76 @@ function AddressComponent() {
     }
   };
 
+  const redirectPage = async () => {
+    console.log("entrei");
+    const milliseconds = 2000;
+    setTimeout(() => {
+      console.log("saindo", redirect);
+      setRedirect(false);
+      finalizarPedido();
+    }, milliseconds);
+  };
+
   return (
     <div className="page-adress-delivery">
-      <h2>Detalhes e Endereço para Entrega</h2>
-      <form>
-        <label htmlFor="sellers">
-          P. Vendedora Responsável:
-          <select
-            onChange={handleChange}
-            data-testid="customer_checkout__select-seller"
-            id="sellers"
-            name="sellers"
-            value={sellerId}
+      {redirect ? (
+        <BuySucess />
+      ) : (
+        <>
+          <h2>Detalhes e Endereço para Entrega</h2>
+          <form>
+            <label htmlFor="sellers">
+              P. Vendedora Responsável:
+              <select
+                onChange={handleChange}
+                data-testid="customer_checkout__select-seller"
+                id="sellers"
+                name="sellers"
+                value={sellerId}
+              >
+                {sellers.length &&
+                  sellers.map(({ name, id }) => (
+                    <option key={id} value={id}>
+                      {name}
+                    </option>
+                  ))}
+              </select>
+            </label>
+            <label htmlFor="address">
+              Endereço:
+              <input
+                placeholder="Rua Francisco Magalhães"
+                onChange={handleChange}
+                data-testid="customer_checkout__input-address"
+                id="address"
+                name="address"
+                value={endereco}
+              />
+            </label>
+            <label htmlFor="address-number">
+              Número:
+              <input
+                placeholder="3030"
+                onChange={handleChange}
+                data-testid="customer_checkout__input-address-number"
+                id="address-number"
+                name="address-number"
+                value={numEndereco}
+              />
+            </label>
+          </form>
+          <button
+            onClick={() => {
+              setRedirect(true);
+              redirectPage();
+            }}
+            data-testid="customer_checkout__button-submit-order"
+            type="button"
           >
-            {sellers.length &&
-              sellers.map(({ name, id }) => (
-                <option key={id} value={id}>
-                  {name}
-                </option>
-              ))}
-          </select>
-        </label>
-        <label htmlFor="address">
-          Endereço:
-          <input
-            placeholder='Rua Francisco Magalhães'
-            onChange={handleChange}
-            data-testid="customer_checkout__input-address"
-            id="address"
-            name="address"
-            value={endereco}
-          />
-        </label>
-        <label htmlFor="address-number">
-          Número:
-          <input
-            placeholder='3030'
-            onChange={handleChange}
-            data-testid="customer_checkout__input-address-number"
-            id="address-number"
-            name="address-number"
-            value={numEndereco}
-          />
-        </label>
-      </form>
-      <button
-        onClick={() => finalizarPedido()}
-        data-testid="customer_checkout__button-submit-order"
-        type="button"
-      >
-        Finalizar Pedido
-      </button>
+            Finalizar Pedido
+          </button>
+        </>
+      )}
     </div>
   );
 }

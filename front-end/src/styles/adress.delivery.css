@@ -57,6 +57,7 @@
 }
 
 .page-buy-sucess {
+  align-items: center;
   display: flex;
   flex-direction: column;
 }
