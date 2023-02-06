@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Context from "../Context/Context";
 import "../styles/navbar.css";
-import duckLogin from "../images/duck-logo-2.png";
+import duckLogin from "../images/duck-logo-0.png";
 
 function NavBar() {
   const [name, setName] = useState("");
@@ -33,7 +33,7 @@ function NavBar() {
           className="img-logo"
           alt="duck-duck-login"
           src={duckLogin}
-          style={{ width: "110px", height: "70px" }}
+          style={{ width: "90px", height: "90px" }}
         />
         <div className="white-border"> </div>
         {userRole === "customer" && (

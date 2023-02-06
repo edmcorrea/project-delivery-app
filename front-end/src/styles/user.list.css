@@ -1,0 +1,37 @@
+.listUsers {
+  border-collapse: collapse;
+  font-size: 20px;
+  justify-content: space-around;
+  margin: auto;
+  width: 100%;
+}
+
+th, td {
+  border-bottom: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+.listUsers tr:nth-of-type( 1 ) {
+  background-color: #eaf1ef;
+}
+
+.listUsers tr:nth-of-type( 1 ):hover {
+  background-color: #eaf1ef;
+  color: black;
+}
+
+.listUsers .user-list-btn {
+  background-color: #036b52;
+  border-radius: 10px;
+  color: white;
+  font-size: 22px;
+  text-align: center;
+  width: 80%;
+}
+
+.listUsers .user-list-btn:hover {
+  cursor: pointer;
+  scale: 1.05;
+  transition: scale 0.3s;
+}
