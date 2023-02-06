@@ -3,7 +3,7 @@
   flex-wrap: wrap;
   gap: 20px;
   justify-content: space-around;
-  margin: 0;
+  margin-top: 80px;
   padding: 0 10%;
   width: 80%;
 }
@@ -16,7 +16,9 @@
   color: black;
   display: flex;
   flex-basis: 35%;
+  gap: 20px;
   justify-content: space-evenly;
+  padding: 15px 10px;
   text-decoration: none;
 }
 
@@ -28,8 +30,7 @@
   border-radius: 10px;
   font-size: 25px;
   line-height: 50px;
-  margin: 0;
-  padding: 20px 10px;
+  padding: 20px 30px;
   text-align: center;
   width: 35%;
 }
