@@ -1,3 +1,9 @@
+const fulanaPereira = 'Fulana Pereira';
+const saleDate = '2023-01-26T18:30:12.000Z';
+const saleDate2 = '2023-01-06T18:30:12.000Z';
+const skolLata = 'Skol Lata 250ml';
+const emTransito = 'Em Trânsito';
+
 export const customerMock = {
   name: 'Cliente Zé Birita',
   email: 'zebirita@email.com',
@@ -20,7 +26,7 @@ export const adminMock = {
 };
 
 export const sellerMock = {
-  name: 'Fulana Pereira',
+  name: fulanaPereira,
   email: 'fulana@deliveryapp.com',
   role: 'seller',
   token: 'toquenlwlhhsdjkwhckwjhdjwhd',
@@ -29,7 +35,7 @@ export const sellerMock = {
 export const userListMock = [
   {
     id: 2,
-    name: 'Fulana Pereira',
+    name: fulanaPereira,
     email: 'fulana@deliveryapp.com',
     role: 'seller',
   },
@@ -44,7 +50,7 @@ export const userListMock = [
 export const productsMock = [
   {
     id: 1,
-    name: 'Skol Lata 250ml',
+    name: skolLata,
     price: 2.20,
     url_image: 'http://localhost:3001/images/skol_lata_350ml.jpg',
   },
@@ -62,42 +68,6 @@ export const productsMock = [
   },
 ];
 
-export const cartMock = [
-  {
-    id: 2,
-    quantity: 4,
-  },
-  {
-    id: 4,
-    quantity: 1,
-  },
-  {
-    id: 6,
-    quantity: 2,
-  },
-];
-
-export const checkoutProductsMock = [
-  {
-    id: 2,
-    name: 'Heineken 600ml',
-    quantity: 4,
-    price: '7,50',
-  },
-  {
-    id: 4,
-    name: 'Brahma 600ml',
-    quantity: 1,
-    price: '7,50',
-  },
-  {
-    id: 6,
-    name: 'Skol Beats Senses 313ml',
-    quantity: 2,
-    price: '4,49',
-  },
-];
-
 export const salesMock = [
   {
     id: 1,
@@ -106,7 +76,7 @@ export const salesMock = [
     totalPrice: 520.45,
     deliveryAddress: 'Rua paralelepipedo, bairro - ES',
     deliveryNumber: '148',
-    saleDate: '2023-01-26T18:30:12.000Z',
+    saleDate,
     status: 'Pendente',
   },
   {
@@ -116,15 +86,121 @@ export const salesMock = [
     totalPrice: 126.82,
     deliveryAddress: 'Rua paralelepipedo, bairro - ES',
     deliveryNumber: '148',
-    saleDate: '2023-01-26T19:23:04.000Z',
-    status: 'Pendente',
+    saleDate: saleDate2,
+    status: emTransito,
+  },
+];
+
+export const cartMock = [
+  {
+    id: 1,
+    quantity: 3,
   },
 ];
 
 export const submitCheckout = {
   sellerId: 2,
-  totalPrice: '46,48',
+  totalPrice: 6.60,
   deliveryAddress: 'Some Valid Address',
   deliveryNumber: '1234',
   products: cartMock,
+};
+
+export const saleMock = {
+  id: 1,
+  sellerName: fulanaPereira,
+  totalPrice: 6.60,
+  saleDate,
+  status: 'Pendente',
+  products: [{
+    id: 1,
+    name: skolLata,
+    price: 2.20,
+    quantity: 3,
+  }],
+};
+
+export const saleMockPendente = {
+  id: 1,
+  sellerName: fulanaPereira,
+  totalPrice: 520.45,
+  saleDate,
+  status: 'Pendente',
+  products: [{
+    id: 1,
+    name: skolLata,
+    price: 2.20,
+    quantity: 3,
+  }],
+};
+
+export const saleMockPreparando = {
+  id: 1,
+  sellerName: fulanaPereira,
+  totalPrice: 520.45,
+  saleDate,
+  status: 'Preparando',
+  products: [{
+    id: 1,
+    name: skolLata,
+    price: 2.20,
+    quantity: 3,
+  }],
+};
+
+export const saleMockEmTransito = {
+  id: 1,
+  sellerName: fulanaPereira,
+  totalPrice: 520.45,
+  saleDate,
+  status: emTransito,
+  products: [{
+    id: 1,
+    name: skolLata,
+    price: 2.20,
+    quantity: 3,
+  }],
+};
+
+export const saleMockEmTransito2 = {
+  id: 2,
+  sellerName: fulanaPereira,
+  totalPrice: 126.82,
+  saleDate: saleDate2,
+  status: emTransito,
+  products: [{
+    id: 1,
+    name: skolLata,
+    price: 2.20,
+    quantity: 3,
+  }],
+};
+
+export const saleMockEntregue2 = {
+  id: 2,
+  sellerName: fulanaPereira,
+  totalPrice: 126.82,
+  saleDate: saleDate2,
+  status: 'Entregue',
+  products: [{
+    id: 1,
+    name: skolLata,
+    price: 2.20,
+    quantity: 3,
+  }],
+};
+
+export const preparandoMock = {
+  id: 1,
+  status: 'Preparando',
+};
+
+export const emTransitoMock = {
+  id: 1,
+  status: emTransito,
+};
+
+export const entregueMock = {
+  id: 1,
+  status: 'Entregue',
 };

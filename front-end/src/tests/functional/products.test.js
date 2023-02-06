@@ -8,9 +8,9 @@ import renderWithRouter from '../helpers/renderWith';
 
 describe('Verifications about Login Page', () => {
   const zeroTotalPrice = 'Total: R$ 0,00';
+  const totalPriceTestId = 'customer_products__button-cart';
 
   beforeEach(() => {
-    localStorage.clear();
     localStorage.setItem('user', JSON.stringify(customerMock));
     api.get = jest.fn().mockResolvedValue({ data: productsMock });
   });
@@ -27,18 +27,10 @@ describe('Verifications about Login Page', () => {
     // AGUARDAR AÇÃO ASSÍNCRONA
     await waitFor(() => expect(api.get).toHaveBeenCalled());
 
-    // BUSCA POR ELEMENTOS
-    const productsBtn = screen.getByRole('button', { name: /produtos/i });
-    const myOrdersBtn = screen.getByRole('button', { name: /meus pedidos/i });
-    const userName = screen.getByRole('heading', { name: customerMock.name });
-    const logoutBtn = screen.getByRole('button', { name: /logout/i });
-    const totalPriceBtn = screen.getByTestId('customer_products__button-cart');
+    // BUSCA POR ELEMENTO
+    const totalPriceBtn = screen.getByTestId(totalPriceTestId);
 
     // RESULTADOS
-    expect(productsBtn).toBeInTheDocument();
-    expect(myOrdersBtn).toBeInTheDocument();
-    expect(userName).toBeInTheDocument();
-    expect(logoutBtn).toBeInTheDocument();
     expect(totalPriceBtn).toHaveTextContent(zeroTotalPrice);
 
     // ELEMENTOS DOS CARDS
@@ -74,7 +66,64 @@ describe('Verifications about Login Page', () => {
     const removeBtn = screen.getAllByRole('button', { name: /-/i })[0];
     const quantityInput = screen
       .getByTestId('customer_products__input-card-quantity-1');
-    const totalPriceBtn = screen.getByTestId('customer_products__button-cart');
+    const totalPriceBtn = screen.getByTestId(totalPriceTestId);
+
+    // RESULTADOS
+    expect(totalPriceBtn).toHaveTextContent(zeroTotalPrice);
+    expect(totalPriceBtn).toHaveProperty('disabled', true);
+
+    // EVENTO DA PAGINA
+    userEvent.type(quantityInput, '1');
+
+    // RESULTADO
+    expect(totalPriceBtn).toHaveTextContent('Total: R$ 2,20');
+    expect(totalPriceBtn).toHaveProperty('disabled', false);
+
+    // EVENTOS DA PAGINA
+    const addClicks = 3;
+    for (let i = 0; i < addClicks; i += 1) {
+      userEvent.click(addBtn);
+    }
+
+    // RESULTADO
+    expect(totalPriceBtn).toHaveTextContent('Total: R$ 8,80');
+    expect(totalPriceBtn).toHaveProperty('disabled', false);
+
+    // EVENTOS DA PAGINA
+    const removeClicks = 2;
+    for (let i = 0; i < removeClicks; i += 1) {
+      userEvent.click(removeBtn);
+    }
+
+    // RESULTADO
+    expect(totalPriceBtn).toHaveTextContent('Total: R$ 4,40');
+    expect(totalPriceBtn).toHaveProperty('disabled', false);
+
+    // EVENTO DA PAGINA
+    userEvent.clear(quantityInput);
+
+    // RESULTADO
+    expect(totalPriceBtn).toHaveTextContent(zeroTotalPrice);
+    expect(totalPriceBtn).toHaveProperty('disabled', true);
+
+    // EVENTO DA PAGINA
+    userEvent.click(removeBtn);
+
+    // RESULTADO
+    expect(totalPriceBtn).toHaveTextContent(zeroTotalPrice);
+    expect(totalPriceBtn).toHaveProperty('disabled', true);
+  });
+
+  it('Verify if it is possible to complete an order - redirect to checkout', async () => {
+    // PREPARAÇÂO - RENDERIZAÇÂO DA PÀGINA
+    renderWithRouter(<App />);
+
+    // AGUARDAR AÇÃO ASSÍNCRONA
+    await waitFor(() => expect(api.get).toHaveBeenCalled());
+
+    // BUSCA POR ELEMENTOS
+    const addBtn = screen.getAllByRole('button', { name: /\+/i })[0];
+    const totalPriceBtn = screen.getByTestId(totalPriceTestId);
 
     // RESULTADOS
     expect(totalPriceBtn).toHaveTextContent(zeroTotalPrice);
@@ -91,20 +140,9 @@ describe('Verifications about Login Page', () => {
     expect(totalPriceBtn).toHaveProperty('disabled', false);
 
     // EVENTOS DA PAGINA
-    const removeClicks = 2;
-    for (let i = 0; i < removeClicks; i += 1) {
-      userEvent.click(removeBtn);
-    }
+    userEvent.click(totalPriceBtn);
 
     // RESULTADO
-    expect(totalPriceBtn).toHaveTextContent('Total: R$ 2,20');
-    expect(totalPriceBtn).toHaveProperty('disabled', false);
-
-    // EVENTOS DA PAGINA
-    userEvent.clear(quantityInput);
-
-    // RESULTADO
-    expect(totalPriceBtn).toHaveTextContent(zeroTotalPrice);
-    expect(totalPriceBtn).toHaveProperty('disabled', true);
+    expect(window.location.href).toBe('http://localhost/customer/checkout');
   });
 });

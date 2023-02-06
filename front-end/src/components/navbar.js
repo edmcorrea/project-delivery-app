@@ -18,10 +18,8 @@ function NavBar() {
 
   useEffect(() => {
     const userObj = JSON.parse(localStorage.getItem('user'));
-    if (userObj) {
-      setName(userObj.name);
-      setUserRole(userObj.role);
-    }
+    setName(userObj.name);
+    setUserRole(userObj.role);
   }, []);
 
   return (
