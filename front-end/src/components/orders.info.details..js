@@ -13,22 +13,11 @@ function OrdersInfoDetailsComponent() {
   const { setProductsOrder } = useContext(Context);
 
   const [sale, setSale] = useState([]);
-  const [sellerStatus, setSellerStatus] = useState('');
+  const [seleStatus, setSeleStatus] = useState('');
   const [disablePrepararPedido, setDisablePrepararPedido] = useState(true);
   const [disableSaiuParaEntrega, setDisableSaiuParaEntrega] = useState(true);
   const [disableMarcarComoEntregue, setDisableMarcarComoEntregue] = useState(true);
   const [userRole, setUserRole] = useState('');
-
-  const requestDB = async () => {
-    const { token } = JSON.parse(localStorage.getItem('user'));
-    setToken(token);
-    const newSale = await requestSaleId(`/sale/${id}`);
-    console.log(newSale);
-    setProductsOrder(newSale.products);
-    setSale(newSale);
-    // setSellerStatus(sale.status);
-    return newSale.status;
-  };
 
   const verifyStatus = (status) => {
     if (status === 'Pendente') {
@@ -47,18 +36,21 @@ function OrdersInfoDetailsComponent() {
     }
   };
 
-  useEffect(async () => {
-    const saleStatus = await requestDB();
-    verifyStatus(saleStatus);
+  const requestDB = async () => {
+    const { token } = JSON.parse(localStorage.getItem('user'));
+    setToken(token);
+    const newSale = await requestSaleId(`/sale/${id}`);
+    setProductsOrder(newSale.products);
+    setSale(newSale);
+    setSeleStatus(newSale.status);
+    verifyStatus(newSale.status);
+  };
 
+  useEffect(async () => {
     const { role } = JSON.parse(localStorage.getItem('user'));
     setUserRole(role);
+    await requestDB();
   }, []);
-
-  useEffect(async () => {
-    const saleStatus = await requestDB();
-    verifyStatus(saleStatus);
-  }, [sellerStatus]);
 
   const formatDate = (date) => {
     const newDate = new Date(date);
@@ -75,8 +67,8 @@ function OrdersInfoDetailsComponent() {
     const { token } = JSON.parse(localStorage.getItem('user'));
     setToken(token);
     const request = await requestSaleStatus(`/sale/status/${saleId}`);
-    setSellerStatus(request.status);
-    // verifyStatus(request.status);
+    setSeleStatus(request.status);
+    verifyStatus(request.status);
   };
 
   return (
@@ -122,14 +114,14 @@ function OrdersInfoDetailsComponent() {
           id="delivery-status"
           name="delivery-status"
         >
-          {sale.status}
+          { seleStatus }
         </p>
         <StatusBtn
           disableSaiuParaEntrega={ disableSaiuParaEntrega }
           disablePrepararPedido={ disablePrepararPedido }
           disableMarcarComoEntregue={ disableMarcarComoEntregue }
           updateStatus={ updateStatus }
-          sellerId={ sale.id }
+          sellerId={ sale.id || 0 }
         />
       </div>
     </div>

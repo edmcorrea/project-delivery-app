@@ -1,4 +1,3 @@
-const fulanaPereira = 'Fulana Pereira';
 const saleDate = '2023-01-26T18:30:12.000Z';
 const saleDate2 = '2023-01-06T18:30:12.000Z';
 const skolLata = 'Skol Lata 250ml';
@@ -26,8 +25,15 @@ export const adminMock = {
 };
 
 export const sellerMock = {
-  name: fulanaPereira,
+  name: 'Fulana Pereira',
   email: 'fulana@deliveryapp.com',
+  role: 'seller',
+  token: 'toquenlwlhhsdjkwhckwjhdjwhd',
+};
+
+export const newSellerMock = {
+  name: 'Novo vendedor',
+  email: 'novo-vendedor@mail.com',
   role: 'seller',
   token: 'toquenlwlhhsdjkwhckwjhdjwhd',
 };
@@ -35,15 +41,36 @@ export const sellerMock = {
 export const userListMock = [
   {
     id: 2,
-    name: fulanaPereira,
-    email: 'fulana@deliveryapp.com',
-    role: 'seller',
+    name: sellerMock.name,
+    email: sellerMock.email,
+    role: sellerMock.role,
   },
   {
     id: 3,
-    name: 'Cliente Zé Birita',
-    email: 'zebirita@email.com',
-    role: 'customer',
+    name: customerMock.name,
+    email: customerMock.email,
+    role: customerMock.role,
+  },
+];
+
+export const newUserListMock = [
+  {
+    id: 2,
+    name: sellerMock.name,
+    email: sellerMock.email,
+    role: sellerMock.role,
+  },
+  {
+    id: 3,
+    name: customerMock.name,
+    email: customerMock.email,
+    role: customerMock.role,
+  },
+  {
+    id: 4,
+    name: newSellerMock.name,
+    email: newSellerMock.email,
+    role: newSellerMock.role,
   },
 ];
 
@@ -108,7 +135,7 @@ export const submitCheckout = {
 
 export const saleMock = {
   id: 1,
-  sellerName: fulanaPereira,
+  sellerName: sellerMock.name,
   totalPrice: 6.60,
   saleDate,
   status: 'Pendente',
@@ -122,7 +149,7 @@ export const saleMock = {
 
 export const saleMockPendente = {
   id: 1,
-  sellerName: fulanaPereira,
+  sellerName: sellerMock.name,
   totalPrice: 520.45,
   saleDate,
   status: 'Pendente',
@@ -134,37 +161,9 @@ export const saleMockPendente = {
   }],
 };
 
-export const saleMockPreparando = {
-  id: 1,
-  sellerName: fulanaPereira,
-  totalPrice: 520.45,
-  saleDate,
-  status: 'Preparando',
-  products: [{
-    id: 1,
-    name: skolLata,
-    price: 2.20,
-    quantity: 3,
-  }],
-};
-
-export const saleMockEmTransito = {
-  id: 1,
-  sellerName: fulanaPereira,
-  totalPrice: 520.45,
-  saleDate,
-  status: emTransito,
-  products: [{
-    id: 1,
-    name: skolLata,
-    price: 2.20,
-    quantity: 3,
-  }],
-};
-
 export const saleMockEmTransito2 = {
   id: 2,
-  sellerName: fulanaPereira,
+  sellerName: sellerMock.name,
   totalPrice: 126.82,
   saleDate: saleDate2,
   status: emTransito,
@@ -178,7 +177,7 @@ export const saleMockEmTransito2 = {
 
 export const saleMockEntregue2 = {
   id: 2,
-  sellerName: fulanaPereira,
+  sellerName: sellerMock.name,
   totalPrice: 126.82,
   saleDate: saleDate2,
   status: 'Entregue',

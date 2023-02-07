@@ -12,11 +12,9 @@ import {
   entregueMock,
   preparandoMock,
   productsMock,
-  saleMockEmTransito,
   saleMockEmTransito2,
   saleMockEntregue2,
   saleMockPendente,
-  saleMockPreparando,
   salesMock,
   sellerMock,
 } from '../helpers/mocks';
@@ -105,16 +103,11 @@ describe('Verifications about Order Details Page', () => {
     expect(preparingBtn).toHaveProperty('disabled', false);
     expect(dispatchBtn).toHaveProperty('disabled', true);
 
-    // RESET MOCK
-    apiSaleId.get.mockReset();
-    apiSaleId.get = jest.fn().mockResolvedValue({ data: saleMockPreparando });
-
     // EVENTO DA PAGINA
     userEvent.click(preparingBtn);
 
     // AGUARDAR AÇÕES ASSÍNCRONA
     await waitFor(() => expect(apiSaleId.patch).toHaveBeenCalled());
-    await waitFor(() => expect(apiSaleId.get).toHaveBeenCalled());
 
     // RESULTADOS
     expect(saleStatus).toHaveTextContent(preparandoMock.status);
@@ -124,15 +117,12 @@ describe('Verifications about Order Details Page', () => {
     // RESET MOCKS
     apiSaleId.patch.mockReset();
     apiSaleId.patch = jest.fn().mockResolvedValue({ data: emTransitoMock });
-    apiSaleId.get.mockReset();
-    apiSaleId.get = jest.fn().mockResolvedValue({ data: saleMockEmTransito });
 
     // EVENTO DA PAGINA
     userEvent.click(dispatchBtn);
 
     // AGUARDAR AÇÕES ASSÍNCRONA
     await waitFor(() => expect(apiSaleId.patch).toHaveBeenCalled());
-    await waitFor(() => expect(apiSaleId.get).toHaveBeenCalled());
 
     // RESULTADOS
     expect(saleStatus).toHaveTextContent(emTransitoMock.status);
@@ -181,16 +171,11 @@ describe('Verifications about Order Details Page', () => {
     expect(saleStatus).toHaveTextContent(saleMockEmTransito2.status);
     expect(entregueBtn).toHaveProperty('disabled', false);
 
-    // RESET MOCK
-    apiSaleId.get.mockReset();
-    apiSaleId.get = jest.fn().mockResolvedValue({ data: saleMockEntregue2 });
-
     // EVENTO DA PAGINA
     userEvent.click(entregueBtn);
 
     // AGUARDAR AÇÕES ASSÍNCRONA
     await waitFor(() => expect(apiSaleId.patch).toHaveBeenCalled());
-    await waitFor(() => expect(apiSaleId.get).toHaveBeenCalled());
 
     // RESULTADOS
     expect(saleStatus).toHaveTextContent(saleMockEntregue2.status);
