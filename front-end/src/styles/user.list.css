@@ -6,19 +6,16 @@
   width: 100%;
 }
 
-th, td {
+td {
   border-bottom: 1px solid #ddd;
   padding: 8px;
   text-align: center;
 }
 
-.listUsers tr:nth-of-type( 1 ) {
-  background-color: #eaf1ef;
-}
-
-.listUsers tr:nth-of-type( 1 ):hover {
+.listUsers thead {
   background-color: #eaf1ef;
   color: black;
+  font-weight: 600;
 }
 
 .listUsers .user-list-btn {

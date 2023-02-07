@@ -1,29 +1,27 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Context from "../Context/Context";
-import "../styles/navbar.css";
-import duckLogin from "../images/duck-logo-0.png";
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Context from '../Context/Context';
+import '../styles/navbar.css';
+import duckLogin from '../images/duck-logo-0.png';
 
 function NavBar() {
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const history = useNavigate();
-  const [userRole, setUserRole] = useState("");
+  const [userRole, setUserRole] = useState('');
   const { setItems } = useContext(Context);
 
   const logoutUser = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("cart");
-    setUserRole("");
+    localStorage.removeItem('user');
+    localStorage.removeItem('cart');
+    setUserRole('');
     setItems([]);
-    history("/login");
+    history('/login');
   };
 
   useEffect(() => {
-    const userObj = JSON.parse(localStorage.getItem("user"));
-    if (userObj) {
-      setName(userObj.name);
-      setUserRole(userObj.role);
-    }
+    const userObj = JSON.parse(localStorage.getItem('user'));
+    setName(userObj.name);
+    setUserRole(userObj.role);
   }, []);
 
   return (
@@ -32,33 +30,33 @@ function NavBar() {
         <img
           className="img-logo"
           alt="duck-duck-login"
-          src={duckLogin}
-          style={{ width: "90px", height: "90px" }}
+          src={ duckLogin }
+          style={ { width: '90px', height: '90px' } }
         />
         <div className="white-border"> </div>
-        {userRole === "customer" && (
+        {userRole === 'customer' && (
           <button
             data-testid="customer_products__element-navbar-link-products"
             type="button"
-            onClick={() => history("/customer/products")}
+            onClick={ () => history('/customer/products') }
           >
             PRODUTOS
           </button>
         )}
-        {userRole !== "administrator" && (
+        {userRole !== 'administrator' && (
           <button
             data-testid="customer_products__element-navbar-link-orders"
             type="button"
-            onClick={() => history(`/${userRole}/orders`)}
+            onClick={ () => history(`/${userRole}/orders`) }
           >
             MEUS PEDIDOS
           </button>
         )}
-        {userRole === "administrator" && (
+        {userRole === 'administrator' && (
           <button
             data-testid="customer_products__element-navbar-link-orders"
             type="button"
-            onClick={() => history("/admin/manage")}
+            onClick={ () => history('/admin/manage') }
           >
             GERENCIAR USUÁRIOS
           </button>
@@ -72,7 +70,7 @@ function NavBar() {
           className="navbar-logout"
           data-testid="customer_products__element-navbar-link-logout"
           type="button"
-          onClick={logoutUser}
+          onClick={ logoutUser }
         >
           LOGOUT
         </button>

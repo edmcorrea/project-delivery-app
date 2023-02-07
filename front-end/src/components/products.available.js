@@ -1,10 +1,9 @@
-import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Context from "../Context/Context";
-import { requestProducts } from "../services/request.products";
-import "../styles/products.available.css";
-import { BsFillCartXFill } from "react-icons/bs";
-import { BsCartCheck } from "react-icons/bs";
+import { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { BsFillCartXFill, BsCartCheck } from 'react-icons/bs';
+import Context from '../Context/Context';
+import { requestProducts } from '../services/request.products';
+import '../styles/products.available.css';
 
 function ProductsAvailable() {
   const history = useNavigate();
@@ -21,7 +20,7 @@ function ProductsAvailable() {
 
   const products = async () => {
     try {
-      const getProducts = await requestProducts("/products");
+      const getProducts = await requestProducts('/products');
       setListProducts(getProducts);
     } catch (error) {
       console.log(error);
@@ -85,7 +84,7 @@ function ProductsAvailable() {
     });
     setTotalPrice(total);
     const itemsNotQttNull = items.filter(({ quantity }) => quantity !== 0);
-    localStorage.setItem("cart", JSON.stringify(itemsNotQttNull));
+    localStorage.setItem('cart', JSON.stringify(itemsNotQttNull));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
@@ -105,30 +104,30 @@ function ProductsAvailable() {
     <div className="products-available-page">
       <section>
         {listProducts.map((prod, i) => (
-          <div className="product-available" key={i + 1}>
-            <p data-testid={`customer_products__element-card-price-${i + 1}`}>
-              {`R$ ${prod.price.replace(/\./, ",")}`}
+          <div className="product-available" key={ i + 1 }>
+            <p data-testid={ `customer_products__element-card-price-${i + 1}` }>
+              {`R$ ${prod.price.toString().replace(/\./, ',')}`}
             </p>
             <img
               alt="customer_product"
-              data-testid={`customer_products__img-card-bg-image-${i + 1}`}
-              src={prod.urlImage}
-              style={{ width: "200px", height: "200px" }}
+              data-testid={ `customer_products__img-card-bg-image-${i + 1}` }
+              src={ prod.urlImage }
+              style={ { width: '200px', height: '200px' } }
             />
 
             <div className="container-available-inc-dec">
               <h3
-                data-testid={`customer_products__element-card-title-${i + 1}`}
+                data-testid={ `customer_products__element-card-title-${i + 1}` }
               >
                 {prod.name}
               </h3>
               <div className="available-inc-dec-btns">
                 <button
                   type="button"
-                  data-testid={`customer_products__button-card-rm-item-${
+                  data-testid={ `customer_products__button-card-rm-item-${
                     i + 1
-                  }`}
-                  onClick={() => removeItem(prod.id)}
+                  }` }
+                  onClick={ () => removeItem(prod.id) }
                 >
                   -
                 </button>
@@ -139,17 +138,17 @@ function ProductsAvailable() {
                       ? items.find(({ id }) => id === prod.id).quantity
                       : 0
                   }
-                  data-testid={`customer_products__input-card-quantity-${
+                  data-testid={ `customer_products__input-card-quantity-${
                     i + 1
-                  }`}
-                  onChange={(e) => setItemQuantity(prod.id, e.target.value)}
+                  }` }
+                  onChange={ (e) => setItemQuantity(prod.id, e.target.value) }
                 />
                 <button
                   type="button"
-                  data-testid={`customer_products__button-card-add-item-${
+                  data-testid={ `customer_products__button-card-add-item-${
                     i + 1
-                  }`}
-                  onClick={() => addItem(prod.id)}
+                  }` }
+                  onClick={ () => addItem(prod.id) }
                 >
                   +
                 </button>
@@ -162,8 +161,8 @@ function ProductsAvailable() {
         className="total-price"
         type="button"
         data-testid="customer_products__button-cart"
-        onClick={() => history("/customer/checkout")}
-        disabled={disable}
+        onClick={ () => history('/customer/checkout') }
+        disabled={ disable }
       >
         {totalPrice ? (
           <BsCartCheck className="cart" />
@@ -174,7 +173,9 @@ function ProductsAvailable() {
           data-testid="customer_products__checkout-bottom-value
         "
         >
-          R$ {totalPrice.toFixed(2).replace(".", ",")}
+          R$
+          {' '}
+          {totalPrice.toFixed(2).replace('.', ',')}
         </h2>
       </button>
     </div>

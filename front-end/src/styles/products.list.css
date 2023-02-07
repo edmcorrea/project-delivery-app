@@ -13,22 +13,19 @@
   width: 100%;
 }
 
-tr:hover {
+tbody:hover {
   background-color: #2f9b82;
   color: white;
   transition: 0.3s;
 }
 
-.product-list tr:nth-of-type( 1 ) {
-  background-color: #eaf1ef;
-}
-
-.product-list tr:nth-of-type( 1 ):hover {
+.product-list thead {
   background-color: #eaf1ef;
   color: black;
+  font-weight: 600;
 }
 
-th, td {
+td {
   border-bottom: 1px solid #ddd;
   padding: 8px;
   text-align: center;

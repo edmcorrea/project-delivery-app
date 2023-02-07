@@ -67,7 +67,7 @@
       "./services/history"
     ],
     "moduleNameMapper": {
-      "axios": "axios/dist/node/axios.cjs"
+      "^axios$": "axios/dist/axios.js"
     }
   }
 }

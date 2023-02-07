@@ -1,9 +1,6 @@
-import { useContext, useEffect } from "react";
-import AddressComponent from "../components/address.delivery";
-import NavBar from "../components/navbar";
-import ProductsListComponent from "../components/products.list";
-import Context from "../Context/Context";
-import BuySucess from "./BuySucess";
+import AddressComponent from '../components/address.delivery';
+import NavBar from '../components/navbar';
+import ProductsListComponent from '../components/products.list';
 
 function Checkout() {
   return (
