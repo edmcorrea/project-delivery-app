@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import App from '../../App';
@@ -78,11 +78,9 @@ describe('Verifications about Login Page', () => {
     // EVENTOS DA PAGINA - INTERAÇÂO COM BOTÃO
     userEvent.click(btnRegister);
 
-    // AGUARDAR AÇÃO ASSÍNCRONA
-    await waitFor(() => expect(api.post).toHaveBeenCalled());
-
     // BUSCA POR ELEMENTO - RENDERIZAÇÃO CONDICIONAL
-    const errorMessage = screen.getByTestId('common_register__element-invalid_register');
+    const errorMessage = await screen
+      .findByTestId('common_register__element-invalid_register');
 
     // RESULTADO
     expect(errorMessage).toHaveTextContent('Registro inválido');
@@ -111,13 +109,9 @@ describe('Verifications about Login Page', () => {
     // EVENTOS DA PAGINA - INTERAÇÂO COM BOTÃO
     userEvent.click(btnRegister);
 
-    // AGUARDAR AÇÕES ASSÍNCRONAS
-    await waitFor(() => expect(api.post).toHaveBeenCalled());
-    await waitFor(() => expect(apiProducts.get).toHaveBeenCalled());
-
     // BUSCA POR ELEMENTO EM NOVA ROTA
-    const navBarName = screen
-      .getByTestId('customer_products__element-navbar-user-full-name');
+    const navBarName = await screen
+      .findByTestId('customer_products__element-navbar-user-full-name');
 
     // RESULTADOS
     expect(navBarName).toHaveTextContent(newCustomerMock.name);

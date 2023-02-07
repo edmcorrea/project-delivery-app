@@ -18,7 +18,6 @@ function UserList() {
     try {
       await requestRemoveUser(`/user/${id}`);
       const users = await requestUsers('/user');
-      console.log(users);
       setUserList(users);
     } catch (error) {
       console.log(error.message);

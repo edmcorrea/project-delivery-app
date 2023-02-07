@@ -17,9 +17,7 @@ function ProductsListComponent({ dataTest }) {
 
   useEffect(() => {
     const userObj = JSON.parse(localStorage.getItem('user'));
-    if (userObj) {
-      setUserRole(userObj.role);
-    }
+    setUserRole(userObj.role);
   }, []);
 
   useEffect(() => {

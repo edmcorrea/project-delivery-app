@@ -15,7 +15,6 @@ function StatusBtn({
     setUserRole(role);
   }, []);
 
-  console.log(sellerId);
   return (
     <div>
       {userRole === 'seller' ? (

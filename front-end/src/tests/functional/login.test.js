@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import App from '../../App';
@@ -85,11 +85,8 @@ describe('Verifications about Login Page', () => {
     // EVENTOS DA PAGINA - INTERAÇÂO COM BOTÃO
     userEvent.click(btnLogin);
 
-    // AGUARDAR AÇÃO ASSÍNCRONA
-    await waitFor(() => expect(api.post).toHaveBeenCalled());
-
     // BUSCA POR ELEMENTO - RENDERIZAÇÃO CONDICIONAL
-    const errorMessage = screen.getByTestId('common_login__element-invalid-email');
+    const errorMessage = await screen.findByTestId('common_login__element-invalid-email');
 
     // RESULTADO
     expect(errorMessage).toHaveTextContent('Login inválido');
@@ -118,12 +115,8 @@ describe('Verifications about Login Page', () => {
     // EVENTOS DA PAGINA - INTERAÇÂO COM BOTÃO
     userEvent.click(btnLogin);
 
-    // AGUARDAR AÇÕES ASSÍNCRONAS
-    await waitFor(() => expect(api.post).toHaveBeenCalled());
-    await waitFor(() => expect(apiProducts.get).toHaveBeenCalled());
-
     // BUSCA POR ELEMENTO EM NOVA ROTA
-    const navBarName = screen.getByTestId(navBarTestId);
+    const navBarName = await screen.findByTestId(navBarTestId);
 
     // RESULTADOS
     expect(navBarName).toHaveTextContent(customerMock.name);
@@ -152,11 +145,8 @@ describe('Verifications about Login Page', () => {
     // PREPARAÇÂO - RENDERIZAÇÂO DA PÀGINA
     renderWithRouter(<App />);
 
-    // AGUARDAR AÇÃO ASSÍNCRONA
-    await waitFor(() => expect(apiProducts.get).toHaveBeenCalled());
-
     // BUSCA POR ELEMENTO
-    const navBarName = screen.getByTestId(navBarTestId);
+    const navBarName = await screen.findByTestId(navBarTestId);
 
     // RESULTADOS
     expect(navBarName).toHaveTextContent(customerMock.name);
@@ -171,11 +161,8 @@ describe('Verifications about Login Page', () => {
     // PREPARAÇÂO - RENDERIZAÇÂO DA PÀGINA
     renderWithRouter(<App />);
 
-    // AGUARDAR AÇÃO ASSÍNCRONA
-    await waitFor(() => expect(apiSale.get).toHaveBeenCalled());
-
     // BUSCA POR ELEMENTO
-    const navBarName = screen.getByTestId(navBarTestId);
+    const navBarName = await screen.findByTestId(navBarTestId);
 
     // RESULTADOS
     expect(navBarName).toHaveTextContent(sellerMock.name);
@@ -190,11 +177,8 @@ describe('Verifications about Login Page', () => {
     // PREPARAÇÂO - RENDERIZAÇÂO DA PÀGINA
     renderWithRouter(<App />);
 
-    // AGUARDAR AÇÃO ASSÍNCRONA
-    await waitFor(() => expect(apiUser.get).toHaveBeenCalled());
-
     // BUSCA POR ELEMENTO
-    const navBarName = screen.getByTestId(navBarTestId);
+    const navBarName = await screen.findByTestId(navBarTestId);
 
     // RESULTADOS
     expect(navBarName).toHaveTextContent(adminMock.name);
