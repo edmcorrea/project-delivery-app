@@ -21,9 +21,13 @@ function AddressComponent() {
     if (name === 'address-number') setAddressNumber(value);
   };
 
-  useEffect(async () => {
+  const getSellerList = async () => {
     const sellerList = await requestSeller('/user/sellers');
     setSellers(sellerList);
+  };
+
+  useEffect(() => {
+    getSellerList();
     setRedirect(false);
   }, []);
 

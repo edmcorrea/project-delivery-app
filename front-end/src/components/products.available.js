@@ -169,10 +169,7 @@ function ProductsAvailable() {
         ) : (
           <BsFillCartXFill className="cart" />
         )}
-        <h2
-          data-testid="customer_products__checkout-bottom-value
-        "
-        >
+        <h2 data-testid="customer_products__checkout-bottom-value">
           R$
           {' '}
           {totalPrice.toFixed(2).replace('.', ',')}

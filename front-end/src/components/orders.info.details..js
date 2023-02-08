@@ -47,10 +47,10 @@ function OrdersInfoDetailsComponent() {
     verifyStatus(newSale.status);
   };
 
-  useEffect(async () => {
+  useEffect(() => {
     const { role } = JSON.parse(localStorage.getItem('user'));
     setUserRole(role);
-    await requestDB();
+    requestDB();
   }, []);
 
   const formatDate = (date) => {
