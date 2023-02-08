@@ -1,7 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { BsFillCartXFill, BsCartCheck } from 'react-icons/bs';
 import Context from '../Context/Context';
 import { requestProducts } from '../services/request.products';
+import '../styles/products.available.css';
 
 function ProductsAvailable() {
   const history = useNavigate();
@@ -45,12 +47,13 @@ function ProductsAvailable() {
       quantity: 0,
     };
     if (findId.quantity === 0) {
-      return;
+      setItems([...filterNotProductId]);
+    } else {
+      setItems([
+        ...filterNotProductId,
+        { id: findId.id, quantity: findId.quantity - 1 },
+      ]);
     }
-    setItems([
-      ...filterNotProductId,
-      { id: findId.id, quantity: findId.quantity - 1 },
-    ]);
     productsContext();
   };
 
@@ -82,12 +85,12 @@ function ProductsAvailable() {
     setTotalPrice(total);
     const itemsNotQttNull = items.filter(({ quantity }) => quantity !== 0);
     localStorage.setItem('cart', JSON.stringify(itemsNotQttNull));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
   useEffect(() => {
     products();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -98,59 +101,79 @@ function ProductsAvailable() {
   }, [totalPrice]);
 
   return (
-    <div>
-      {listProducts.map((prod, i) => (
-        <div key={ i + 1 }>
-          <p data-testid={ `customer_products__element-card-price-${i + 1}` }>
-            {prod.price.toString().replace(/\./, ',')}
-          </p>
-          <img
-            alt="customer_product"
-            data-testid={ `customer_products__img-card-bg-image-${i + 1}` }
-            src={ prod.urlImage }
-            style={ { width: '200px', height: '200px' } }
-          />
-          <p data-testid={ `customer_products__element-card-title-${i + 1}` }>
-            {prod.name}
-          </p>
+    <div className="products-available-page">
+      <section>
+        {listProducts.map((prod, i) => (
+          <div className="product-available" key={ i + 1 }>
+            <p data-testid={ `customer_products__element-card-price-${i + 1}` }>
+              {`R$ ${prod.price.toString().replace(/\./, ',')}`}
+            </p>
+            <img
+              alt="customer_product"
+              data-testid={ `customer_products__img-card-bg-image-${i + 1}` }
+              src={ prod.urlImage }
+              style={ { width: '200px', height: '200px' } }
+            />
 
-          <button
-            type="button"
-            data-testid={ `customer_products__button-card-rm-item-${i + 1}` }
-            onClick={ () => removeItem(prod.id) }
-          >
-            -
-          </button>
-          <input
-            name="Qtdd-Item"
-            value={
-              items.find(({ id }) => id === prod.id)
-                ? items.find(({ id }) => id === prod.id).quantity
-                : 0
-            }
-            data-testid={ `customer_products__input-card-quantity-${i + 1}` }
-            onChange={ (e) => setItemQuantity(prod.id, e.target.value) }
-          />
-          <button
-            type="button"
-            data-testid={ `customer_products__button-card-add-item-${i + 1}` }
-            onClick={ () => addItem(prod.id) }
-          >
-            +
-          </button>
-        </div>
-      ))}
+            <div className="container-available-inc-dec">
+              <h3
+                data-testid={ `customer_products__element-card-title-${i + 1}` }
+              >
+                {prod.name}
+              </h3>
+              <div className="available-inc-dec-btns">
+                <button
+                  type="button"
+                  data-testid={ `customer_products__button-card-rm-item-${
+                    i + 1
+                  }` }
+                  onClick={ () => removeItem(prod.id) }
+                >
+                  -
+                </button>
+                <input
+                  name="Qtdd-Item"
+                  value={
+                    items.find(({ id }) => id === prod.id)
+                      ? items.find(({ id }) => id === prod.id).quantity
+                      : 0
+                  }
+                  data-testid={ `customer_products__input-card-quantity-${
+                    i + 1
+                  }` }
+                  onChange={ (e) => setItemQuantity(prod.id, e.target.value) }
+                />
+                <button
+                  type="button"
+                  data-testid={ `customer_products__button-card-add-item-${
+                    i + 1
+                  }` }
+                  onClick={ () => addItem(prod.id) }
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </section>
       <button
+        className="total-price"
         type="button"
         data-testid="customer_products__button-cart"
         onClick={ () => history('/customer/checkout') }
         disabled={ disable }
       >
-        <p data-testid="customer_products__checkout-bottom-value">
-          Total: R$
+        {totalPrice ? (
+          <BsCartCheck className="cart" />
+        ) : (
+          <BsFillCartXFill className="cart" />
+        )}
+        <h2 data-testid="customer_products__checkout-bottom-value">
+          R$
           {' '}
           {totalPrice.toFixed(2).replace('.', ',')}
-        </p>
+        </h2>
       </button>
     </div>
   );

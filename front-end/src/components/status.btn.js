@@ -16,10 +16,11 @@ function StatusBtn({
   }, []);
 
   return (
-    <div>
+    <div className="status-buttons">
       {userRole === 'seller' ? (
         <>
           <button
+            className="status-btn"
             type="button"
             onClick={ () => updateStatus(sellerId) }
             disabled={ disablePrepararPedido }
@@ -30,6 +31,7 @@ function StatusBtn({
             PREPARAR PEDIDO
           </button>
           <button
+            className="status-btn"
             type="button"
             onClick={ () => updateStatus(sellerId) }
             disabled={ disableSaiuParaEntrega }
@@ -42,6 +44,7 @@ function StatusBtn({
         </>
       ) : (
         <button
+          className="status-btn"
           type="button"
           onClick={ () => updateStatus(sellerId) }
           disabled={ disableMarcarComoEntregue }

@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import App from '../../App';
@@ -206,6 +206,10 @@ describe('Verifications about Checkout Page', () => {
     userEvent.click(submit);
 
     // AGUARDAR AÇÃO ASSÍNCRONA
+    await waitForElementToBeRemoved(
+      screen.queryByText(/compra realizada com sucessso/i),
+      { timeout: 2000 },
+    );
     await waitFor(() => expect(apiRequest.post).toHaveBeenCalled());
     await waitFor(() => expect(apiSaleId.get).toHaveBeenCalled());
 

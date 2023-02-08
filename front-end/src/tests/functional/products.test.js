@@ -7,7 +7,7 @@ import { customerMock, productsMock } from '../helpers/mocks';
 import renderWithRouter from '../helpers/renderWith';
 
 describe('Verifications about Login Page', () => {
-  const zeroTotalPrice = 'Total: R$ 0,00';
+  const zeroTotalPrice = 'R$ 0,00';
   const totalPriceTestId = 'customer_products__button-cart';
 
   beforeEach(() => {
@@ -76,7 +76,7 @@ describe('Verifications about Login Page', () => {
     userEvent.type(quantityInput, '1');
 
     // RESULTADO
-    expect(totalPriceBtn).toHaveTextContent('Total: R$ 2,20');
+    expect(totalPriceBtn).toHaveTextContent('R$ 2,20');
     expect(totalPriceBtn).toHaveProperty('disabled', false);
 
     // EVENTOS DA PAGINA
@@ -86,7 +86,7 @@ describe('Verifications about Login Page', () => {
     }
 
     // RESULTADO
-    expect(totalPriceBtn).toHaveTextContent('Total: R$ 8,80');
+    expect(totalPriceBtn).toHaveTextContent('R$ 8,80');
     expect(totalPriceBtn).toHaveProperty('disabled', false);
 
     // EVENTOS DA PAGINA
@@ -96,7 +96,7 @@ describe('Verifications about Login Page', () => {
     }
 
     // RESULTADO
-    expect(totalPriceBtn).toHaveTextContent('Total: R$ 4,40');
+    expect(totalPriceBtn).toHaveTextContent('R$ 4,40');
     expect(totalPriceBtn).toHaveProperty('disabled', false);
 
     // EVENTO DA PAGINA
@@ -136,7 +136,7 @@ describe('Verifications about Login Page', () => {
     }
 
     // RESULTADO
-    expect(totalPriceBtn).toHaveTextContent('Total: R$ 6,60');
+    expect(totalPriceBtn).toHaveTextContent('R$ 6,60');
     expect(totalPriceBtn).toHaveProperty('disabled', false);
 
     // EVENTOS DA PAGINA

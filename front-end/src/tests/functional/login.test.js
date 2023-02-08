@@ -33,7 +33,7 @@ describe('Verifications about Login Page', () => {
 
     // BUSCA POR ELEMENTOS
     const login = screen.getByTestId(emailTestId);
-    const password = screen.getByText(/senha/i);
+    const password = screen.getByTestId(passwordTestId);
     const btnRegister = screen.getByRole('button', { name: /tenho/i });
 
     // RESULTADOS

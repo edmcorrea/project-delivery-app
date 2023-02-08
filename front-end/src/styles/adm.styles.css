@@ -1,0 +1,41 @@
+.adm-page {
+  margin: 50px;
+}
+
+.adm-subpage form {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: space-around;
+  margin-bottom: 70px;
+  padding: 0 10%;
+}
+
+.adm-subpage form label {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  font-size: 15px;
+}
+
+.adm-subpage form input {
+  height: 29px;
+  padding: 0 10px;
+}
+
+.adm-subpage form select {
+  font-weight: 700;
+  height: 33px;
+  padding: 0 10px;
+}
+
+.adm-subpage form button {
+  background-color: #036b52;
+  border-radius: 10px;
+  color: white;
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  padding: 10px 30px;
+  text-align: center;
+}

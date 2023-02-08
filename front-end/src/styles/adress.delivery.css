@@ -1,0 +1,63 @@
+.page-adress-delivery form {
+  display: flex;
+  gap: 50px;
+  justify-content: space-evenly;
+  padding: 0 10%;
+}
+
+.page-adress-delivery h2 {
+  padding: 0 10%;
+}
+
+.page-adress-delivery form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  gap: 10px;
+}
+
+.page-adress-delivery form label:nth-last-of-type( 1 ) {
+  flex-grow: 1;
+}
+
+.page-adress-delivery form label:nth-last-of-type( 2 ) {
+  flex-grow: 3;
+}
+
+.page-adress-delivery form label:nth-last-of-type( 3 ) {
+  flex-grow: 1;
+}
+
+.page-adress-delivery input {
+  height: 29px;
+  padding: 0 10px;
+}
+
+.page-adress-delivery select {
+  font-weight: 700;
+  height: 35px;
+  padding: 0 10px;
+}
+
+.page-adress-delivery button {
+  background-color: #036b52;
+  color: white;
+  display: block;
+  font-size: 22px;
+  margin: auto;
+  margin-top: 15px;
+  padding: 20px 50px;
+  text-align: center;
+}
+
+.page-adress-delivery button:hover {
+  cursor: pointer;
+  scale: 1.05;
+  transition: scale 0.3s;
+}
+
+.page-buy-sucess {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}

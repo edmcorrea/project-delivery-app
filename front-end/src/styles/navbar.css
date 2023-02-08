@@ -1,0 +1,48 @@
+.navbar-component {
+  background-color: #5f9487;
+  border: 1px solid #036b52;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.navbar-component section {
+  display: flex;
+}
+
+/* .navbar-logout {
+  font-size: small;
+  padding: 0 10px;
+} */
+
+.navbar-component button {
+  background-color: transparent;
+  border: none;
+  font-size: medium;
+  font-weight: 700;
+  padding: 0 50px;
+}
+
+.navbar-component button:hover {
+  border-left: 1px solid white;
+  border-right: 1px solid white;
+  cursor: pointer;
+  scale: 1.15;
+}
+
+.navbar-component h2 {
+  align-items: center;
+  display: flex;
+  font-weight: 700;
+  margin: 0;
+  padding: 0 30px;
+}
+
+.img-logo {
+  padding: 0 45px;
+}
+
+.white-border {
+  border: 1px solod white;
+}

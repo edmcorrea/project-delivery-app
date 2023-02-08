@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Context from '../Context/Context';
+import '../styles/navbar.css';
+import duckLogin from '../images/duck-logo-0.png';
 
 function NavBar() {
   const [name, setName] = useState('');
@@ -23,43 +25,56 @@ function NavBar() {
   }, []);
 
   return (
-    <div>
-      {userRole === 'customer' && (
+    <div className="navbar-component">
+      <section>
+        <img
+          className="img-logo"
+          alt="duck-duck-login"
+          src={ duckLogin }
+          style={ { width: '90px', height: '90px' } }
+        />
+        <div className="white-border"> </div>
+        {userRole === 'customer' && (
+          <button
+            data-testid="customer_products__element-navbar-link-products"
+            type="button"
+            onClick={ () => history('/customer/products') }
+          >
+            PRODUTOS
+          </button>
+        )}
+        {userRole !== 'administrator' && (
+          <button
+            data-testid="customer_products__element-navbar-link-orders"
+            type="button"
+            onClick={ () => history(`/${userRole}/orders`) }
+          >
+            MEUS PEDIDOS
+          </button>
+        )}
+        {userRole === 'administrator' && (
+          <button
+            data-testid="customer_products__element-navbar-link-orders"
+            type="button"
+            onClick={ () => history('/admin/manage') }
+          >
+            GERENCIAR USUÁRIOS
+          </button>
+        )}
+      </section>
+      <section>
+        <h2 data-testid="customer_products__element-navbar-user-full-name">
+          {name}
+        </h2>
         <button
-          data-testid="customer_products__element-navbar-link-products"
+          className="navbar-logout"
+          data-testid="customer_products__element-navbar-link-logout"
           type="button"
-          onClick={ () => history('/customer/products') }
+          onClick={ logoutUser }
         >
-          PRODUTOS
-        </button>)}
-      {userRole !== 'administrator' && (
-        <button
-          data-testid="customer_products__element-navbar-link-orders"
-          type="button"
-          onClick={ () => history(`/${userRole}/orders`) }
-        >
-          MEUS PEDIDOS
+          LOGOUT
         </button>
-      )}
-      {userRole === 'administrator' && (
-        <button
-          data-testid="customer_products__element-navbar-link-orders"
-          type="button"
-          onClick={ () => history('/admin/manage') }
-        >
-          GERENCIAR USUÁRIOS
-        </button>
-      )}
-      <h2 data-testid="customer_products__element-navbar-user-full-name">
-        {name}
-      </h2>
-      <button
-        data-testid="customer_products__element-navbar-link-logout"
-        type="button"
-        onClick={ logoutUser }
-      >
-        logout
-      </button>
+      </section>
     </div>
   );
 }

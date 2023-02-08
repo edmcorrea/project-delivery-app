@@ -6,8 +6,10 @@ function OrdersDetail() {
   return (
     <div>
       <NavBar />
-      <OrdersInfoDetailsComponent />
-      <ProductsListComponent dataTest="order_details" />
+      <div className="page-order-details">
+        <OrdersInfoDetailsComponent />
+        <ProductsListComponent dataTest="order_details" />
+      </div>
     </div>
   );
 }

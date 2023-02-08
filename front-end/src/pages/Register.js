@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { requestRegister, setToken } from '../services/request.register';
+import '../styles/register.css';
+import duckLogin from '../images/duck-login.png';
 
 function Register() {
   const history = useNavigate();
@@ -26,11 +28,10 @@ function Register() {
     const nameChars = 12;
     const regexMail = /\S+@\S+\.\S+/;
     if (name.length >= nameChars
-       && password.length >= passwordChars
-        && regexMail.test(email)) {
+      && password.length >= passwordChars
+      && regexMail.test(email)) {
       return setDisableBtn(false);
     }
-
     return setDisableBtn(true);
   }, [name, email, password]);
 
@@ -42,59 +43,72 @@ function Register() {
   };
 
   return (
-    <div>
-      <form>
-        <label htmlFor="nomeRegister">
-          Nome
-          <input
-            data-testid="common_register__input-name"
-            id="nomeRegister"
-            type="text"
-            name="name"
-            value={ name }
-            onChange={ handleChange }
+    <div className="register-page">
+      <div className="register-container">
+        <form>
+          <img
+            alt="duck-duck-login"
+            src={ duckLogin }
+            style={ { width: '200px', height: '170px' } }
           />
-        </label>
-        <label htmlFor="emailRegister">
-          Email
-          <input
-            data-testid="common_register__input-email"
-            id="emailRegister"
-            type="email"
-            name="email"
-            value={ email }
-            onChange={ handleChange }
-          />
-        </label>
-        <br />
-        <label htmlFor="senhaRegister">
-          Senha
-          <input
-            data-testid="common_register__input-password"
-            id="senhaRegister"
-            type="password"
-            name="password"
-            value={ password }
-            onChange={ handleChange }
-          />
-        </label>
-        <br />
-        <button
-          data-testid="common_register__button-register"
-          type="button"
-          disabled={ disableBtn }
-          onClick={ handleSubmit }
-        >
-          Cadastrar
-
-        </button>
-        { error && (
-          <p data-testid="common_register__element-invalid_register">
+          <br />
+          <label htmlFor="nomeRegister">
+            <input
+              className={ name ? 'has-val' : 'csinput' }
+              data-testid="common_register__input-name"
+              id="nomeRegister"
+              type="text"
+              name="name"
+              value={ name }
+              onChange={ handleChange }
+            />
+            <span className="focus-input" data-placeholder="Nome" />
+          </label>
+          <label htmlFor="emailRegister">
+            <input
+              className={ email ? 'has-val' : 'csinput' }
+              data-testid="common_register__input-email"
+              id="emailRegister"
+              type="email"
+              name="email"
+              value={ email }
+              onChange={ handleChange }
+            />
+            <span className="focus-input" data-placeholder="Email" />
+          </label>
+          <label htmlFor="senhaRegister">
+            <input
+              className={ password ? 'has-val' : 'csinput' }
+              data-testid="common_register__input-password"
+              id="senhaRegister"
+              type="password"
+              name="password"
+              value={ password }
+              onChange={ handleChange }
+            />
+            <span className="focus-input" data-placeholder="Senha" />
+          </label>
+          <br />
+          <button
+            className="register-btn"
+            data-testid="common_register__button-register"
+            type="button"
+            disabled={ disableBtn }
+            onClick={ handleSubmit }
+          >
+            Cadastrar
+          </button>
+        </form>
+        {error && (
+          <p
+            className="register-invalid"
+            data-testid="common_register__element-invalid_register"
+          >
             Registro inválido
             {' '}
           </p>
-        ) }
-      </form>
+        )}
+      </div>
     </div>
   );
 }

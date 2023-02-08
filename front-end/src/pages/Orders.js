@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom';
 import NavBar from '../components/navbar';
 import Context from '../Context/Context';
 import { requestSales, setToken } from '../services/request.sale';
+import '../styles/orders.css';
 
 const numberFormat = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
   currency: 'BRL',
 });
+
+const numberFour = 4;
 
 function Orders() {
   const { saleList, setSaleList } = useContext(Context);
@@ -41,30 +44,52 @@ function Orders() {
     getSaleList();
   }, []);
 
+  function zeroPad(num, places) {
+    const zero = places - num.toString().length + 1;
+    return Array(+(zero > 0 && zero)).join('0') + num;
+  }
+
   return (
     <div>
       <NavBar />
-      <div>
+      <div className="page-orders">
         {saleList.map((sale, i) => (
           <Link key={ i + 1 } to={ `/${userRole}/orders/${sale.id}` }>
             <div>
-              <p data-testid={ `${userRole}_orders__element-order-id-${sale.id}` }>
-                { sale.id }
-              </p>
-              <p data-testid={ `${userRole}_orders__element-delivery-status-${sale.id}` }>
-                { sale.status }
-              </p>
-              <p data-testid={ `${userRole}_orders__element-order-date-${sale.id}` }>
-                { formatDate(sale.saleDate) }
-              </p>
-              <p data-testid={ `${userRole}_orders__element-card-price-${sale.id}` }>
-                { numberFormat.format(sale.totalPrice) }
-              </p>
-              { userRole === 'seller' && (
-                <p data-testid={ `seller_orders__element-card-address-${sale.id}` }>
-                  { `${sale.deliveryAddress}, ${sale.deliveryNumber}` }
-                </p>
-              ) }
+              <p>Pedido</p>
+              <h3
+                className="order-sale-id"
+                data-testid={ `${userRole}_orders__element-order-id-${sale.id}` }
+              >
+                {zeroPad(sale.id, numberFour)}
+              </h3>
+            </div>
+            <h3
+              className={ `status-sale ${
+                sale.status === 'Em Trânsito' ? 'EmTransito' : sale.status
+              }` }
+              data-testid={ `${userRole}_orders__element-delivery-status-${sale.id}` }
+            >
+              {sale.status}
+            </h3>
+            <div className="order">
+              <h3
+                data-testid={ `${userRole}_orders__element-order-date-${sale.id}` }
+              >
+                {formatDate(sale.saleDate)}
+              </h3>
+              <h3
+                data-testid={ `${userRole}_orders__element-card-price-${sale.id}` }
+              >
+                {numberFormat.format(sale.totalPrice)}
+              </h3>
+              {userRole === 'seller' && (
+                <h3
+                  data-testid={ `seller_orders__element-card-address-${sale.id}` }
+                >
+                  {`${sale.deliveryAddress}, ${sale.deliveryNumber}`}
+                </h3>
+              )}
             </div>
           </Link>
         ))}

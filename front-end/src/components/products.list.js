@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import Context from '../Context/Context';
 import CartEmpty from './cart.empty';
 import RemoveCartBtn from './remove.cart.btn';
+import '../styles/products.list.css';
 
 const numberFormat = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -37,63 +38,81 @@ function ProductsListComponent({ dataTest }) {
   }, [arrMap]);
 
   return (
-    <div>
+    <div className="component-products-list">
       {arrMap.length ? (
-        <div>
+        <table className="product-list">
+          <thead>
+            <tr>
+              <td>Item</td>
+              <td>Descrição</td>
+              <td>Quantidade</td>
+              <td>Valor Unitário</td>
+              <td>Sub-Total</td>
+              {dataTest === 'checkout' && <td>Remover</td>}
+            </tr>
+          </thead>
           {arrMap.map((element, indice) => (
-            <div key={ indice }>
-              <p
-                data-testid={
-                  `customer_${dataTest}__element-order-table-item-number-${indice}`
-                }
-              >
-                {indice + 1}
-              </p>
-              <p
-                data-testid={ `customer_${dataTest}__element-order-table-name-${indice}` }
-              >
-                {element.name}
-              </p>
-              <p
-                data-testid={
-                  `customer_${dataTest}__element-order-table-quantity-${indice}`
-                }
-              >
-                {element.quantity}
-              </p>
-              <p
-                data-testid={
-                  `customer_${dataTest}__element-order-table-unit-price-${indice}`
-                }
-              >
-                {numberFormat.format(element.price)}
-              </p>
-              <p
-                data-testid={
-                  `customer_${dataTest}__element-order-table-sub-total-${indice}`
-                }
-              >
-                {numberFormat.format(
-                  Number(element.quantity) * Number(element.price),
+            <tbody key={ indice }>
+              <tr>
+                <td
+                  data-testid={
+                    `customer_${dataTest}__element-order-table-item-number-${indice}`
+                  }
+                >
+                  {indice + 1}
+                </td>
+                <td
+                  data-testid={
+                    `customer_${dataTest}__element-order-table-name-${indice}`
+                  }
+                >
+                  {element.name}
+                </td>
+                <td
+                  data-testid={
+                    `customer_${dataTest}__element-order-table-quantity-${indice}`
+                  }
+                >
+                  {element.quantity}
+                </td>
+                <td
+                  data-testid={
+                    `customer_${dataTest}__element-order-table-unit-price-${indice}`
+                  }
+                >
+                  {numberFormat.format(element.price)}
+                </td>
+                <td
+                  data-testid={
+                    `customer_${dataTest}__element-order-table-sub-total-${indice}`
+                  }
+                >
+                  {numberFormat.format(
+                    Number(element.quantity) * Number(element.price),
+                  )}
+                </td>
+                {dataTest === 'checkout' && (
+                  <td>
+                    {dataTest === 'checkout' && (
+                      <RemoveCartBtn id={ element.id } indice={ indice } />
+                    )}
+                  </td>
                 )}
-              </p>
-              {dataTest === 'checkout' && (
-                <RemoveCartBtn
-                  id={ element.id }
-                  indice={ indice }
-                />
-              )}
-            </div>
+              </tr>
+            </tbody>
           ))}
-        </div>
+        </table>
       ) : (
         <CartEmpty dataTest={ dataTest } />
       )}
-      <p data-testid={ `${userRole}_${dataTest}__element-order-total-price` }>
-        {(dataTest === 'checkout')
-          ? totalPrice.toFixed(2).replace('.', ',')
-          : orderTotalPrice.toFixed(2).replace('.', ',')}
-      </p>
+      <div className="total-price-checkout">
+        <h2>TOTAL</h2>
+        <h2 data-testid={ `${userRole}_${dataTest}__element-order-total-price` }>
+          {dataTest === 'checkout'
+            ? numberFormat.format(totalPrice)
+            : numberFormat.format(orderTotalPrice)}
+        </h2>
+      </div>
     </div>
   );
 }

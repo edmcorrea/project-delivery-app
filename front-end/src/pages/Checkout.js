@@ -5,9 +5,13 @@ import ProductsListComponent from '../components/products.list';
 function Checkout() {
   return (
     <div>
-      <NavBar />
-      <ProductsListComponent dataTest="checkout" />
-      <AddressComponent />
+      <div>
+        <NavBar />
+        <div className="checkout-page">
+          <ProductsListComponent dataTest="checkout" />
+          <AddressComponent />
+        </div>
+      </div>
     </div>
   );
 }

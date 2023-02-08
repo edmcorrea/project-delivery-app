@@ -63,7 +63,7 @@ describe('Verifications about Order Details Page', () => {
     const dispatchBtn = screen.getByRole('button', { name: /saiu para entrega/i });
 
     // RESULTADOS
-    expect(orderId).toHaveTextContent(`PEDIDO:${saleMockPendente.id}`);
+    expect(orderId).toHaveTextContent(`PEDIDO: ${saleMockPendente.id}`);
     expect(saleDate).toHaveTextContent('26/01/2023');
     expect(saleStatus).toHaveTextContent(saleMockPendente.status);
     expect(preparingBtn).toHaveProperty('disabled', false);

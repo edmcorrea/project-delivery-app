@@ -7,6 +7,7 @@ import {
   setToken,
 } from '../services/request.sale.id';
 import StatusBtn from './status.btn';
+import '../styles/order.info.details.css';
 
 function OrdersInfoDetailsComponent() {
   const { id } = useParams();
@@ -46,10 +47,10 @@ function OrdersInfoDetailsComponent() {
     verifyStatus(newSale.status);
   };
 
-  useEffect(async () => {
+  useEffect(() => {
     const { role } = JSON.parse(localStorage.getItem('user'));
     setUserRole(role);
-    await requestDB();
+    requestDB();
   }, []);
 
   const formatDate = (date) => {
@@ -72,9 +73,9 @@ function OrdersInfoDetailsComponent() {
   };
 
   return (
-    <div>
-      <p>Detalhes do Pedido</p>
-      <div>
+    <div className="page-info-details">
+      <h2>Detalhes do Pedido</h2>
+      <div className="info-details">
         <p
           data-testid={
             `${userRole}_order_details__element-order-details-label-order-id`
@@ -83,6 +84,7 @@ function OrdersInfoDetailsComponent() {
           name="order-id"
         >
           PEDIDO:
+          {' '}
           {id}
         </p>
         {userRole === 'customer' && (
@@ -93,7 +95,7 @@ function OrdersInfoDetailsComponent() {
             id="seller-name"
             name="seller-name"
           >
-            P.Vend:
+            P. Vend:
             {' '}
             {sale.sellerName}
           </p>
