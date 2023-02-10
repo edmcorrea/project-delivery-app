@@ -13,7 +13,7 @@ require('dotenv').config();
 const options = {
   host: process.env.HOSTNAME || process.env.MYSQLHOST || 'localhost',
   port: process.env.MYSQLPORT || '3306',
-  database: process.env.MYSQL_DB_NAME || process.env.MYSQLDBNAME,
+  database: process.env.MYSQL_DB_NAME || process.env.MYSQLDATABASE,
     // database: 
     // `${process.env.MYSQLDBNAME || 'delivery-app'}${suffix[environment] || suffix.test}`,
   username: process.env.MYSQLUSER || 'root',
