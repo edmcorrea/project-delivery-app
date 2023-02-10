@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
 export const api = axios.create({
-  baseURL: `http://localhost:${process.env.PORT || '3001'}`,
+  baseURL: `https://lumpy-order-production.up.railway.app`,
 });
 
 export const requestSaleId = async (endpoint) => {
